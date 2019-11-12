@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Fizzyi.github.io/</id>
     <title>Fizzyi的博客</title>
-    <updated>2019-11-11T16:11:46.619Z</updated>
+    <updated>2019-11-12T02:18:55.976Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Fizzyi.github.io/"/>
     <link rel="self" href="https://Fizzyi.github.io//atom.xml"/>
@@ -10,6 +10,26 @@
     <logo>https://Fizzyi.github.io//images/avatar.png</logo>
     <icon>https://Fizzyi.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, Fizzyi的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[JS练手之某药]]></title>
+        <id>https://Fizzyi.github.io//post/js-lian-shou-zhi-mou-yao</id>
+        <link href="https://Fizzyi.github.io//post/js-lian-shou-zhi-mou-yao">
+        </link>
+        <updated>2019-11-12T02:02:03.000Z</updated>
+        <content type="html"><![CDATA[<p>URL:aHR0cCUzQS8vd3d3LmRka3kuY29tL2NvbW1vZGl0eS5odG1sJTNGZGRreWNhY2hlJTNEYTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY=</p>
+<p>通过观察请求参数，除了第一个sign参数不知道如何获取，其余的参数应该都比较好获取，那就开始干吧。<br>
+<img src="https://Fizzyi.github.io//post-images/1573524328115.png" alt=""><br>
+首先全局搜索 sign ，发现有3个文件相关，而其中之后一个JS文件，那就先进去看看。<br>
+进入该JS文件后，搜索sign，很容易就找到了sign的加密方法。<br>
+<img src="https://Fizzyi.github.io//post-images/1573524509565.png" alt=""></p>
+<p>接下来的事情就是用python来重写JS。</p>
+<p><img src="https://Fizzyi.github.io//post-images/1573524772704.png" alt=""><br>
+如图所示的python代码，就可以生成可用的sign。</p>
+<p>总结：一篇非常基础的JS破解，非常适合初学者学习（没错，说的就是我😶），不过学习到了如何使用md5进行加密。<br>
+<img src="https://Fizzyi.github.io//post-images/1573524972231.png" alt=""></p>
+<p>来源：https://mp.weixin.qq.com/s/SEDLwzlIjopb6cO1so5xmA</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://Fizzyi.github.io//post/hello-gridea</id>
