@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>JS练手之某药 | Fizzyi的博客</title>
+<title>asyncio 学习 | Fizzyi的博客</title>
 <meta name="description" content="天行健，君子以自强不息；&lt;br&gt;地势坤，君子以厚德载物">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -92,25 +92,56 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">JS练手之某药</h2>
+            <h2 class="post-title">asyncio 学习</h2>
             <div class="post-date">2019-11-12</div>
             
             <div class="post-content">
-              <p>URL:aHR0cCUzQS8vd3d3LmRka3kuY29tL2NvbW1vZGl0eS5odG1sJTNGZGRreWNhY2hlJTNEYTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY=</p>
-<p>通过观察请求参数，除了第一个sign参数不知道如何获取，其余的参数应该都比较好获取，那就开始干吧。<br>
-<img src="https://Fizzyi.github.io//post-images/1573524328115.png" alt=""><br>
-首先全局搜索 sign ，发现有3个文件相关，而其中之后一个JS文件，那就先进去看看。<br>
-进入该JS文件后，搜索sign，很容易就找到了sign的加密方法。<br>
-<img src="https://Fizzyi.github.io//post-images/1573524509565.png" alt=""></p>
-<p>接下来的事情就是用python来重写JS。</p>
-<p><img src="https://Fizzyi.github.io//post-images/1573524772704.png" alt=""><br>
-如图所示的python代码，就可以生成可用的sign。</p>
-<p>总结：一篇非常基础的JS破解，非常适合初学者学习（没错，说的就是我😶），不过学习到了如何使用md5进行加密。<br>
-<img src="https://Fizzyi.github.io//post-images/1573524972231.png" alt=""></p>
-<p>来源：https://mp.weixin.qq.com/s/SEDLwzlIjopb6cO1so5xmA</p>
+              <h1 id="asyncio的组成部分">asyncio的组成部分</h1>
+<p>高层级API</p>
+<ul>
+<li>协程对象和Tasks对象</li>
+<li>数据流</li>
+<li>同步源语</li>
+<li>子进程</li>
+<li>队列</li>
+<li>异常<br>
+低层级API</li>
+<li>事件循环</li>
+<li>Futures对象</li>
+<li>传输和协议</li>
+<li>策略</li>
+<li>平台支持</li>
+</ul>
+<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
+<ul>
+<li>事件循环<br>
+事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
+所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
+<li>Future<br>
+Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
+<li>Task<br>
+Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
+<li>awaitable objects(可等待对象)<br>
+如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
+await 的目的:
+<ul>
+<li>获取协程的结果</li>
+<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
+</ul>
+</li>
+</ul>
 
             </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://Fizzyi.github.io//post/js-lian-shou-zhi-mou-yao">
+                  <h3 class="post-title">
+                    JS练手之某药
+                  </h3>
+                </a>
+              </div>
             
 
             

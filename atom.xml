@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Fizzyi.github.io/</id>
     <title>Fizzyi的博客</title>
-    <updated>2019-11-12T02:19:07.414Z</updated>
+    <updated>2019-11-14T08:12:52.020Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Fizzyi.github.io/"/>
     <link rel="self" href="https://Fizzyi.github.io//atom.xml"/>
@@ -10,6 +10,48 @@
     <logo>https://Fizzyi.github.io//images/avatar.png</logo>
     <icon>https://Fizzyi.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, Fizzyi的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[asyncio 学习]]></title>
+        <id>https://Fizzyi.github.io//post/asyncio-xue-xi</id>
+        <link href="https://Fizzyi.github.io//post/asyncio-xue-xi">
+        </link>
+        <updated>2019-11-12T12:45:20.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="asyncio的组成部分">asyncio的组成部分</h1>
+<p>高层级API</p>
+<ul>
+<li>协程对象和Tasks对象</li>
+<li>数据流</li>
+<li>同步源语</li>
+<li>子进程</li>
+<li>队列</li>
+<li>异常<br>
+低层级API</li>
+<li>事件循环</li>
+<li>Futures对象</li>
+<li>传输和协议</li>
+<li>策略</li>
+<li>平台支持</li>
+</ul>
+<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
+<ul>
+<li>事件循环<br>
+事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
+所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
+<li>Future<br>
+Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
+<li>Task<br>
+Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
+<li>awaitable objects(可等待对象)<br>
+如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
+await 的目的:
+<ul>
+<li>获取协程的结果</li>
+<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JS练手之某药]]></title>
         <id>https://Fizzyi.github.io//post/js-lian-shou-zhi-mou-yao</id>
