@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Fizzyi的博客</title>
+<title>Docker 初学 | Fizzyi的博客</title>
 <meta name="description" content="天行健，君子以自强不息；&lt;br&gt;地势坤，君子以厚德载物">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -91,57 +91,42 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://Fizzyi.github.io//post/docker-chu-xue">
-                  <h2 class="post-title">Docker 初学</h2>
-                </a>
-                <div class="post-date">
-                  2019-11-14
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://Fizzyi.github.io//post/asyncio-xue-xi">
-                  <h2 class="post-title">asyncio 学习</h2>
-                </a>
-                <div class="post-date">
-                  2019-11-12
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://Fizzyi.github.io//post/js-lian-shou-zhi-mou-yao">
-                  <h2 class="post-title">JS练手之某药</h2>
-                </a>
-                <div class="post-date">
-                  2019-11-12
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">Docker 初学</h2>
+            <div class="post-date">2019-11-14</div>
+            
+            <div class="post-content">
+              <h1 id="dockerfile的编写">Dockerfile的编写</h1>
+<pre><code>#在contos上安装Nginx
+From centos
+#标明作者的名称和邮箱
+MAINTAINER fizzyi zhaohangyi13@163.com 
+#测试一下网络环境
+RUN ping -c 1 www.baidu.com
+#安装Nginx必要的软件
+RUN yum -y install gcc make pcre-devel zlib-devel tar zlib
+#把Nginx安装包复制到/usr/src/目录下
+ADD Nginx-1.15.8.tar.gz /usr/src/
+#切换到/usr/src/Nginx-1.15.8编译并且安装Nginx
+RUN cd /usr/src/Nginx-1.15.8 &amp;&amp; mkdir /usr/local/Nginx
+</code></pre>
 
-          <div class="pagination-container">
-  
-  
-</div>
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://Fizzyi.github.io//post/asyncio-xue-xi">
+                  <h3 class="post-title">
+                    asyncio 学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
 
         </div>
       </div>
