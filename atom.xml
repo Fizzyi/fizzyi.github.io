@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Fizzyi.github.io/</id>
     <title>Fizzyi的博客</title>
-    <updated>2019-11-14T11:33:04.545Z</updated>
+    <updated>2019-11-15T08:21:12.293Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Fizzyi.github.io/"/>
     <link rel="self" href="https://Fizzyi.github.io//atom.xml"/>
@@ -10,6 +10,38 @@
     <logo>https://Fizzyi.github.io//images/avatar.png</logo>
     <icon>https://Fizzyi.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, Fizzyi的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[JS练习之Gojoy]]></title>
+        <id>https://Fizzyi.github.io//post/js-lian-xi-zhi-gojoy</id>
+        <link href="https://Fizzyi.github.io//post/js-lian-xi-zhi-gojoy">
+        </link>
+        <updated>2019-11-15T07:26:34.000Z</updated>
+        <content type="html"><![CDATA[<p>url：https://m.gojoy.cn/pages/login/index?from=%2Fpages%2Fuser%2Findex</p>
+<p>访问该网站，按照惯例打开检查，发现有无限debug阻扰。之前都是点击右边暂停旁边的那个方向键进行取消debug,这次学到了一个新的方法，就是在debug代码这行右键点击前面的序号3，选择第三个 Add condlitional breakpoint，然后在输入框中输入false，然后回车，就设置了一个条件断点。<img src="https://Fizzyi.github.io//post-images/1573803144819.png" alt=""></p>
+<p>随便输入一个账号和密码，在Network下可以看见一个login，观察后发现这个是一个post请求并且携带了一个参数，请求地址是 https://gmall.gojoy.cn/user-service/user/login<br>
+<img src="https://Fizzyi.github.io//post-images/1573803305376.png" alt=""><br>
+我还是第一次看见这种携带参数的方式，😳</p>
+<p>在Network下可以知道这个请求的方式是XHR,我们就可以在Sources下打XHR断点，然后输入关键字login。<br>
+<img src="https://Fizzyi.github.io//post-images/1573803623169.png" alt=""><br>
+找到XHR/fetch Breakpoint,然后点击右边的+,输入login.然后在继续重新登陆，就会断在这里。<br>
+<img src="https://Fizzyi.github.io//post-images/1573803747690.png" alt=""><br>
+妈耶，密密麻麻的参数看的我头大。<br>
+顺着这里往上看，越看头越大。这里就又学到了一个新知识，堆栈。<br>
+<img src="https://Fizzyi.github.io//post-images/1573803980463.png" alt=""><br>
+从上往下一个一个的点，这个堆栈应该就是一种关联方式把，能找到它的父级？（我猜的）<br>
+然后当点到这个(anonymous)的时候，我看到了这个，直觉告诉我，就是它了。<br>
+<img src="https://Fizzyi.github.io//post-images/1573804097510.png" alt=""><br>
+于是在这里打上一个断点，取消xhr断点，然后重新登陆，断点生效，然后来看看这几个参数是什么,这几个参数更加证明了猜想，就是这里发送的请求。<br>
+<img src="https://Fizzyi.github.io//post-images/1573804862634.png" alt=""><br>
+这里u是我输入的参数，那么这个Q应该就是加密的过程了，在console下输入Q，出现了native code,双击进入，我看大佬说一般是进不去的，不过这里可以进去。进去之后看着这，头又大了一圈。<br>
+<img src="https://Fizzyi.github.io//post-images/1573805005450.png" alt=""><br>
+不过在console下输入 a[o.m[[o.m.i[&quot;;&quot;]]].q](o.m[[o.m.i[&quot;;&quot;]]].x  得到的结果就是这个请求的参数。</p>
+<p>新知识总结：<br>
+1 无限debugger的解决方式：在debugger这行前面的序号右键 Add condlitional breakpoint 输入false，可跳过无限debugger。<br>
+2 堆栈这个东西，挺好用的，可以快速找到上一级调用的地方。<br>
+3 如果请求是xhr的话，可以通过打xhr断点来寻找调用的地方。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Docker 初学]]></title>
         <id>https://Fizzyi.github.io//post/docker-chu-xue</id>
@@ -56,12 +88,12 @@ RUN cd /usr/src/Nginx-1.15.8 &amp;&amp; mkdir /usr/local/Nginx
 </ul>
 <h1 id="asyncio的几个概念">asyncio的几个概念</h1>
 <ul>
-<li>事件循环<br>
+<li>事件循环event_loop<br>
 事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
 所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
-<li>Future<br>
+<li>Future 对象<br>
 Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
-<li>Task<br>
+<li>Task 任务<br>
 Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
 <li>awaitable objects(可等待对象)<br>
 如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
@@ -71,6 +103,24 @@ await 的目的:
 <li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
 </ul>
 </li>
+</ul>
+<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
+<ul>
+<li>定义/创建协程对象</li>
+<li>将协程转换为task对象</li>
+<li>定义事件循环对象容器</li>
+<li>将task任务扔进事件循环对象中触发<br>
+import asyncio<br>
+async def hello(name):<br>
+print(&quot;hello&quot;,name)<br>
+#定义协程对象<br>
+coroutine = hello('world')
+<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
+loop = asyncio.get_event_loop()
+<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
+task = loop.create_task(coroutine)
+<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
+loop.run_until_complete(task)</li>
 </ul>
 ]]></content>
     </entry>

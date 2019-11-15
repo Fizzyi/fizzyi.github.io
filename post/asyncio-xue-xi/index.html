@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://Fizzyi.github.io//favicon.ico?v=1573731183155">
+<link rel="shortcut icon" href="https://Fizzyi.github.io//favicon.ico?v=1573806068685">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://Fizzyi.github.io//styles/main.css">
 
@@ -39,7 +39,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://Fizzyi.github.io/">
-        <img src="https://Fizzyi.github.io//images/avatar.png?v=1573731183155" class="site-logo">
+        <img src="https://Fizzyi.github.io//images/avatar.png?v=1573806068685" class="site-logo">
         <h1 class="site-title">Fizzyi的博客</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -123,12 +123,12 @@
 </ul>
 <h1 id="asyncio的几个概念">asyncio的几个概念</h1>
 <ul>
-<li>事件循环<br>
+<li>事件循环event_loop<br>
 事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
 所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
-<li>Future<br>
+<li>Future 对象<br>
 Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
-<li>Task<br>
+<li>Task 任务<br>
 Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
 <li>awaitable objects(可等待对象)<br>
 如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
@@ -138,6 +138,24 @@ await 的目的:
 <li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
 </ul>
 </li>
+</ul>
+<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
+<ul>
+<li>定义/创建协程对象</li>
+<li>将协程转换为task对象</li>
+<li>定义事件循环对象容器</li>
+<li>将task任务扔进事件循环对象中触发<br>
+import asyncio<br>
+async def hello(name):<br>
+print(&quot;hello&quot;,name)<br>
+#定义协程对象<br>
+coroutine = hello('world')
+<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
+loop = asyncio.get_event_loop()
+<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
+task = loop.create_task(coroutine)
+<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
+loop.run_until_complete(task)</li>
 </ul>
 
             </div>
