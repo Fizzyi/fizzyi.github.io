@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>文章归档 | Fizzyi的博客</title>
+<title>Mongodb 学习 | Fizzyi的博客</title>
 <meta name="description" content="天行健，君子以自强不息；&lt;br&gt;地势坤，君子以厚德载物">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -100,70 +100,32 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          
+          <div class="post-detail">
+            <h2 class="post-title">Mongodb 学习</h2>
+            <div class="post-date">2019-11-21</div>
+            
+            <div class="post-content">
+              <h1 id="基础学习">基础学习</h1>
+<h1 id="查询语句">查询语句</h1>
+<h2 id="查询重复的数据-查询企业列表中企业名称重复的数据">查询重复的数据 查询企业列表中企业名称重复的数据</h2>
+<pre><code>db.company_list.aggregate([{$group:{_id:'$QY_NAME',count:{$sum:1}}},{$match:{count:{$gt:1}}}])</code></pre>
 
-          <h2 class="archives-title">文章归档</h2>
-          <div class="archives-container">
+            </div>
             
-              <h2 class="year" data-aos="fade-in" data-aos-delay="500">2019</h2>
-              
-                
-                  <article class="post">
-                    <a href="https://Fizzyi.github.io//post/mongodb-xue-xi">
-                      <h2 class="post-title">
-                        Mongodb 学习
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://Fizzyi.github.io//post/js-lian-xi-zhi-gojoy">
-                      <h2 class="post-title">
-                        JS练习之Gojoy
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://Fizzyi.github.io//post/docker-chu-xue">
-                      <h2 class="post-title">
-                        Docker 初学
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://Fizzyi.github.io//post/asyncio-xue-xi">
-                      <h2 class="post-title">
-                        asyncio 学习
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://Fizzyi.github.io//post/js-lian-shou-zhi-mou-yao">
-                      <h2 class="post-title">
-                        JS练手之某药
-                      </h2>
-                    </a>
-                  </article>
-                
-              
             
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://Fizzyi.github.io//post/js-lian-xi-zhi-gojoy">
+                  <h3 class="post-title">
+                    JS练习之Gojoy
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
           </div>
-
-          <div class="pagination-container">
-  
-  
-</div>
 
         </div>
       </div>
