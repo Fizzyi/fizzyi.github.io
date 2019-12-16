@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Fizzyi.github.io/</id>
     <title>Fizzyi的博客</title>
-    <updated>2019-12-10T01:09:57.107Z</updated>
+    <updated>2019-12-16T14:55:19.764Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Fizzyi.github.io/"/>
     <link rel="self" href="https://Fizzyi.github.io//atom.xml"/>
@@ -10,6 +10,54 @@
     <logo>https://Fizzyi.github.io//images/avatar.png</logo>
     <icon>https://Fizzyi.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, Fizzyi的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[数据分析练习]]></title>
+        <id>https://Fizzyi.github.io//post/shu-ju-fen-xi-lian-xi-zong-ji-zhi-tan-suo-chipotle-kuai-can-shu-ju</id>
+        <link href="https://Fizzyi.github.io//post/shu-ju-fen-xi-lian-xi-zong-ji-zhi-tan-suo-chipotle-kuai-can-shu-ju">
+        </link>
+        <updated>2019-12-12T03:35:50.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="chipotle快餐数据">Chipotle快餐数据</h1>
+<p>chipo = pd.read_csv(path)</p>
+<h2 id="查看前10行数据">查看前10行数据</h2>
+<pre><code>chipo.head(10)
+</code></pre>
+<h2 id="打印表头">打印表头</h2>
+<pre><code>chipo.columns()
+</code></pre>
+<h2 id="统计某一列中不重复的值的数量">统计某一列中不重复的值的数量</h2>
+<pre><code>chipo[''].nunique()
+</code></pre>
+<h2 id="统计某一列中数据出现的次数">统计某一列中数据出现的次数</h2>
+<pre><code>chipo[''].value_counts()
+</code></pre>
+<h2 id="求和">求和</h2>
+<pre><code>chipo[''].sum()
+</code></pre>
+<h2 id="对某一列数据进行批量处理例如转换为浮点数">对某一列数据进行批量处理，例如转换为浮点数</h2>
+<pre><code>func = lambda x :float(x[1:-1])
+chipo['item_pirce'] = chipo['item_price'].apple(func)
+</code></pre>
+<h1 id="探索2012欧洲杯数据">探索2012欧洲杯数据</h1>
+<h2 id="只显示某一列数据">只显示某一列数据</h2>
+<pre><code>euro12.Goals
+euro12['Goals']
+</code></pre>
+<h2 id="同时多个条件进行排序">同时多个条件进行排序</h2>
+<pre><code>euro12.sort_values(['Red Cards','Yellow Cards'])
+</code></pre>
+<h2 id="求黄牌的平均数">求黄牌的平均数</h2>
+<pre><code>euro12['Yellow Cards'].mean()
+</code></pre>
+<h2 id="选出队伍名为g开头的队伍的数据">选出队伍名为G开头的队伍的数据</h2>
+<pre><code>euro12[euro12.Team.str.startswith('G')]
+</code></pre>
+<h2 id="选取前7列的数据">选取前7列的数据</h2>
+<pre><code>euro12.iloc[:,:7]
+</code></pre>
+<h2 id="找到英格兰england-意大利italy和俄罗斯russia的射正率shooting-accuracy">找到英格兰(England)、意大利(Italy)和俄罗斯(Russia)的射正率(Shooting Accuracy)</h2>
+<pre><code>euro12.loc[euro12.Team.isin(['England','Italy','Russia']),['Team','Shooting Accuracy']]</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[数据分析]]></title>
         <id>https://Fizzyi.github.io//post/shu-ju-fen-xi</id>

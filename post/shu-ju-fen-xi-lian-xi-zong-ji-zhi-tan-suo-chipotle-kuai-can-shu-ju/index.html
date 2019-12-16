@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Docker 初学 | Fizzyi的博客</title>
+<title>数据分析练习 | Fizzyi的博客</title>
 <meta name="description" content="天行健，君子以自强不息；&lt;br&gt;地势坤，君子以厚德载物">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -101,33 +101,59 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">Docker 初学</h2>
-            <div class="post-date">2019-11-14</div>
+            <h2 class="post-title">数据分析练习</h2>
+            <div class="post-date">2019-12-12</div>
             
             <div class="post-content">
-              <h1 id="dockerfile的编写">Dockerfile的编写</h1>
-<pre><code>#在contos上安装Nginx
-From centos
-#标明作者的名称和邮箱
-MAINTAINER fizzyi zhaohangyi13@163.com 
-#测试一下网络环境
-RUN ping -c 1 www.baidu.com
-#安装Nginx必要的软件
-RUN yum -y install gcc make pcre-devel zlib-devel tar zlib
-#把Nginx安装包复制到/usr/src/目录下
-ADD Nginx-1.15.8.tar.gz /usr/src/
-#切换到/usr/src/Nginx-1.15.8编译并且安装Nginx
-RUN cd /usr/src/Nginx-1.15.8 &amp;&amp; mkdir /usr/local/Nginx
+              <h1 id="chipotle快餐数据">Chipotle快餐数据</h1>
+<p>chipo = pd.read_csv(path)</p>
+<h2 id="查看前10行数据">查看前10行数据</h2>
+<pre><code>chipo.head(10)
 </code></pre>
+<h2 id="打印表头">打印表头</h2>
+<pre><code>chipo.columns()
+</code></pre>
+<h2 id="统计某一列中不重复的值的数量">统计某一列中不重复的值的数量</h2>
+<pre><code>chipo[''].nunique()
+</code></pre>
+<h2 id="统计某一列中数据出现的次数">统计某一列中数据出现的次数</h2>
+<pre><code>chipo[''].value_counts()
+</code></pre>
+<h2 id="求和">求和</h2>
+<pre><code>chipo[''].sum()
+</code></pre>
+<h2 id="对某一列数据进行批量处理例如转换为浮点数">对某一列数据进行批量处理，例如转换为浮点数</h2>
+<pre><code>func = lambda x :float(x[1:-1])
+chipo['item_pirce'] = chipo['item_price'].apple(func)
+</code></pre>
+<h1 id="探索2012欧洲杯数据">探索2012欧洲杯数据</h1>
+<h2 id="只显示某一列数据">只显示某一列数据</h2>
+<pre><code>euro12.Goals
+euro12['Goals']
+</code></pre>
+<h2 id="同时多个条件进行排序">同时多个条件进行排序</h2>
+<pre><code>euro12.sort_values(['Red Cards','Yellow Cards'])
+</code></pre>
+<h2 id="求黄牌的平均数">求黄牌的平均数</h2>
+<pre><code>euro12['Yellow Cards'].mean()
+</code></pre>
+<h2 id="选出队伍名为g开头的队伍的数据">选出队伍名为G开头的队伍的数据</h2>
+<pre><code>euro12[euro12.Team.str.startswith('G')]
+</code></pre>
+<h2 id="选取前7列的数据">选取前7列的数据</h2>
+<pre><code>euro12.iloc[:,:7]
+</code></pre>
+<h2 id="找到英格兰england-意大利italy和俄罗斯russia的射正率shooting-accuracy">找到英格兰(England)、意大利(Italy)和俄罗斯(Russia)的射正率(Shooting Accuracy)</h2>
+<pre><code>euro12.loc[euro12.Team.isin(['England','Italy','Russia']),['Team','Shooting Accuracy']]</code></pre>
 
             </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://Fizzyi.github.io//post/asyncio-xue-xi">
+                <a href="https://Fizzyi.github.io//post/shu-ju-fen-xi">
                   <h3 class="post-title">
-                    asyncio 学习
+                    数据分析
                   </h3>
                 </a>
               </div>
