@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-03-16T08:37:35.837Z</updated>
+    <updated>2020-03-16T08:39:51.773Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -614,28 +614,6 @@ db.company_info.updateMany({is_deal:'0'},{$set:{'is_deal':'1'}})</p>
 2 堆栈这个东西，挺好用的，可以快速找到上一级调用的地方。<br>
 3 如果请求是xhr的话，可以通过打xhr断点来寻找调用的地方。</p>
 <p>来源地址：https://mp.weixin.qq.com/s/Lzb809M3GNJ2hi1m-L56Pw</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Docker 初学]]></title>
-        <id>https://fizzyi.github.io/post/docker-chu-xue/</id>
-        <link href="https://fizzyi.github.io/post/docker-chu-xue/">
-        </link>
-        <updated>2019-11-14T08:13:46.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="dockerfile的编写">Dockerfile的编写</h1>
-<pre><code>#在contos上安装Nginx
-From centos
-#标明作者的名称和邮箱
-MAINTAINER fizzyi zhaohangyi13@163.com 
-#测试一下网络环境
-RUN ping -c 1 www.baidu.com
-#安装Nginx必要的软件
-RUN yum -y install gcc make pcre-devel zlib-devel tar zlib
-#把Nginx安装包复制到/usr/src/目录下
-ADD Nginx-1.15.8.tar.gz /usr/src/
-#切换到/usr/src/Nginx-1.15.8编译并且安装Nginx
-RUN cd /usr/src/Nginx-1.15.8 &amp;&amp; mkdir /usr/local/Nginx
-</code></pre>
 ]]></content>
     </entry>
     <entry>
