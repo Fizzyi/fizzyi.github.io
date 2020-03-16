@@ -1,111 +1,93 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" >
-
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Mongodb 学习 | Fizzyi的博客</title>
-<meta name="description" content="天行健，君子以自强不息；&lt;br&gt;地势坤，君子以厚德载物">
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+<meta name="description" content="逐渐秃头的程序员" />
+<link rel="shortcut icon" href="http://fizzyi.github.io/favicon.ico?v=1584343637542">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://Fizzyi.github.io//favicon.ico?v=1577934784464">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
-<link rel="stylesheet" href="https://Fizzyi.github.io//styles/main.css">
+<link rel="stylesheet" href="http://fizzyi.github.io/styles/main.css">
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'L0Y7XKKEQJ');
-</script>
 
 
   </head>
   <body>
-    <div id="app" class="main">
-
-      <div class="sidebar" :class="{ 'full-height': menuVisible }">
-  <div class="top-container" data-aos="fade-right">
-    <div class="top-header-container">
-      <a class="site-title-container" href="https://Fizzyi.github.io/">
-        <img src="https://Fizzyi.github.io//images/avatar.png?v=1577934784464" class="site-logo">
-        <h1 class="site-title">Fizzyi的博客</h1>
-      </a>
-      <div class="menu-btn" @click="menuVisible = !menuVisible">
-        <div class="line"></div>
-      </div>
-    </div>
-    <div>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="http://fizzyi.github.io">
+  <img class="avatar" src="http://fizzyi.github.io/images/avatar.png?v=1584343637542" alt="">
+  </a>
+  <h1 class="site-title">
+    Fizzyi的博客
+  </h1>
+  <p class="site-description">
+    逐渐秃头的程序员
+  </p>
+  <div class="menu-container">
+    
       
-        
-          <a href="/" class="site-nav">
-            首页
-          </a>
-        
+        <a href="/" class="menu">
+          首页
+        </a>
       
-        
-          <a href="/archives" class="site-nav">
-            归档
-          </a>
-        
+    
       
-        
-          <a href="/tags" class="site-nav">
-            标签
-          </a>
-        
+        <a href="/archives" class="menu">
+          归档
+        </a>
       
-        
-          <a href="/post/about" class="site-nav">
-            关于
-          </a>
-        
+    
       
-    </div>
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
   </div>
-  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
-    <div class="social-container">
+  <div class="social-container">
+    
       
-        
+    
       
-        
+    
       
-        
+    
       
-        
+    
       
-        
-      
-    </div>
-    <div class="site-description">
-      天行健，君子以自强不息；<br>地势坤，君子以厚德载物
-    </div>
-    <div class="site-footer">
-      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://Fizzyi.github.io//atom.xml" target="_blank">RSS</a>
-    </div>
+    
   </div>
 </div>
 
-
-      <div class="main-container">
-        <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">Mongodb 学习</h2>
-            <div class="post-date">2019-11-21</div>
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Mongodb 学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-11-21
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
             
-            <div class="post-content">
-              <h1 id="基础学习-文档的crud操作">基础学习 文档的CRUD操作</h1>
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="基础学习-文档的crud操作">基础学习 文档的CRUD操作</h1>
 <h2 id="一-增">一、增</h2>
 <p>创建操作或者插入操作会向集合中添加新的文档，如果插入时集合不存在，插入操作会创建对应的集合。<br>
 MongDB有3个插入文档的方法</p>
@@ -234,46 +216,107 @@ db.company_info.updateMany({is_deal:'0'},{$set:{'is_deal':'1'}})</p>
 <h3 id="33替换文档">3.3替换文档</h3>
 <p>reolaceOne() 方法会根据过滤器替换集合中的单个文档。</p>
 
-            </div>
-            
-            
-              <div class="next-post">
-                <div class="next">下一篇</div>
-                <a href="https://Fizzyi.github.io//post/js-lian-xi-zhi-gojoy">
-                  <h3 class="post-title">
-                    JS练习之Gojoy
-                  </h3>
-                </a>
               </div>
-            
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-%E6%96%87%E6%A1%A3%E7%9A%84crud%E6%93%8D%E4%BD%9C">基础学习 文档的CRUD操作</a>
+<ul>
+<li><a href="#%E4%B8%80-%E5%A2%9E">一、增</a></li>
+<li><a href="#%E4%BA%8C-%E6%9F%A5">二、查</a>
+<ul>
+<li><a href="#21%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6">2.1查询条件</a></li>
+<li><a href="#22%E6%A0%B9%E6%8D%AE%E5%B5%8C%E5%A5%97%E6%96%87%E6%A1%A3%E5%AD%97%E6%AE%B5%E6%9F%A5%E8%AF%A2">2.2根据嵌套文档字段查询</a></li>
+<li><a href="#23%E6%9F%A5%E8%AF%A2%E4%B8%8E%E6%8A%95%E5%BD%B1%E6%93%8D%E4%BD%9C">2.3查询与投影操作</a>
+<ul>
+<li><a href="#231%E6%AF%94%E8%BE%83%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C%E7%AC%A6">2.3.1比较查询操作符</a></li>
+<li><a href="#232-%E9%80%BB%E8%BE%91%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C%E7%AC%A6">2.3.2 逻辑查询操作符</a></li>
+<li><a href="#233-%E5%85%83%E7%B4%A0%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C%E7%AC%A6">2.3.3 元素查询操作符</a></li>
+<li><a href="#234-%E6%95%B0%E7%BB%84%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C%E7%AC%A6">2.3.4 数组查询操作符</a></li>
+</ul>
+</li>
+<li><a href="#24-cursor%E5%AF%B9%E8%B1%A1">2.4 Cursor对象</a>
+<ul>
+<li><a href="#241-%E7%A4%BA%E4%BE%8B">2.4.1 示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89-%E6%94%B9">三、 改</a>
+<ul>
+<li><a href="#31%E6%9B%B4%E6%96%B0%E5%8D%95%E4%B8%AA%E6%96%87%E6%A1%A3">3.1更新单个文档</a></li>
+<li><a href="#32%E6%9B%B4%E6%96%B0%E5%A4%9A%E4%B8%AA%E6%96%87%E6%A1%A3">3.2更新多个文档</a></li>
+<li><a href="#33%E6%9B%BF%E6%8D%A2%E6%96%87%E6%A1%A3">3.3替换文档</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-            
-
-          </div>
-
+              </div>
+            </div>
+          </article>
         </div>
-      </div>
-    </div>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="http://fizzyi.github.io/post/js-lian-xi-zhi-gojoy/">
+              <h3 class="post-title">
+                JS练习之Gojoy
+              </h3>
+            </a>
+          </div>
+        
 
-<script type="application/javascript">
+        
 
-AOS.init();
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="http://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+</div>
 
-hljs.initHighlightingOnLoad()
+<script>
+  hljs.initHighlightingOnLoad()
 
-var app = new Vue({
-  el: '#app',
-  data: {
-    menuVisible: false,
-  },
-})
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
 
 </script>
 
-
-
-
+      </div>
+    </div>
   </body>
 </html>
