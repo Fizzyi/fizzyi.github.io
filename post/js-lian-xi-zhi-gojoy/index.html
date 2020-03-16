@@ -1,99 +1,100 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" >
+
 <title>JS练习之Gojoy | Fizzyi的博客</title>
-<meta name="description" content="逐渐秃头的程序员" />
-<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1584344258793">
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1584344320409">
+
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
 
-<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
 
   </head>
   <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="https://fizzyi.github.io">
-  <img class="avatar" src="https://fizzyi.github.io/images/avatar.png?v=1584344258793" alt="">
-  </a>
-  <h1 class="site-title">
-    Fizzyi的博客
-  </h1>
-  <p class="site-description">
-    逐渐秃头的程序员
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
-        </a>
-      
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://fizzyi.github.io">Fizzyi的博客</a></h3>
   </div>
-  <div class="social-container">
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
   </div>
-</div>
+</nav>
 
-        <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              JS练习之Gojoy
-            </h2>
-            <div class="post-info">
-              <span>
-                2019-11-15
-              </span>
-              <span>
-                3 min read
-              </span>
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>JS练习之Gojoy</h1>
+            <p class="article-meta">
+              2019-11-15
               
-                <a href="https://fizzyi.github.io/tag/v4o-y8Aa4/" class="post-tag">
-                  # 爬虫
+                <a href="https://fizzyi.github.io/tag/v4o-y8Aa4/" class="badge ">
+                  爬虫
                 </a>
               
-            </div>
+            </p>
             
-              <img class="post-feature-image" src="https://fizzyi.github.io/post-images/js-lian-xi-zhi-gojoy.png" alt="">
+              <img src="https://fizzyi.github.io/post-images/js-lian-xi-zhi-gojoy.png" alt="JS练习之Gojoy">
             
-            <div class="post-content-wrapper">
-              <div class="post-content">
-                <p>url：https://m.gojoy.cn/pages/login/index?from=%2Fpages%2Fuser%2Findex</p>
+            <div class="post-content">
+              <p>url：https://m.gojoy.cn/pages/login/index?from=%2Fpages%2Fuser%2Findex</p>
 <p>访问该网站，按照惯例打开检查，发现有无限debug阻扰。之前都是点击右边暂停旁边的那个方向键进行取消debug,这次学到了一个新的方法，就是在debug代码这行右键点击前面的序号3，选择第三个 Add condlitional breakpoint，然后在输入框中输入false，然后回车，就设置了一个条件断点。<img src="https://fizzyi.github.io/post-images/1573803144819.png" alt="" loading="lazy"></p>
 <p>随便输入一个账号和密码，在Network下可以看见一个login，观察后发现这个是一个post请求并且携带了一个参数，请求地址是 https://gmall.gojoy.cn/user-service/user/login<br>
 <img src="https://fizzyi.github.io/post-images/1573803305376.png" alt="" loading="lazy"><br>
@@ -119,74 +120,146 @@
 3 如果请求是xhr的话，可以通过打xhr断点来寻找调用的地方。</p>
 <p>来源地址：https://mp.weixin.qq.com/s/Lzb809M3GNJ2hi1m-L56Pw</p>
 
-              </div>
-              <div class="toc-container">
-                
-              </div>
             </div>
           </article>
         </div>
-
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://fizzyi.github.io/post/docker-chu-xue/">
+                <h3 class="post-title">
+                  Docker 初学
+                </h3>
+              </a>
+            </div>
+          
+        </div>
         
-          <div class="next-post">
-            <div class="next">下一篇</div>
-            <a href="https://fizzyi.github.io/post/docker-chu-xue/">
-              <h3 class="post-title">
-                Docker 初学
-              </h3>
-            </a>
-          </div>
-        
+      </div>
 
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://fizzyi.github.io/images/avatar.png?v=1584344320409" class="no-responsive avatar">
+    <div class="text-muted">逐渐秃头的程序员</div>
+    <div class="social-container">
+      
         
-
-        <div class="site-footer">
-  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
-  <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/te-se-xi-tong/">特色系统</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/numpy-zhi-ji-chu/">Numpy之基础</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/shu-ju-fen-xi-lian-xi-zong-ji-zhi-tan-suo-chipotle-kuai-can-shu-ju/">数据分析练习</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/shu-ju-fen-xi/">数据分析</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/mongodb-xue-xi/">Mongodb 学习</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/js-lian-xi-zhi-gojoy/">JS练习之Gojoy</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/docker-chu-xue/">Docker 初学</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/asyncio-xue-xi/">asyncio 学习</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">JS练手之某药</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://fizzyi.github.io/post/about/">关于</a>
+            </li>
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://fizzyi.github.io/tag/v4o-y8Aa4/" class="badge ">
+          爬虫
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
 </div>
 
-<script>
-  hljs.initHighlightingOnLoad()
 
-  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+    </div>
 
-  // This should probably be throttled.
-  // Especially because it triggers during smooth scrolling.
-  // https://lodash.com/docs/4.17.10#throttle
-  // You could do like...
-  // window.addEventListener("scroll", () => {
-  //    _.throttle(doThatStuff, 100);
-  // });
-  // Only not doing it here to keep this Pen dependency-free.
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
-  window.addEventListener("scroll", event => {
-    let fromTop = window.scrollY;
+<script type="application/javascript">
 
-    mainNavLinks.forEach((link, index) => {
-      let section = document.getElementById(decodeURI(link.hash).substring(1));
-      let nextSection = null
-      if (mainNavLinks[index + 1]) {
-        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
-      }
-      if (section.offsetTop <= fromTop) {
-        if (nextSection) {
-          if (nextSection.offsetTop > fromTop) {
-            link.classList.add("current");
-          } else {
-            link.classList.remove("current");    
-          }
-        } else {
-          link.classList.add("current");
-        }
-      } else {
-        link.classList.remove("current");
-      }
-    });
-  });
+AOS.init();
+
+hljs.initHighlightingOnLoad()
 
 </script>
 
-      </div>
-    </div>
+
+
+
   </body>
 </html>
