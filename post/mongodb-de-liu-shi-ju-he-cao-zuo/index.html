@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>asyncio 学习 | Fizzyi的垃圾桶</title>
+<title>MongoDB的流式聚合操作 | Fizzyi的垃圾桶</title>
 <meta name="description" content="逐渐秃头的程序员">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -101,71 +101,119 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">asyncio 学习</h2>
-            <div class="post-date">2019-11-12</div>
+            <h2 class="post-title">MongoDB的流式聚合操作</h2>
+            <div class="post-date">2020-03-20</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/03/20/2020-03-2016.48.19.png')">
+              </div>
             
             <div class="post-content">
-              <h1 id="asyncio的组成部分">asyncio的组成部分</h1>
-<p>高层级API</p>
+              <p>MongoDB中的聚合是指同时对多个文档中的数据进行处理、筛选和归类并输出结果的过程。<br>
+MongoDB提供了三种聚合方式：</p>
 <ul>
-<li>协程对象和Tasks对象</li>
-<li>数据流</li>
-<li>同步源语</li>
-<li>子进程</li>
-<li>队列</li>
-<li>异常<br>
-低层级API</li>
-<li>事件循环</li>
-<li>Futures对象</li>
-<li>传输和协议</li>
-<li>策略</li>
-<li>平台支持</li>
+<li>Aggregation Pipeline</li>
+<li>Map-Reduce</li>
+<li>简单聚合</li>
 </ul>
-<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
-<ul>
-<li>事件循环event_loop<br>
-事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
-所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
-<li>Future 对象<br>
-Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
-<li>Task 任务<br>
-Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
-<li>awaitable objects(可等待对象)<br>
-如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
-await 的目的:
-<ul>
-<li>获取协程的结果</li>
-<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
-</ul>
-</li>
-</ul>
-<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
-<ul>
-<li>定义/创建协程对象</li>
-<li>将协程转换为task对象</li>
-<li>定义事件循环对象容器</li>
-<li>将task任务扔进事件循环对象中触发<br>
-import asyncio<br>
-async def hello(name):<br>
-print(&quot;hello&quot;,name)<br>
-#定义协程对象<br>
-coroutine = hello('world')
-<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
-loop = asyncio.get_event_loop()
-<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
-task = loop.create_task(coroutine)
-<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
-loop.run_until_complete(task)</li>
-</ul>
+<h1 id="1-aggregation-pipeline">1、Aggregation Pipeline</h1>
+<p>Aggregation Pipeline 又称聚合管道。开发者可以将多个文档传入一个由多个Stage组成的Pipeline，每个Stage处理的结果都会传入下一个Stage中，最后一个Stage的处理结果就是整个Pipeline的输出。</p>
+<p>创建聚合管道的语法如下：</p>
+<pre><code>db.collection.aggregate( [ { &lt;stage1&gt; },{  &lt;stage2&gt; }.....  ] )
+</code></pre>
+<p>常见的SQL聚合术语、函数和概念以及对应的MongoDB操作符和Stage。</p>
+<table>
+<thead>
+<tr>
+<th>SQL</th>
+<th>MongoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WHERE</td>
+<td>$match</td>
+</tr>
+<tr>
+<td>GROUP BY</td>
+<td>$group</td>
+</tr>
+<tr>
+<td>HAVING</td>
+<td>$match</td>
+</tr>
+<tr>
+<td>SELECT</td>
+<td>$project</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>$sort</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>$limit</td>
+</tr>
+<tr>
+<td>SUM()</td>
+<td>$sum</td>
+</tr>
+<tr>
+<td>COUNR()</td>
+<td>sumsortByCount</td>
+</tr>
+<tr>
+<td>join</td>
+<td>$lookup</td>
+</tr>
+</tbody>
+</table>
+<p>$match 的描述为&quot;过滤文档，仅允许匹配的文档传递到下一个管道阶段 &quot;。</p>
+<pre><code>{ $match: { &lt;query&gt; } }
+</code></pre>
+<p>$group 统计文档</p>
+<pre><code>{ $group: {_id:&quot;key&quot;:&quot;$key&quot;,number:{$sum: 1}} }
+</code></pre>
+<p>$sample 从输入中随机选择指定数量的文档</p>
+<pre><code>{ $sample :  { size:  num } }
+</code></pre>
+<p>$project 是过滤文档中的字段，处理结果会传入到下一个阶段。需要展示的值为1/true，不需要展示的值为0/false。默认为0</p>
+<pre><code>{ $project: { company_name:1} }
+</code></pre>
+<p>$out 聚合Pipeline返回的结果文档，并将其写入指定的集合。</p>
+<pre><code>{ $out:  &quot;collectionName&quot; }
+</code></pre>
+<h1 id="2-简单的聚合">2、 简单的聚合</h1>
+<h2 id="count">count</h2>
+<p>用于计算集合或者视图中的文档数，返回一个包含计数结果和状态的文档。</p>
+<pre><code>{
+    count: collection/view,
+    query:document,
+    limit:integer,
+    skip: integer,
+    hint:hint, # 指定要使用的索引，将索引名称指定为字符串或者索引规范文档。
+    readConcern:document
+}
+</code></pre>
+<h2 id="group">group</h2>
+<p>按指定的键对集合中的文档进行分组，并执行简单的聚合函数。</p>
+<pre><code>{
+    group:
+    {
+        ns : &lt;namespace&gt;  通过操作执行组的集合，必填
+        key : &lt;key&gt; 要分组的字段或者字段，必填
+        $reduce : &lt;reduce function &gt; 在分组期间对文档进行聚合操作的函数
+    }
+}
+</code></pre>
 
             </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">
+                <a href="https://fizzyi.github.io/post/mongodb-diao-you/">
                   <h3 class="post-title">
-                    JS练手之某药
+                    Mongodb调优
                   </h3>
                 </a>
               </div>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-03-18T05:47:18.678Z</updated>
+    <updated>2020-03-20T08:48:46.702Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,111 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[MongoDB的流式聚合操作]]></title>
+        <id>https://fizzyi.github.io/post/mongodb-de-liu-shi-ju-he-cao-zuo/</id>
+        <link href="https://fizzyi.github.io/post/mongodb-de-liu-shi-ju-he-cao-zuo/">
+        </link>
+        <updated>2020-03-20T06:37:05.000Z</updated>
+        <content type="html"><![CDATA[<p>MongoDB中的聚合是指同时对多个文档中的数据进行处理、筛选和归类并输出结果的过程。<br>
+MongoDB提供了三种聚合方式：</p>
+<ul>
+<li>Aggregation Pipeline</li>
+<li>Map-Reduce</li>
+<li>简单聚合</li>
+</ul>
+<h1 id="1-aggregation-pipeline">1、Aggregation Pipeline</h1>
+<p>Aggregation Pipeline 又称聚合管道。开发者可以将多个文档传入一个由多个Stage组成的Pipeline，每个Stage处理的结果都会传入下一个Stage中，最后一个Stage的处理结果就是整个Pipeline的输出。</p>
+<p>创建聚合管道的语法如下：</p>
+<pre><code>db.collection.aggregate( [ { &lt;stage1&gt; },{  &lt;stage2&gt; }.....  ] )
+</code></pre>
+<p>常见的SQL聚合术语、函数和概念以及对应的MongoDB操作符和Stage。</p>
+<table>
+<thead>
+<tr>
+<th>SQL</th>
+<th>MongoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WHERE</td>
+<td>$match</td>
+</tr>
+<tr>
+<td>GROUP BY</td>
+<td>$group</td>
+</tr>
+<tr>
+<td>HAVING</td>
+<td>$match</td>
+</tr>
+<tr>
+<td>SELECT</td>
+<td>$project</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>$sort</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>$limit</td>
+</tr>
+<tr>
+<td>SUM()</td>
+<td>$sum</td>
+</tr>
+<tr>
+<td>COUNR()</td>
+<td>sumsortByCount</td>
+</tr>
+<tr>
+<td>join</td>
+<td>$lookup</td>
+</tr>
+</tbody>
+</table>
+<p>$match 的描述为&quot;过滤文档，仅允许匹配的文档传递到下一个管道阶段 &quot;。</p>
+<pre><code>{ $match: { &lt;query&gt; } }
+</code></pre>
+<p>$group 统计文档</p>
+<pre><code>{ $group: {_id:&quot;key&quot;:&quot;$key&quot;,number:{$sum: 1}} }
+</code></pre>
+<p>$sample 从输入中随机选择指定数量的文档</p>
+<pre><code>{ $sample :  { size:  num } }
+</code></pre>
+<p>$project 是过滤文档中的字段，处理结果会传入到下一个阶段。需要展示的值为1/true，不需要展示的值为0/false。默认为0</p>
+<pre><code>{ $project: { company_name:1} }
+</code></pre>
+<p>$out 聚合Pipeline返回的结果文档，并将其写入指定的集合。</p>
+<pre><code>{ $out:  &quot;collectionName&quot; }
+</code></pre>
+<h1 id="2-简单的聚合">2、 简单的聚合</h1>
+<h2 id="count">count</h2>
+<p>用于计算集合或者视图中的文档数，返回一个包含计数结果和状态的文档。</p>
+<pre><code>{
+    count: collection/view,
+    query:document,
+    limit:integer,
+    skip: integer,
+    hint:hint, # 指定要使用的索引，将索引名称指定为字符串或者索引规范文档。
+    readConcern:document
+}
+</code></pre>
+<h2 id="group">group</h2>
+<p>按指定的键对集合中的文档进行分组，并执行简单的聚合函数。</p>
+<pre><code>{
+    group:
+    {
+        ns : &lt;namespace&gt;  通过操作执行组的集合，必填
+        key : &lt;key&gt; 要分组的字段或者字段，必填
+        $reduce : &lt;reduce function &gt; 在分组期间对文档进行聚合操作的函数
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Mongodb调优]]></title>
         <id>https://fizzyi.github.io/post/mongodb-diao-you/</id>
