@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-04-07T08:44:00.004Z</updated>
+    <updated>2020-06-04T09:49:23.491Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,24 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[JS练手项目之838888 迅雷网盘URL加密]]></title>
+        <id>https://fizzyi.github.io/post/js-lian-shou-xiang-mu-zhi-838888-xun-lei-wang-pan-url-jia-mi/</id>
+        <link href="https://fizzyi.github.io/post/js-lian-shou-xiang-mu-zhi-838888-xun-lei-wang-pan-url-jia-mi/">
+        </link>
+        <updated>2020-06-04T09:38:25.000Z</updated>
+        <content type="html"><![CDATA[<p>真JS练手项目</p>
+<p>输入关键字后，发现URL中有个疑似加密的参数<br>
+<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.40.08.png" alt="" loading="lazy"><br>
+这个参数又没有参数名，所以看网页源码中的点击按钮的地方<br>
+<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.41.39.png" alt="" loading="lazy"><br>
+发现点击按钮绑定了一个函数 onsubmit=&quot;return mysubmit(this);于是全局搜索mysubmit<br>
+，很好，只有一个文件有它，那就是它了<br>
+<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.43.36.png" alt="" loading="lazy"><br>
+它还包含了其余的两个参数，都找出来，然后写到一个JS文件中，稍微改写一下JS<br>
+<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.48.23.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JS练习之某省雨水监视平台]]></title>
         <id>https://fizzyi.github.io/post/js-lian-xi-zhi-mou-sheng-yu-shui-jian-shi-ping-tai/</id>
@@ -805,26 +823,6 @@ task = loop.create_task(coroutine)
 <h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
 loop.run_until_complete(task)</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS练手之某药]]></title>
-        <id>https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/</id>
-        <link href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">
-        </link>
-        <updated>2019-11-12T02:02:03.000Z</updated>
-        <content type="html"><![CDATA[<p>URL:aHR0cCUzQS8vd3d3LmRka3kuY29tL2NvbW1vZGl0eS5odG1sJTNGZGRreWNhY2hlJTNEYTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY=</p>
-<p>通过观察请求参数，除了第一个sign参数不知道如何获取，其余的参数应该都比较好获取，那就开始干吧。<br>
-<img src="https://fizzyi.github.io/post-images/1573524328115.png" alt="" loading="lazy"><br>
-首先全局搜索 sign ，发现有3个文件相关，而其中之后一个JS文件，那就先进去看看。<br>
-进入该JS文件后，搜索sign，很容易就找到了sign的加密方法。<br>
-<img src="https://fizzyi.github.io/post-images/1573524509565.png" alt="" loading="lazy"></p>
-<p>接下来的事情就是用python来重写JS。</p>
-<p><img src="https://fizzyi.github.io/post-images/1573524772704.png" alt="" loading="lazy"><br>
-如图所示的python代码，就可以生成可用的sign。</p>
-<p>总结：一篇非常基础的JS破解，非常适合初学者学习（没错，说的就是我😶），不过学习到了如何使用md5进行加密。<br>
-<img src="https://fizzyi.github.io/post-images/1573524972231.png" alt="" loading="lazy"></p>
-<p>来源：https://mp.weixin.qq.com/s/SEDLwzlIjopb6cO1so5xmA</p>
 ]]></content>
     </entry>
 </feed>
