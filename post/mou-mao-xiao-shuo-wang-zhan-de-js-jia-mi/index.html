@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>asyncio 学习 | Fizzyi的垃圾桶</title>
+<title>某猫小说网站的JS加密 | Fizzyi的垃圾桶</title>
 <meta name="description" content="逐渐秃头的程序员">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -101,71 +101,30 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">asyncio 学习</h2>
-            <div class="post-date">2019-11-12</div>
+            <h2 class="post-title">某猫小说网站的JS加密</h2>
+            <div class="post-date">2020-06-11</div>
             
             <div class="post-content">
-              <h1 id="asyncio的组成部分">asyncio的组成部分</h1>
-<p>高层级API</p>
-<ul>
-<li>协程对象和Tasks对象</li>
-<li>数据流</li>
-<li>同步源语</li>
-<li>子进程</li>
-<li>队列</li>
-<li>异常<br>
-低层级API</li>
-<li>事件循环</li>
-<li>Futures对象</li>
-<li>传输和协议</li>
-<li>策略</li>
-<li>平台支持</li>
-</ul>
-<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
-<ul>
-<li>事件循环event_loop<br>
-事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
-所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
-<li>Future 对象<br>
-Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
-<li>Task 任务<br>
-Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
-<li>awaitable objects(可等待对象)<br>
-如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
-await 的目的:
-<ul>
-<li>获取协程的结果</li>
-<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
-</ul>
-</li>
-</ul>
-<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
-<ul>
-<li>定义/创建协程对象</li>
-<li>将协程转换为task对象</li>
-<li>定义事件循环对象容器</li>
-<li>将task任务扔进事件循环对象中触发<br>
-import asyncio<br>
-async def hello(name):<br>
-print(&quot;hello&quot;,name)<br>
-#定义协程对象<br>
-coroutine = hello('world')
-<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
-loop = asyncio.get_event_loop()
-<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
-task = loop.create_task(coroutine)
-<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
-loop.run_until_complete(task)</li>
-</ul>
+              <p>前言：本教程仅供学习，不得非法破坏网站。如用于其他暴力等用途，后果自负。如侵权您的网站请留言我，我立刻删除，感谢。</p>
+<p>url: aHR0cHM6Ly93d3cuY2l3ZWltYW8uY29tL2NoYXB0ZXIvMTA0ODM3NDYz</p>
+<p>访问网页，查看开发者页面，没有发现有包含小说的原文的请求，猜想可能是加密了，然后观察后发现这个chapter_content,感觉就是加密后的原文。<br>
+<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.03.13.png" alt="" loading="lazy"><br>
+然后全文搜索下这个参数，发现就只有一个地方有这个参数，然后打上断点，发现在这里中断，意味着我们没找错地方，看下方有一个myDecrypt函数，感觉就是解密函数，跟进去看看<br>
+<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.12.12.png" alt="" loading="lazy"><br>
+进来发现猜想的没错，就是我们要找的解密函数，于是就开始扣JS，扣下来一点就执行一下，看差什么，缺撒补撒的原则就行。<br>
+这里要注意的是他的 d.base64.encode 和 d.base64.decode 是网站自己写的，也需要找到扣出来。<br>
+最后执行，得到原文。<br>
+<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.19.57.png" alt="" loading="lazy"></p>
+<p>JS地址：https://github.com/Fizzyi/JS_PROJECT/tree/master/XX%E7%8C%AB</p>
 
             </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">
+                <a href="https://fizzyi.github.io/post/js-lian-shou-xiang-mu-zhi-838888-xun-lei-wang-pan-url-jia-mi/">
                   <h3 class="post-title">
-                    JS练手之某药
+                    JS练手项目之838888 迅雷网盘URL加密
                   </h3>
                 </a>
               </div>
