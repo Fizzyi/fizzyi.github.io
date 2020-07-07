@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-06-11T07:36:29.797Z</updated>
+    <updated>2020-07-07T06:16:11.350Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,39 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[某省建筑市场监管与诚信信息发布平台]]></title>
+        <id>https://fizzyi.github.io/post/mou-sheng-jian-zhu-shi-chang-jian-guan-yu-cheng-xin-xin-xi-fa-bu-ping-tai/</id>
+        <link href="https://fizzyi.github.io/post/mou-sheng-jian-zhu-shi-chang-jian-guan-yu-cheng-xin-xin-xi-fa-bu-ping-tai/">
+        </link>
+        <updated>2020-07-07T05:45:05.000Z</updated>
+        <content type="html"><![CDATA[<p>url : http://223.4.65.131:8080/#/company<br>
+在进入企业详情的时候，地址为 company/companyDetail?CORPCODE=******<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.49.59.png" alt="" loading="lazy"><br>
+但是在返回数据的接口中却没有发现该参数，于是全局搜索该参数<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.52.42.png" alt="" loading="lazy"><br>
+发现有两个js文件中都出现了这个参数，于是挨个点进去看，<br>
+在第一个文件就发现了这个参数的赋值，于是带上断点之后在执行，发现就是在这个地方进行的加密操作。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.54.17.png" alt="" loading="lazy"></p>
+<pre><code class="language-js">var t = Object(p.b)(e.CorpCode);
+</code></pre>
+<p>在这里记录下学到的一个知识点，如上所示的代码，其实就是将 e.CorpCode 作为p.b 函数的参数进行执行。</p>
+<p>然后我们进去这个p.b函数，发现就是很熟悉的AES加密<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.58.17.png" alt="" loading="lazy"><br>
+但是仔细一看也还是不一样，不慌张，我们一个一个的进去看，首先看这个e参数的生成方式，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.01.58.png" alt="" loading="lazy"><br>
+发现他是三个函数一层一层的生成的，我们先看最里面的两个函数，现在console面板打印看下<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.03.30.png" alt="" loading="lazy"><br>
+打印了才发现最里面两个函数其实是没有什么实质的效果的，然后在看这个s.parse<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.04.28.png" alt="" loading="lazy"><br>
+这个函数的前两行都很简单，就是遍历然后生成一个列表之类的，然后完了之后最后一行给new一下，我第一次也是直接往里面找，然后最后才发现其实这个 <code>new c.init(r,n)</code>也是没有实质性的作用，只是将它的格式给该了一下，在console中打印出来<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.07.04.png" alt="" loading="lazy"><br>
+所以其实只要在最后按照它的格式给返回数据就可以了。<br>
+剩下的就很简单了，就是最简单的AES机密的方法。</p>
+<p>完整的解密方法已经上传到我的GitHub，有需要的朋友可以自取。<br>
+https://github.com/Fizzyi/JS_PROJECT</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[某猫小说网站的JS加密]]></title>
         <id>https://fizzyi.github.io/post/mou-mao-xiao-shuo-wang-zhan-de-js-jia-mi/</id>
@@ -749,39 +782,6 @@ db.company_info.updataOne({name:'李四'},{$set:{'is_deal':'1'}},{upsert:true})<
 db.company_info.updateMany({is_deal:'0'},{$set:{'is_deal':'1'}})</p>
 <h3 id="33替换文档">3.3替换文档</h3>
 <p>reolaceOne() 方法会根据过滤器替换集合中的单个文档。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS练习之Gojoy]]></title>
-        <id>https://fizzyi.github.io/post/js-lian-xi-zhi-gojoy/</id>
-        <link href="https://fizzyi.github.io/post/js-lian-xi-zhi-gojoy/">
-        </link>
-        <updated>2019-11-15T07:26:34.000Z</updated>
-        <content type="html"><![CDATA[<p>url：https://m.gojoy.cn/pages/login/index?from=%2Fpages%2Fuser%2Findex</p>
-<p>访问该网站，按照惯例打开检查，发现有无限debug阻扰。之前都是点击右边暂停旁边的那个方向键进行取消debug,这次学到了一个新的方法，就是在debug代码这行右键点击前面的序号3，选择第三个 Add condlitional breakpoint，然后在输入框中输入false，然后回车，就设置了一个条件断点。<img src="https://fizzyi.github.io/post-images/1573803144819.png" alt="" loading="lazy"></p>
-<p>随便输入一个账号和密码，在Network下可以看见一个login，观察后发现这个是一个post请求并且携带了一个参数，请求地址是 https://gmall.gojoy.cn/user-service/user/login<br>
-<img src="https://fizzyi.github.io/post-images/1573803305376.png" alt="" loading="lazy"><br>
-我还是第一次看见这种携带参数的方式，😳</p>
-<p>在Network下可以知道这个请求的方式是XHR,我们就可以在Sources下打XHR断点，然后输入关键字login。<br>
-<img src="https://fizzyi.github.io/post-images/1573803623169.png" alt="" loading="lazy"><br>
-找到XHR/fetch Breakpoint,然后点击右边的+,输入login.然后在继续重新登陆，就会断在这里。<br>
-<img src="https://fizzyi.github.io/post-images/1573803747690.png" alt="" loading="lazy"><br>
-妈耶，密密麻麻的参数看的我头大。<br>
-顺着这里往上看，越看头越大。这里就又学到了一个新知识，堆栈。<br>
-<img src="https://fizzyi.github.io/post-images/1573803980463.png" alt="" loading="lazy"><br>
-从上往下一个一个的点，这个堆栈应该就是一种关联方式把，能找到它的父级？（我猜的）<br>
-然后当点到这个(anonymous)的时候，我看到了这个，直觉告诉我，就是它了。<br>
-<img src="https://fizzyi.github.io/post-images/1573804097510.png" alt="" loading="lazy"><br>
-于是在这里打上一个断点，取消xhr断点，然后重新登陆，断点生效，然后来看看这几个参数是什么,这几个参数更加证明了猜想，就是这里发送的请求。<br>
-<img src="https://fizzyi.github.io/post-images/1573804862634.png" alt="" loading="lazy"><br>
-这里u是我输入的参数，那么这个Q应该就是加密的过程了，在console下输入Q，出现了native code,双击进入，我看大佬说一般是进不去的，不过这里可以进去。进去之后看着这，头又大了一圈。<br>
-<img src="https://fizzyi.github.io/post-images/1573805005450.png" alt="" loading="lazy"><br>
-不过在console下输入 a[o.m[[o.m.i[&quot;;&quot;]]].q](o.m[[o.m.i[&quot;;&quot;]]].x  得到的结果就是这个请求的参数。</p>
-<p>新知识总结：<br>
-1 无限debugger的解决方式：在debugger这行前面的序号右键 Add condlitional breakpoint 输入false，可跳过无限debugger。<br>
-2 堆栈这个东西，挺好用的，可以快速找到上一级调用的地方。<br>
-3 如果请求是xhr的话，可以通过打xhr断点来寻找调用的地方。</p>
-<p>来源地址：https://mp.weixin.qq.com/s/Lzb809M3GNJ2hi1m-L56Pw</p>
 ]]></content>
     </entry>
 </feed>

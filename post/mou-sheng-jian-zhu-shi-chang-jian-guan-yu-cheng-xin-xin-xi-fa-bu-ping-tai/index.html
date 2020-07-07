@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>asyncio 学习 | Fizzyi的垃圾桶</title>
+<title>某省建筑市场监管与诚信信息发布平台 | Fizzyi的垃圾桶</title>
 <meta name="description" content="逐渐秃头的程序员">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -101,71 +101,47 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">asyncio 学习</h2>
-            <div class="post-date">2019-11-12</div>
+            <h2 class="post-title">某省建筑市场监管与诚信信息发布平台</h2>
+            <div class="post-date">2020-07-07</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/07/07/timg.jpg')">
+              </div>
             
             <div class="post-content">
-              <h1 id="asyncio的组成部分">asyncio的组成部分</h1>
-<p>高层级API</p>
-<ul>
-<li>协程对象和Tasks对象</li>
-<li>数据流</li>
-<li>同步源语</li>
-<li>子进程</li>
-<li>队列</li>
-<li>异常<br>
-低层级API</li>
-<li>事件循环</li>
-<li>Futures对象</li>
-<li>传输和协议</li>
-<li>策略</li>
-<li>平台支持</li>
-</ul>
-<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
-<ul>
-<li>事件循环event_loop<br>
-事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
-所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
-<li>Future 对象<br>
-Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
-<li>Task 任务<br>
-Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
-<li>awaitable objects(可等待对象)<br>
-如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
-await 的目的:
-<ul>
-<li>获取协程的结果</li>
-<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
-</ul>
-</li>
-</ul>
-<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
-<ul>
-<li>定义/创建协程对象</li>
-<li>将协程转换为task对象</li>
-<li>定义事件循环对象容器</li>
-<li>将task任务扔进事件循环对象中触发<br>
-import asyncio<br>
-async def hello(name):<br>
-print(&quot;hello&quot;,name)<br>
-#定义协程对象<br>
-coroutine = hello('world')
-<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
-loop = asyncio.get_event_loop()
-<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
-task = loop.create_task(coroutine)
-<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
-loop.run_until_complete(task)</li>
-</ul>
+              <p>url : http://223.4.65.131:8080/#/company<br>
+在进入企业详情的时候，地址为 company/companyDetail?CORPCODE=******<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.49.59.png" alt="" loading="lazy"><br>
+但是在返回数据的接口中却没有发现该参数，于是全局搜索该参数<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.52.42.png" alt="" loading="lazy"><br>
+发现有两个js文件中都出现了这个参数，于是挨个点进去看，<br>
+在第一个文件就发现了这个参数的赋值，于是带上断点之后在执行，发现就是在这个地方进行的加密操作。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.54.17.png" alt="" loading="lazy"></p>
+<pre><code class="language-js">var t = Object(p.b)(e.CorpCode);
+</code></pre>
+<p>在这里记录下学到的一个知识点，如上所示的代码，其实就是将 e.CorpCode 作为p.b 函数的参数进行执行。</p>
+<p>然后我们进去这个p.b函数，发现就是很熟悉的AES加密<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.58.17.png" alt="" loading="lazy"><br>
+但是仔细一看也还是不一样，不慌张，我们一个一个的进去看，首先看这个e参数的生成方式，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.01.58.png" alt="" loading="lazy"><br>
+发现他是三个函数一层一层的生成的，我们先看最里面的两个函数，现在console面板打印看下<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.03.30.png" alt="" loading="lazy"><br>
+打印了才发现最里面两个函数其实是没有什么实质的效果的，然后在看这个s.parse<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.04.28.png" alt="" loading="lazy"><br>
+这个函数的前两行都很简单，就是遍历然后生成一个列表之类的，然后完了之后最后一行给new一下，我第一次也是直接往里面找，然后最后才发现其实这个 <code>new c.init(r,n)</code>也是没有实质性的作用，只是将它的格式给该了一下，在console中打印出来<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.07.04.png" alt="" loading="lazy"><br>
+所以其实只要在最后按照它的格式给返回数据就可以了。<br>
+剩下的就很简单了，就是最简单的AES机密的方法。</p>
+<p>完整的解密方法已经上传到我的GitHub，有需要的朋友可以自取。<br>
+https://github.com/Fizzyi/JS_PROJECT</p>
 
             </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">
+                <a href="https://fizzyi.github.io/post/mou-mao-xiao-shuo-wang-zhan-de-js-jia-mi/">
                   <h3 class="post-title">
-                    JS练手之某药
+                    某猫小说网站的JS加密
                   </h3>
                 </a>
               </div>
