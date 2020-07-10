@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>标签列表 | Fizzyi的垃圾桶</title>
+<title>某电竞平台参数加密 | Fizzyi的垃圾桶</title>
 <meta name="description" content="逐渐秃头的程序员">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -100,16 +100,47 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="tag-list-title">标签列表</h2>
-          <div class="tags-container">
+          <div class="post-detail">
+            <h2 class="post-title">某电竞平台参数加密</h2>
+            <div class="post-date">2020-07-10</div>
             
-              <a class="tag" href="https://fizzyi.github.io/tag/Hw_a0KIDP/">数据库</a>
+            <div class="post-content">
+              <p>url: https://www.jdj007.com/schedule.html?gameType=1</p>
+<p>查看请求，发现参数中有个sign,就是此次的目标。</p>
+<p><img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.07.31.png" alt="" loading="lazy"><br>
+全局搜索 sign ,sign:<br>
+发现这个地方很有可能是我们要早的地方，于是打上断点，刷新页面，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.12.58.png" alt="" loading="lazy"><br>
+然后在console 面板中不断的输出，可以证实 <code>a = encodeURIComponent(c.a.stringify(n))</code><br>
+而 <code>n = = i()(t)</code>, <code>t = o = &quot;timestamp=&quot;.concat(r, &quot;&amp;secret=&quot;).concat(&quot;aHVheWluZ19zZWNyZXRfYXBp&quot;)</code>,<code>r = = (new Date).getTime()</code><br>
+r 就是现在的时间戳，然后拼成了一个字符串，当作了i()函数的参数，所以我们现在进 i() 函数里面看看。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.17.27.png" alt="" loading="lazy"><br>
+眼熟的感觉来了，之前在另外一个网站也看见过这个 new e.init(),测试后发现这个参数其实是没有什么用的，直接看后面的 finalize(t)函数，好巧不巧，这个函数就在上面，然后进去<code>this._doFinalize()</code>，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.20.44.png" alt="" loading="lazy"><br>
+然后可以发现其实这个函数就是SHA256加密，那么就知道n这个参数其实就是对参数进行了SHA256加密。</p>
+<p>接着我们来看 <code>encodeURIComponent(c.a.stringify(n))</code>,encodeURIComponent 就是JS自带的一个编码函数，那么我们只需要破解里面的 c.a.stringify(n)，跟进去一看<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.24.02.png" alt="" loading="lazy"><br>
+就是一个Base64 的加密，那么所有的加密就全部解出来。<br>
+整体的思路就是将字符串先进行一个SHA256加密，然后在进行一个Base64的编码，最后在通过URL编码一下。</p>
+<p>完整的JS加密已经上传至我的<a href="https://github.com/Fizzyi/JS_PROJECT">github</a>.</p>
+
+            </div>
             
-              <a class="tag" href="https://fizzyi.github.io/tag/-kX9u3mh5/">数据分析</a>
             
-              <a class="tag" href="https://fizzyi.github.io/tag/v4o-y8Aa4/">爬虫</a>
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mou-sheng-jian-zhu-shi-chang-jian-guan-yu-cheng-xin-xin-xi-fa-bu-ping-tai/">
+                  <h3 class="post-title">
+                    某省建筑市场监管与诚信信息发布平台
+                  </h3>
+                </a>
+              </div>
             
+
+            
+
           </div>
+
         </div>
       </div>
     </div>
