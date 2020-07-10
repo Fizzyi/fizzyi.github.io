@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-07-10T06:30:30.732Z</updated>
+    <updated>2020-07-10T06:35:46.322Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -16,7 +16,8 @@
         <link href="https://fizzyi.github.io/post/mou-dian-jing-ping-tai-can-shu-jia-mi/">
         </link>
         <updated>2020-07-10T06:05:19.000Z</updated>
-        <content type="html"><![CDATA[<p>url: https://www.jdj007.com/schedule.html?gameType=1</p>
+        <content type="html"><![CDATA[<p>污渍，永远的神！</p>
+<p>url: https://www.jdj007.com/schedule.html?gameType=1</p>
 <p>查看请求，发现参数中有个sign,就是此次的目标。</p>
 <p><img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.07.31.png" alt="" loading="lazy"><br>
 全局搜索 sign ,sign:<br>
