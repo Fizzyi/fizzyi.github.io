@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-07-13T08:05:37.469Z</updated>
+    <updated>2020-07-13T08:26:09.488Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -31,7 +31,9 @@
 所以加密方式就解出来，以e为偏移量，对请求的参数就行AES加密即可。</p>
 <p>加密解出来之后，解密也很简单了。<br>
 <img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.04.png" alt="" loading="lazy"><br>
-<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.24.png" alt="" loading="lazy"></p>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.24.png" alt="" loading="lazy"><br>
+完整的JS解密已经放在github上面，需要的朋友可以自取。<br>
+https://github.com/Fizzyi/JS_PROJECT/tree/master/%E6%AF%9B%E6%AF%9B%E7%A7%9F</p>
 ]]></content>
     </entry>
     <entry>
