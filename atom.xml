@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2020-07-13T08:26:09.488Z</updated>
+    <updated>2020-09-16T07:44:07.769Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,28 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[JS练手之某联盟 ]]></title>
+        <id>https://fizzyi.github.io/post/js-lian-shou-zhi-mou-lian-meng/</id>
+        <link href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-lian-meng/">
+        </link>
+        <updated>2020-09-16T07:23:00.000Z</updated>
+        <content type="html"><![CDATA[<p>最近两个月重构了公司的项目，空余时间也在忙私事，好久都没有学习了，现在终于把公司的事情忙过了，开始学习，今天先来一个简单的练手的网站。<br>
+url:aHR0cDovL2xvZ2luLnNoaWtlZS5jb20v<br>
+老规矩，随意输入一个帐号和密码123456，查看请求头，发现密码是加密数据<br>
+<img src="http://119.3.13.71:7777/images/2020/09/16/2020-09-1615.29.31.png" alt="" loading="lazy"><br>
+于是全局搜索这个参数，很容易就发现在这个js文件中找到这个参数，于是就开始常规操作，打断点，进入这个函数里面进行分析。<br>
+<img src="http://119.3.13.71:7777/images/2020/09/16/2020-09-1615.33.18.png" alt="" loading="lazy"><br>
+然后就是缺撒补撒了，这个JS总共也就600多行，于是就全部复制下来了，然后回去看看参数，有两个参数，一个是rsa_n,一个是密码的值，<br>
+于是自己写一个JS函数构造下这部分<br>
+rsa_n 初始值是固定的，直接取出来就好。<br>
+<img src="http://119.3.13.71:7777/images/2020/09/16/2020-09-1615.35.36.png" alt="" loading="lazy"><br>
+就这样就大功告成了。<br>
+完整的JS已经上传到<a href="https://github.com/Fizzyi/JS_PROJECT">GitHub</a>，有需求的可自取。</p>
+<p>现在的我也只会最基础的方法，希望我有一天也能成长为🐮。<br>
+千里之行，始于足下。看着其他的同龄人都已经那么优秀了，自己也要努力啊。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[某租平台的JS加密]]></title>
         <id>https://fizzyi.github.io/post/mou-zu-ping-tai-de-js-jia-mi/</id>
@@ -434,54 +456,6 @@ a.resize((2,6))
 # 返回3个相同形状的数组
 hsplit(a,3)
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[数据分析练习]]></title>
-        <id>https://fizzyi.github.io/post/shu-ju-fen-xi-lian-xi-zong-ji-zhi-tan-suo-chipotle-kuai-can-shu-ju/</id>
-        <link href="https://fizzyi.github.io/post/shu-ju-fen-xi-lian-xi-zong-ji-zhi-tan-suo-chipotle-kuai-can-shu-ju/">
-        </link>
-        <updated>2019-12-12T03:35:50.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="chipotle快餐数据">Chipotle快餐数据</h1>
-<p>chipo = pd.read_csv(path)</p>
-<h2 id="查看前10行数据">查看前10行数据</h2>
-<pre><code>chipo.head(10)
-</code></pre>
-<h2 id="打印表头">打印表头</h2>
-<pre><code>chipo.columns()
-</code></pre>
-<h2 id="统计某一列中不重复的值的数量">统计某一列中不重复的值的数量</h2>
-<pre><code>chipo[''].nunique()
-</code></pre>
-<h2 id="统计某一列中数据出现的次数">统计某一列中数据出现的次数</h2>
-<pre><code>chipo[''].value_counts()
-</code></pre>
-<h2 id="求和">求和</h2>
-<pre><code>chipo[''].sum()
-</code></pre>
-<h2 id="对某一列数据进行批量处理例如转换为浮点数">对某一列数据进行批量处理，例如转换为浮点数</h2>
-<pre><code>func = lambda x :float(x[1:-1])
-chipo['item_pirce'] = chipo['item_price'].apple(func)
-</code></pre>
-<h1 id="探索2012欧洲杯数据">探索2012欧洲杯数据</h1>
-<h2 id="只显示某一列数据">只显示某一列数据</h2>
-<pre><code>euro12.Goals
-euro12['Goals']
-</code></pre>
-<h2 id="同时多个条件进行排序">同时多个条件进行排序</h2>
-<pre><code>euro12.sort_values(['Red Cards','Yellow Cards'])
-</code></pre>
-<h2 id="求黄牌的平均数">求黄牌的平均数</h2>
-<pre><code>euro12['Yellow Cards'].mean()
-</code></pre>
-<h2 id="选出队伍名为g开头的队伍的数据">选出队伍名为G开头的队伍的数据</h2>
-<pre><code>euro12[euro12.Team.str.startswith('G')]
-</code></pre>
-<h2 id="选取前7列的数据">选取前7列的数据</h2>
-<pre><code>euro12.iloc[:,:7]
-</code></pre>
-<h2 id="找到英格兰england-意大利italy和俄罗斯russia的射正率shooting-accuracy">找到英格兰(England)、意大利(Italy)和俄罗斯(Russia)的射正率(Shooting Accuracy)</h2>
-<pre><code>euro12.loc[euro12.Team.isin(['England','Italy','Russia']),['Team','Shooting Accuracy']]</code></pre>
 ]]></content>
     </entry>
 </feed>
