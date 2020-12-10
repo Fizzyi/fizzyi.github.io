@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>数据库 | Fizzyi的垃圾桶</title>
+<title>LINUX 系统寻找大文件 | Fizzyi的垃圾桶</title>
 <meta name="description" content="逐渐秃头的程序员">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -100,48 +100,34 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: 数据库</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://fizzyi.github.io/post/mongodb-diao-you/">
-                  <h2 class="post-title">Mongodb调优</h2>
-                </a>
-                <div class="post-date">
-                  2020-03-16
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-                <a class="right" href="https://fizzyi.github.io/post/mongodb-diao-you/">
-                  <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/03/16/2020-03-1616.36.57.png')">
-                  </div>
-                </a>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://fizzyi.github.io/post/mongodb-xue-xi/">
-                  <h2 class="post-title">Mongodb 学习</h2>
-                </a>
-                <div class="post-date">
-                  2019-11-21
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">LINUX 系统寻找大文件</h2>
+            <div class="post-date">2020-11-25</div>
+            
+            <div class="post-content">
+              <pre><code>du -h / --max-depth=1 | sort -hr | head -n 10
+</code></pre>
+<p>查看已删除但未释放的文件</p>
+<pre><code>lsof -n | grep deleted
+</code></pre>
+<h1 id="然后重启相关程序">然后重启相关程序</h1>
 
-          <div class="pagination-container">
-  
-  
-</div>
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-lian-meng/">
+                  <h3 class="post-title">
+                    JS练手之某联盟 
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
 
         </div>
       </div>
