@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>某工业超市数字化工业用品服务平台 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1614333749826">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1614333749826" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">某工业超市数字化工业用品服务平台</h2>
+            <div class="post-date">2021-02-26</div>
+            
+            <div class="post-content">
+              <p>URL：https://www.zkh360.com/list/c-259588.html?showType=pic&amp;clp=1</p>
+<p>老习惯，一来先F12查看发送的请求，一看还挺多，不过大多数都是无用的，</p>
+<p><img src="https://raw.githubusercontent.com/Fizzyi/JS_PROJECT/master/%E6%9F%90%E5%B7%A5%E4%B8%9A%E8%B6%85%E5%B8%82%E6%95%B0%E5%AD%97%E5%8C%96%E5%B7%A5%E4%B8%9A%E7%94%A8%E5%93%81%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0/image/1.png" alt="" loading="lazy"><br>
+观察下请求数据，没什么加密的参数，但是看请求头，发现了两个疑似加密的参数 zkhs/zkhst。</p>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/Fizzyi/JS_PROJECT/master/%E6%9F%90%E5%B7%A5%E4%B8%9A%E8%B6%85%E5%B8%82%E6%95%B0%E5%AD%97%E5%8C%96%E5%B7%A5%E4%B8%9A%E7%94%A8%E5%93%81%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0/image/6.png" alt="" loading="lazy"></figure>
+<p>进行全局搜索，最终在下图的地方发现疑似参数，然后打断点确认是我们需要的两个参数。</p>
+<p><img src="https://raw.githubusercontent.com/Fizzyi/JS_PROJECT/master/%E6%9F%90%E5%B7%A5%E4%B8%9A%E8%B6%85%E5%B8%82%E6%95%B0%E5%AD%97%E5%8C%96%E5%B7%A5%E4%B8%9A%E7%94%A8%E5%93%81%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0/image/2.png" alt="" loading="lazy"><br>
+所以我们只需要知道a，r参数就行。往上找，发现这是一个简单的控制流平坦化。</p>
+<pre><code class="language-python">a = u()(&quot;body=&quot;.concat(i, &quot;&amp;params=&quot;).concat(a, &quot;&amp;sign_token=&quot;).concat(r), r)
+r = Object(c.g)(&quot;zkhst&quot;)
+</code></pre>
+<p>a是经过u()方法进行的加密，参数有 i，a ， r。 i为发送请求的data，r未知。所以我们只需要知道r是怎么生成的就好。<br>
+继续分析 r。发现在case 0 和 case 8中，r 都在和 Object(c.g)(&quot;zkhst&quot;)进行比较，我们先打断点进入Object(c.g)(&quot;zkhst&quot;) 看下</p>
+<p><img src="https://raw.githubusercontent.com/Fizzyi/JS_PROJECT/master/%E6%9F%90%E5%B7%A5%E4%B8%9A%E8%B6%85%E5%B8%82%E6%95%B0%E5%AD%97%E5%8C%96%E5%B7%A5%E4%B8%9A%E7%94%A8%E5%93%81%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0/image/3.png" alt="" loading="lazy"><br>
+发现这是在对cookie进行正则。我们先不慌着对这个正则进行分析，我们返回上一步看他的逻辑。在case 0 中，如果  r = Object(c.g)(&quot;zkhst&quot;)，则进入了case 9，即此时r已经有数据了，如果 r != Object(c.g)(&quot;zkhst&quot;),则e.next = 8,并且执行了一个 Object(l.k)() ，我们在看下case 8,发现他又在 r = Object(c.g)(&quot;zkhst&quot;)。所以我们应该对 Object(l.k)() 进行分析。</p>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/Fizzyi/JS_PROJECT/master/%E6%9F%90%E5%B7%A5%E4%B8%9A%E8%B6%85%E5%B8%82%E6%95%B0%E5%AD%97%E5%8C%96%E5%B7%A5%E4%B8%9A%E7%94%A8%E5%93%81%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0/image/4.png" alt="" loading="lazy"></figure>
+<p>发现是去请求了一个sign_token的地址。但是此刻去搜索可能会发现没有请求过这个地址，这个时候我们对cookie进行一个清楚，重新打断点执行，就会发现执行了这个函数，然后看下这个地址返回的数据，发现在返回的请求头中就有这个zkhst参数。<br>
+<img src="https://raw.githubusercontent.com/Fizzyi/JS_PROJECT/master/%E6%9F%90%E5%B7%A5%E4%B8%9A%E8%B6%85%E5%B8%82%E6%95%B0%E5%AD%97%E5%8C%96%E5%B7%A5%E4%B8%9A%E7%94%A8%E5%93%81%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0/image/5.png" alt="" loading="lazy"></p>
+<p>到此，这个参数的获取方式就已经结束了，另外一个参数只需要把三个参数进行组装之后到u()函数中进行一个加密就可以获取到了。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/linux-xi-tong-xun-zhao-da-wen-jian/">
+                  <h3 class="post-title">
+                    LINUX 系统寻找大文件
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
