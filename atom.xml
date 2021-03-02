@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2021-02-26T10:03:27.103Z</updated>
+    <updated>2021-03-02T14:33:08.526Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,66 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[某壁纸平台]]></title>
+        <id>https://fizzyi.github.io/post/mou-bi-zhi-ping-tai/</id>
+        <link href="https://fizzyi.github.io/post/mou-bi-zhi-ping-tai/">
+        </link>
+        <updated>2021-03-02T14:08:45.000Z</updated>
+        <content type="html"><![CDATA[<p>URL ： https://bz.zzzmh.cn/</p>
+<p>老规矩，F12查看请求，发现只有一个 getJson的请求，于是看参数，请求参数无异常，是页码和类型，看请求头，发现有个sign和access参数是加密的。<br>
+<img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/%E6%9E%81%E7%AE%80%E5%A3%81%E7%BA%B8/1.png?raw=true" alt="" loading="lazy"></p>
+<p>于是使用XHR打断点，刷新重新请求，然后通过观察调用栈，往上找，一找就找到我们想要的access参数。</p>
+<figure data-type="image" tabindex="1"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/%E6%9E%81%E7%AE%80%E5%A3%81%E7%BA%B8/2.png?raw=true" alt="" loading="lazy"></figure>
+<pre><code class="language-html">var access = sha256(contentType + location + sign + timestamp);
+</code></pre>
+<p>然后发现sign参数是传入的参数，在往上找。</p>
+<pre><code class="language-html">var sign = sessionStorage.getItem(&quot;sign&quot;)
+</code></pre>
+<p>发现sign是从一个sessionStorage中获取到的，于是全局搜索这个值。发现下面就有一个essionStorage.setItem(&quot;sign&quot;, sign);</p>
+<p><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/%E6%9E%81%E7%AE%80%E5%A3%81%E7%BA%B8/3.png?raw=true" alt="" loading="lazy"><br>
+猜测应该就是在这里生成的sign然后赋值的。然后在这里打断点，结果发现并没有断在这里，于是我们清空缓存了在试一试。刷新重试之后果然断在了这里，然后在console面板输出components看下，发现是浏览器指纹。</p>
+<figure data-type="image" tabindex="2"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/%E6%9E%81%E7%AE%80%E5%A3%81%E7%BA%B8/4.png?raw=true" alt="" loading="lazy"></figure>
+<p>所以sign的生成方法是使用x64hash128方法对浏览器的指纹的参数拼接在一起后进行的一个加密。<br>
+所以到这里，这个网站的JS加密就完成了，剩下的就使用python重写参数生成的方法了。</p>
+<h1 id="干货">干货</h1>
+<p>Fingerprint2 是一个开源的设备指纹采集器，很多网站采集浏览器指纹都是使用的这个库。但是这个库生成的指纹有坑，会产生大量的重复。<br>
+这些参数代表的意思分别为：<br>
+userAgent:navigator.userAgent<br>
+language : 语言<br>
+colorDepth: 返回目标设备或缓冲器上的调色板的比特深度 screen.colorDepth *<br>
+deviceMemory: 以千兆字节为单位返回设备内存量。该值是通过舍入到最接近的2的幂并将该数除以1024而给出的近似值。链接  *<br>
+pixelRatio: 像素比 devicePixelRatio  *<br>
+hardwareConcurrency:navigator.hardwareConcurrency返回可用于运行在用户的计算机上的线程的逻辑处理器的数量 *<br>
+screenResolution: 检测屏幕宽高，并根据屏幕方向矫正返回值[width,height]<br>
+availableScreenResolution:返回屏幕分辨率[width,height]，无头浏览器无法获取。*<br>
+timezoneOffset: 返回从当前区域设置（主机系统设置）到UTC的时区差异（以分钟为单位）链接<br>
+timezone:时区 *<br>
+sessionStorage: 是否支持sessionStorage，不支持时返回错误 #<br>
+localStorage: 是否支持localStorage #<br>
+indexedDb:是否支持indexedDb #<br>
+addBehavior:此时可能未定义body或以编程方式删除<br>
+openDatabase: 返回是否支持Web SQL<br>
+cpuClass:返回浏览器系统的 CPU 等级,一般无法获取 *<br>
+platform: 返回表示浏览器平台的字符串,该规范允许浏览器始终返回空字符串，因此不要依赖此属性来获得可靠的答案.链接 *<br>
+doNotTrack: 返回用户的“不跟踪”设置。如果用户请求不被网站，内容或广告跟踪，则为“1”。一般结果为* 。<br>
+plugins:返回浏览器安装的插件列表。*<br>
+canvas: 如果浏览器支持canvas则返回生成baes64数据。*<br>
+webgl:返回浏览器对webgl绘图协议的支持情况汇总 *<br>
+webglVendorAndRenderer: 返会显卡型号相关信息 *<br>
+adBlock:返回是否安装去广告插件。<br>
+hasLiedLanguages: 返回用户是否改变了首选语言<br>
+hasLiedResolution:返回用户是否改变了分辨率<br>
+hasLiedOs:返回用户是否改变了操作系统<br>
+hasLiedBrowser:返回用户是否改变了浏览器<br>
+touchSupport: 返回最大触摸点数，是否支持touch，是否支持ontouchstart事件]<br>
+fonts:返回从64种字体种筛选出的可用字体<br>
+fontsFlash:Flash字体枚举,如果没有swfobject，不会触发。<br>
+audio: 返回音频指纹<br>
+enumerateDevices:navigator.mediaDevices 请求可用媒体输入和输出设备的列表，例如麦克风，相机，耳机等</p>
+<p>参考链接：https://juejin.cn/post/6844903773211459597</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[某工业超市数字化工业用品服务平台]]></title>
         <id>https://fizzyi.github.io/post/mou-gong-ye-chao-shi-shu-zi-hua-gong-ye-yong-pin-fu-wu-ping-tai/</id>
@@ -220,111 +280,6 @@ https://github.com/Fizzyi/JS_PROJECT</p>
 发现返回的参数中也是加密的，直接调用js中的解密函数就可以获取解密后的结果。<br>
 <img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.42.42.png" alt="'结果'" loading="lazy"></p>
 <p>来源：https://mp.weixin.qq.com/s/IgaU9dzLcRzCk97Qs7phYA</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[MongoDB的流式聚合操作]]></title>
-        <id>https://fizzyi.github.io/post/mongodb-de-liu-shi-ju-he-cao-zuo/</id>
-        <link href="https://fizzyi.github.io/post/mongodb-de-liu-shi-ju-he-cao-zuo/">
-        </link>
-        <updated>2020-03-20T06:37:05.000Z</updated>
-        <content type="html"><![CDATA[<p>MongoDB中的聚合是指同时对多个文档中的数据进行处理、筛选和归类并输出结果的过程。<br>
-MongoDB提供了三种聚合方式：</p>
-<ul>
-<li>Aggregation Pipeline</li>
-<li>Map-Reduce</li>
-<li>简单聚合</li>
-</ul>
-<h1 id="1-aggregation-pipeline">1、Aggregation Pipeline</h1>
-<p>Aggregation Pipeline 又称聚合管道。开发者可以将多个文档传入一个由多个Stage组成的Pipeline，每个Stage处理的结果都会传入下一个Stage中，最后一个Stage的处理结果就是整个Pipeline的输出。</p>
-<p>创建聚合管道的语法如下：</p>
-<pre><code>db.collection.aggregate( [ { &lt;stage1&gt; },{  &lt;stage2&gt; }.....  ] )
-</code></pre>
-<p>常见的SQL聚合术语、函数和概念以及对应的MongoDB操作符和Stage。</p>
-<table>
-<thead>
-<tr>
-<th>SQL</th>
-<th>MongoDB</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>WHERE</td>
-<td>$match</td>
-</tr>
-<tr>
-<td>GROUP BY</td>
-<td>$group</td>
-</tr>
-<tr>
-<td>HAVING</td>
-<td>$match</td>
-</tr>
-<tr>
-<td>SELECT</td>
-<td>$project</td>
-</tr>
-<tr>
-<td>ORDER BY</td>
-<td>$sort</td>
-</tr>
-<tr>
-<td>LIMIT</td>
-<td>$limit</td>
-</tr>
-<tr>
-<td>SUM()</td>
-<td>$sum</td>
-</tr>
-<tr>
-<td>COUNR()</td>
-<td>sumsortByCount</td>
-</tr>
-<tr>
-<td>join</td>
-<td>$lookup</td>
-</tr>
-</tbody>
-</table>
-<p>$match 的描述为&quot;过滤文档，仅允许匹配的文档传递到下一个管道阶段 &quot;。</p>
-<pre><code>{ $match: { &lt;query&gt; } }
-</code></pre>
-<p>$group 统计文档</p>
-<pre><code>{ $group: {_id:&quot;key&quot;:&quot;$key&quot;,number:{$sum: 1}} }
-</code></pre>
-<p>$sample 从输入中随机选择指定数量的文档</p>
-<pre><code>{ $sample :  { size:  num } }
-</code></pre>
-<p>$project 是过滤文档中的字段，处理结果会传入到下一个阶段。需要展示的值为1/true，不需要展示的值为0/false。默认为0</p>
-<pre><code>{ $project: { company_name:1} }
-</code></pre>
-<p>$out 聚合Pipeline返回的结果文档，并将其写入指定的集合。</p>
-<pre><code>{ $out:  &quot;collectionName&quot; }
-</code></pre>
-<h1 id="2-简单的聚合">2、 简单的聚合</h1>
-<h2 id="count">count</h2>
-<p>用于计算集合或者视图中的文档数，返回一个包含计数结果和状态的文档。</p>
-<pre><code>{
-    count: collection/view,
-    query:document,
-    limit:integer,
-    skip: integer,
-    hint:hint, # 指定要使用的索引，将索引名称指定为字符串或者索引规范文档。
-    readConcern:document
-}
-</code></pre>
-<h2 id="group">group</h2>
-<p>按指定的键对集合中的文档进行分组，并执行简单的聚合函数。</p>
-<pre><code>{
-    group:
-    {
-        ns : &lt;namespace&gt;  通过操作执行组的集合，必填
-        key : &lt;key&gt; 要分组的字段或者字段，必填
-        $reduce : &lt;reduce function &gt; 在分组期间对文档进行聚合操作的函数
-    }
-}
-</code></pre>
 ]]></content>
     </entry>
 </feed>
