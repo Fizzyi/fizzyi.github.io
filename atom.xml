@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2021-03-02T14:36:38.841Z</updated>
+    <updated>2021-03-03T10:00:40.386Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,111 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[初识AST]]></title>
+        <id>https://fizzyi.github.io/post/chu-shi-ast/</id>
+        <link href="https://fizzyi.github.io/post/chu-shi-ast/">
+        </link>
+        <updated>2021-03-03T08:42:54.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="简单介绍ast">简单介绍AST</h1>
+<p>抽象语法树（Abstract Syntax Tree，AST），或简称语法树（Syntax tree），是源代码语法结构的一种抽象表示。<br>
+它以树状的形式表现编程语言的语法结构，树上的每个节点都表示源代码中的一种结构。</p>
+<h1 id="工具">工具</h1>
+<p>在线解析网站：https://astexplorer.net/<br>
+选择 JavaScript 和 @babel/parser。</p>
+<h1 id="ast-结构简单介绍">AST 结构简单介绍</h1>
+<p>在上面的在线解析网站左边输入<code>var a = &quot;\x31\x32\x33\x34\x35\x36&quot;;</code><br>
+右边如下图</p>
+<figure data-type="image" tabindex="1"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_1.png?raw=true" alt="" loading="lazy"></figure>
+<p>最上面是根节点，下面是根节点的各个子节点</p>
+<ul>
+<li>type：表示当前节点的类型，我们常用的类型判断方法t.is*****(node)就是判断当前的节点是否为某个类型。</li>
+<li>start:表示当前节点的起始位置。</li>
+<li>end：表示当前节点的末尾。</li>
+<li>loc:表示当前节点所在的行列位置，里面也有start和end节点，这里的start是表示节点所在起始的行列位。</li>
+<li>errors：是File节点所特有的属性。</li>
+<li>program：包含整个源代码，不包含注释节点。</li>
+<li>comments:源代码中所有的注释。</li>
+</ul>
+<p>type类型是每个节点都有的节点，经常使用。</p>
+<p>然后打开 program中的body，如下图。</p>
+<figure data-type="image" tabindex="2"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_2.png?raw=true" alt="" loading="lazy"></figure>
+<p>这是一个 VariableDeclaration类型的节点。这个节点是变量声明节点。在这个节点下的id的value就是声明值，init.extra.value就是声明量。</p>
+<figure data-type="image" tabindex="3"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_4.png?raw=true" alt="" loading="lazy"></figure>
+<p>下面这图是AST的所有TYPE，会经常使用到。<br>
+<img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast.png?raw=true" alt="" loading="lazy"></p>
+<h1 id="babel反混淆代码模板">babel反混淆代码模板</h1>
+<p>模板来源于 公众号 菜鸟学Python编程。</p>
+<pre><code class="language-javascript">
+//babel库及文件模块导入
+const parser = require(&quot;@babel/parser&quot;);
+const traverse = require(&quot;@babel/traverse&quot;).default;
+const types = require(&quot;@babel/types&quot;);
+const generator = require(&quot;@babel/generator&quot;).default;
+const fs = require('fs');
+
+
+// 读取文件
+let encode_file = fs.readFileSync(&quot;./base64.js&quot;, {
+    encoding: &quot;utf-8&quot;
+});
+// 转换为ast数
+let ast = parser.parse(encode_file);
+
+const visitor =
+    {
+       // 写下处理代码
+
+    };
+
+// 调用插件，处理源代码
+traverse(ast, visitor);
+
+
+//生成新的 js code,并且保存到文件中输出
+let {code} = generator(ast,opts = {jsescOption:{&quot;minimal&quot;:true}});
+fs.writeFile('decode.js', code, (err) =&gt; {
+});
+
+</code></pre>
+<p>以后使用ast处理混淆代码的时候只需要在visitor中写代码即可。</p>
+<h1 id="第一次使用ast">第一次使用AST</h1>
+<p>想必大家在爬取数据的时候都会遇到一些网站的JS文件中把中英文进行Unicode编码，如下图这样的，如果只有一两个，我们可以手动替换，如果多了，就没办法手动替换了，这时候就可以采用AST来进行替换。<br>
+<img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_5.png?raw=true" alt="" loading="lazy"></p>
+<p>我们先从简单的来 假如我们base64.js 中的代码为 var a = &quot;\x31\x32\x33\x34\x35\x36。<br>
+现在我们要对这个代码就是还原。</p>
+<pre><code class="language-javascript">const visitor =
+    {
+        StringLiteral({node})
+        {
+            if (node.extra &amp;&amp; /\\[ux]/gi.test(node.extra.raw)) {
+                node.extra = undefined;
+            }
+            console.log(node)
+        },
+
+    };
+</code></pre>
+<p>接下来对代码进行解释：<br>
+通过官网查询，StringLiteral类的节点的extra节点并非是必须的，这样在将其删除的时候，不会影响原节点，在 在线网站对其进行解析的时候，其value节点是可阅读的字段，编码后的字符串放在了extra节点里，所以直接进行删除。<br>
+<img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_6.png?raw=true" alt="" loading="lazy"></p>
+<pre><code class="language-javascript">const visitor = {
+    StringLiteral({node}) 
+    {
+        // 对type为StringLiteral类型的所有节点进行解析
+    };
+    NumericLiteral({node}) 
+    {
+        // 对type为NumericLiteral类型的所有节点进行解析
+    };
+}
+</code></pre>
+<p>所以用文字对这段代码进行复述就是  遍历类型为 StringLiteral 的节点，如果 <code>node.extra</code> 为真 而且 <code>/\\[ux]/gi.test(node.extra.raw)</code> 为真,则 <code>node.extra = undefined;</code></p>
+<p>执行后得到的结果为：</p>
+<figure data-type="image" tabindex="4"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_7.png?raw=true" alt="" loading="lazy"></figure>
+<p>这样我们就得到逆向之后的JS了，这样看JS文件就比较的清晰了。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[某壁纸平台]]></title>
         <id>https://fizzyi.github.io/post/mou-bi-zhi-ping-tai/</id>
@@ -254,32 +359,6 @@ https://github.com/Fizzyi/JS_PROJECT</p>
 <img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.43.36.png" alt="" loading="lazy"><br>
 它还包含了其余的两个参数，都找出来，然后写到一个JS文件中，稍微改写一下JS<br>
 <img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.48.23.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS练习之某省雨水监视平台]]></title>
-        <id>https://fizzyi.github.io/post/js-lian-xi-zhi-mou-sheng-yu-shui-jian-shi-ping-tai/</id>
-        <link href="https://fizzyi.github.io/post/js-lian-xi-zhi-mou-sheng-yu-shui-jian-shi-ping-tai/">
-        </link>
-        <updated>2020-04-03T08:24:05.000Z</updated>
-        <content type="html"><![CDATA[<p>URL :  aHR0cDovL3ljLndzd2oubmV0L2Foc3h4L0xPTC9wdWJsaWMvcHVibGljLmh0bWw=</p>
-<p>点击搜索，然后打开开发者工具到Network页面。</p>
-<figure data-type="image" tabindex="1"><img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.27.21.png" alt="'请求页'" loading="lazy"></figure>
-<p>观察后发现请求有 time,hourClass,name,waterEncode,random，五个参数，特别一点的有hourClass和waterEncode两个参数，分别拿去全局搜索，hourClass没有搜索到相关的，不过waterEncode搜索到相关的JS。<br>
-<img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.32.06.png" alt="'第一页'" loading="lazy"><br>
-然后在这一行打上断点，重新进行搜索。如我所愿，卡在断点这个地方，然后进去到这个方法里面去看看。</p>
-<p><img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.34.50.png" alt="'第二页'" loading="lazy"><br>
-然后发现了这个网站的加密方法和解密方法，怎么用也给你说的很清楚。<br>
-在然后，把这个JS文件复制下来，新创建一个JS文件存放。</p>
-<p>然后我们来改写这个JS，在最下面先添加上加密的方法<br>
-<img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.38.11.png" alt="'加密'" loading="lazy"></p>
-<p>然后在返回找其他的参数，根据右边的调用栈往上找，在go这一步发现传入的rwData，里面包含了name和hourClass，name和hourClass都是固定的，往上找到time参数，发现就是对选择的时间进行了格式化的处理。</p>
-<p><img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.29.49.png" alt="'name'" loading="lazy"><br>
-所有的参数都已经找出来，接下来就是简单的调用了。<br>
-<img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.39.32.png" alt="'运用'" loading="lazy"><br>
-发现返回的参数中也是加密的，直接调用js中的解密函数就可以获取解密后的结果。<br>
-<img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.42.42.png" alt="'结果'" loading="lazy"></p>
-<p>来源：https://mp.weixin.qq.com/s/IgaU9dzLcRzCk97Qs7phYA</p>
 ]]></content>
     </entry>
 </feed>
