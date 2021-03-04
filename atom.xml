@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://fizzyi.github.io</id>
     <title>Fizzyi的垃圾桶</title>
-    <updated>2021-03-03T12:29:07.316Z</updated>
+    <updated>2021-03-04T05:58:03.348Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://fizzyi.github.io"/>
     <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
@@ -10,6 +10,101 @@
     <logo>https://fizzyi.github.io/images/avatar.png</logo>
     <icon>https://fizzyi.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[AST 练手项目 替换已经定义的变量]]></title>
+        <id>https://fizzyi.github.io/post/ast-lian-shou-xiang-mu-yi/</id>
+        <link href="https://fizzyi.github.io/post/ast-lian-shou-xiang-mu-yi/">
+        </link>
+        <updated>2021-03-03T13:55:43.000Z</updated>
+        <content type="html"><![CDATA[<p>现有 初始JS代码如下</p>
+<pre><code class="language-javascript">var s=92
+var a = s+5
+var b=func(1324801, a)
+</code></pre>
+<p>希望得到的结果是</p>
+<pre><code class="language-javascript">var s = 92
+var a = 97
+var b = func(1324901,97)
+</code></pre>
+<p>做之前的思考： 首先是遍历节点，但是要遍历哪种类型的节点呢，然后把节点的值计算出来，最后进行节点的替换。</p>
+<p>完整的代码为：</p>
+<pre><code class="language-JavaScript">//  替换已经定义的变量
+
+
+//babel库及文件模块导入
+const parser = require(&quot;@babel/parser&quot;);
+const traverse = require(&quot;@babel/traverse&quot;).default;
+const types = require(&quot;@babel/types&quot;);
+const generator = require(&quot;@babel/generator&quot;).default;
+const fs = require('fs');
+
+
+// 读取文件
+let encode_file = fs.readFileSync(&quot;./text.js&quot;, {
+    encoding: &quot;utf-8&quot;
+});
+// 转换为ast数
+let ast = parser.parse(encode_file);
+
+const visitor =
+    {
+        &quot;Identifier|BinaryExpression&quot;(path){          
+            let {confident,value} = path.evaluate();
+            if (confident){
+                path.replaceInline(types.valueToNode(value))
+            }
+        }
+
+    };
+
+// 调用插件，处理源代码
+traverse(ast, visitor);
+
+
+//生成新的 js code,并且保存到文件中输出
+let {code} = generator(ast,opts = {jsescOption:{&quot;minimal&quot;:true}});
+fs.writeFile('text_after.js', code, (err) =&gt; {
+});
+</code></pre>
+<p><a href="https://github.com/Fizzyi/JS_PROJECT/blob/master/AST_PROJECT/deal_var.js">代码地址</a></p>
+<p>代码解释：<br>
+（1）选择需要便利的节点<br>
+遍历 Identifier(标识符节点，例如声明变量时 var a = 3 的a) 或者 BinaryExpression(二进制表达式 通常指运算，例如 1+2)<br>
+（2） 进行节点的值计算<br>
+path.evaluate() 是计算表达式的值，没有参数，就是计算这个节点的值，会返回两个值，当第一个值为true的时候，第二个值就是计算的结果<br>
+（3）进行节点的值的替换<br>
+path.replaceInline() 为节点的替换. 在进行节点的替换时，必须先构造节点才可以替换。说白了，就是JSON结构的数据，如果是字面量，可以直接用 valueToNode方法来直接进行构造，如果是其他节点，可以对照在线解析网站进行构造，注意各个子节点的顺序。所以默认格式为 path.replaceInline(types.valueToNode(value)) 来进行替换</p>
+<p>本文的知识点：</p>
+<ul>
+<li>如何同时遍历多种类型的节点， 节点名|节点名替换</li>
+<li>计算表达式的值 使用函数 path.evaluate()，不需要传入参数，返回两个值，当第一个值为true时，第二个值为计算出来的值。</li>
+<li>如何进行节点的值的替换 使用path.replacelnline(types.valueToNode(value)) 进行替换。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[AST path]]></title>
+        <id>https://fizzyi.github.io/post/ast-path/</id>
+        <link href="https://fizzyi.github.io/post/ast-path/">
+        </link>
+        <updated>2021-03-03T13:07:19.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="path">path</h1>
+<p>什么是path,翻译过来就是路径的意思。</p>
+<p>比如说 console.log('AAA')<br>
+在线网站解析出来如图：</p>
+<p>图1</p>
+<p>红色方框的就是他的path类型，在遍历的时候就这样写插件</p>
+<pre><code class="language-javascript">const visitor = {
+    ExpressionStatement(path){
+
+    }
+}
+
+</code></pre>
+<p>那么path有哪些方法呢？总结如下图</p>
+<figure data-type="image" tabindex="1"><img src="https://github.com/Fizzyi/JS_PROJECT/blob/master/images/ast_8.png?raw=true" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[初识AST]]></title>
         <id>https://fizzyi.github.io/post/chu-shi-ast/</id>
@@ -322,43 +417,6 @@ r 就是现在的时间戳，然后拼成了一个字符串，当作了i()函数
 剩下的就很简单了，就是最简单的AES机密的方法。</p>
 <p>完整的解密方法已经上传到我的GitHub，有需要的朋友可以自取。<br>
 https://github.com/Fizzyi/JS_PROJECT</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[某猫小说网站的JS加密]]></title>
-        <id>https://fizzyi.github.io/post/mou-mao-xiao-shuo-wang-zhan-de-js-jia-mi/</id>
-        <link href="https://fizzyi.github.io/post/mou-mao-xiao-shuo-wang-zhan-de-js-jia-mi/">
-        </link>
-        <updated>2020-06-11T06:55:45.000Z</updated>
-        <content type="html"><![CDATA[<p>前言：本教程仅供学习，不得非法破坏网站。如用于其他暴力等用途，后果自负。如侵权您的网站请留言我，我立刻删除，感谢。</p>
-<p>url: aHR0cHM6Ly93d3cuY2l3ZWltYW8uY29tL2NoYXB0ZXIvMTA0ODM3NDYz</p>
-<p>访问网页，查看开发者页面，没有发现有包含小说的原文的请求，猜想可能是加密了，然后观察后发现这个chapter_content,感觉就是加密后的原文。<br>
-<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.03.13.png" alt="" loading="lazy"><br>
-然后全文搜索下这个参数，发现就只有一个地方有这个参数，然后打上断点，发现在这里中断，意味着我们没找错地方，看下方有一个myDecrypt函数，感觉就是解密函数，跟进去看看<br>
-<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.12.12.png" alt="" loading="lazy"><br>
-进来发现猜想的没错，就是我们要找的解密函数，于是就开始扣JS，扣下来一点就执行一下，看差什么，缺撒补撒的原则就行。<br>
-这里要注意的是他的 d.base64.encode 和 d.base64.decode 是网站自己写的，也需要找到扣出来。<br>
-最后执行，得到原文。<br>
-<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.19.57.png" alt="" loading="lazy"></p>
-<p>JS地址：https://github.com/Fizzyi/JS_PROJECT/tree/master/XX%E7%8C%AB</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS练手项目之838888 迅雷网盘URL加密]]></title>
-        <id>https://fizzyi.github.io/post/js-lian-shou-xiang-mu-zhi-838888-xun-lei-wang-pan-url-jia-mi/</id>
-        <link href="https://fizzyi.github.io/post/js-lian-shou-xiang-mu-zhi-838888-xun-lei-wang-pan-url-jia-mi/">
-        </link>
-        <updated>2020-06-04T09:38:25.000Z</updated>
-        <content type="html"><![CDATA[<p>真JS练手项目</p>
-<p>输入关键字后，发现URL中有个疑似加密的参数<br>
-<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.40.08.png" alt="" loading="lazy"><br>
-这个参数又没有参数名，所以看网页源码中的点击按钮的地方<br>
-<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.41.39.png" alt="" loading="lazy"><br>
-发现点击按钮绑定了一个函数 onsubmit=&quot;return mysubmit(this);于是全局搜索mysubmit<br>
-，很好，只有一个文件有它，那就是它了<br>
-<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.43.36.png" alt="" loading="lazy"><br>
-它还包含了其余的两个参数，都找出来，然后写到一个JS文件中，稍微改写一下JS<br>
-<img src="http://119.3.13.71:7777/images/2020/06/04/2020-06-0417.48.23.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
 </feed>

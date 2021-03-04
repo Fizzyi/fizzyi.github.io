@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>asyncio 学习 | Fizzyi的垃圾桶</title>
+<title>AST 练手项目 替换已经定义的变量 | Fizzyi的垃圾桶</title>
 <meta name="description" content="逐渐秃头的程序员">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -101,71 +101,91 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">asyncio 学习</h2>
-            <div class="post-date">2019-11-12</div>
+            <h2 class="post-title">AST 练手项目 替换已经定义的变量</h2>
+            <div class="post-date">2021-03-03</div>
             
             <div class="post-content">
-              <h1 id="asyncio的组成部分">asyncio的组成部分</h1>
-<p>高层级API</p>
+              <p>现有 初始JS代码如下</p>
+<pre><code class="language-javascript">var s=92
+var a = s+5
+var b=func(1324801, a)
+</code></pre>
+<p>希望得到的结果是</p>
+<pre><code class="language-javascript">var s = 92
+var a = 97
+var b = func(1324901,97)
+</code></pre>
+<p>做之前的思考： 首先是遍历节点，但是要遍历哪种类型的节点呢，然后把节点的值计算出来，最后进行节点的替换。</p>
+<p>完整的代码为：</p>
+<pre><code class="language-JavaScript">//  替换已经定义的变量
+
+
+//babel库及文件模块导入
+const parser = require(&quot;@babel/parser&quot;);
+const traverse = require(&quot;@babel/traverse&quot;).default;
+const types = require(&quot;@babel/types&quot;);
+const generator = require(&quot;@babel/generator&quot;).default;
+const fs = require('fs');
+
+
+// 读取文件
+let encode_file = fs.readFileSync(&quot;./text.js&quot;, {
+    encoding: &quot;utf-8&quot;
+});
+// 转换为ast数
+let ast = parser.parse(encode_file);
+
+const visitor =
+    {
+        &quot;Identifier|BinaryExpression&quot;(path){          
+            let {confident,value} = path.evaluate();
+            if (confident){
+                path.replaceInline(types.valueToNode(value))
+            }
+        }
+
+    };
+
+// 调用插件，处理源代码
+traverse(ast, visitor);
+
+
+//生成新的 js code,并且保存到文件中输出
+let {code} = generator(ast,opts = {jsescOption:{&quot;minimal&quot;:true}});
+fs.writeFile('text_after.js', code, (err) =&gt; {
+});
+</code></pre>
+<p><a href="https://github.com/Fizzyi/JS_PROJECT/blob/master/AST_PROJECT/deal_var.js">代码地址</a></p>
+<p>代码解释：<br>
+（1）选择需要便利的节点<br>
+遍历 Identifier(标识符节点，例如声明变量时 var a = 3 的a) 或者 BinaryExpression(二进制表达式 通常指运算，例如 1+2)<br>
+（2） 进行节点的值计算<br>
+path.evaluate() 是计算表达式的值，没有参数，就是计算这个节点的值，会返回两个值，当第一个值为true的时候，第二个值就是计算的结果<br>
+（3）进行节点的值的替换<br>
+path.replaceInline() 为节点的替换. 在进行节点的替换时，必须先构造节点才可以替换。说白了，就是JSON结构的数据，如果是字面量，可以直接用 valueToNode方法来直接进行构造，如果是其他节点，可以对照在线解析网站进行构造，注意各个子节点的顺序。所以默认格式为 path.replaceInline(types.valueToNode(value)) 来进行替换</p>
+<p>本文的知识点：</p>
 <ul>
-<li>协程对象和Tasks对象</li>
-<li>数据流</li>
-<li>同步源语</li>
-<li>子进程</li>
-<li>队列</li>
-<li>异常<br>
-低层级API</li>
-<li>事件循环</li>
-<li>Futures对象</li>
-<li>传输和协议</li>
-<li>策略</li>
-<li>平台支持</li>
-</ul>
-<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
-<ul>
-<li>事件循环event_loop<br>
-事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
-所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
-<li>Future 对象<br>
-Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
-<li>Task 任务<br>
-Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
-<li>awaitable objects(可等待对象)<br>
-如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
-await 的目的:
-<ul>
-<li>获取协程的结果</li>
-<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
-</ul>
-</li>
-</ul>
-<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
-<ul>
-<li>定义/创建协程对象</li>
-<li>将协程转换为task对象</li>
-<li>定义事件循环对象容器</li>
-<li>将task任务扔进事件循环对象中触发<br>
-import asyncio<br>
-async def hello(name):<br>
-print(&quot;hello&quot;,name)<br>
-#定义协程对象<br>
-coroutine = hello('world')
-<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
-loop = asyncio.get_event_loop()
-<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
-task = loop.create_task(coroutine)
-<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
-loop.run_until_complete(task)</li>
+<li>如何同时遍历多种类型的节点， 节点名|节点名替换</li>
+<li>计算表达式的值 使用函数 path.evaluate()，不需要传入参数，返回两个值，当第一个值为true时，第二个值为计算出来的值。</li>
+<li>如何进行节点的值的替换 使用path.replacelnline(types.valueToNode(value)) 进行替换。</li>
 </ul>
 
             </div>
             
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/zd1ABogjD/" class="tag">
+                    ast
+                  </a>
+                
+              </div>
+            
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">
+                <a href="https://fizzyi.github.io/post/ast-path/">
                   <h3 class="post-title">
-                    JS练手之某药
+                    AST path
                   </h3>
                 </a>
               </div>
