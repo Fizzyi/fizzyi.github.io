@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Mongodb调优 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Mongodb调优</h2>
+            <div class="post-date">2020-03-16</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/03/16/2020-03-1616.36.57.png')">
+              </div>
+            
+            <div class="post-content">
+              <p>最近将爬虫数据数据库从Mysql转到了MongoDB,刚开始用着还好，不过最近随着数据量的上升，在搜索的速度上逐渐慢了下来，今天在GITCHAT上阅读了一篇 Mong性能调优，受益匪浅。<br>
+数据库的搜索速度慢，首先要分析到底是哪里阻塞了，这样才好对症下药。</p>
+<h1 id="1-寻找原因-mongo执行计划">1、寻找原因- Mongo执行计划</h1>
+<p>Mongo提供了explain()方法来分析一个语句的执行计划，通过这个执行计划我们可以了解到关于性能方面的很多信息，包括是否命中了索引，如何命中索引，执行耗时，文档扫描数等等。<br>
+explain()方法执行三种分析模式<br>
+queryPlanner -- 仅给出执行计划<br>
+executionStats -- 给出执行计划并执行<br>
+allPlansExecution -- 结合前面的两种。<br>
+默认使用的一种。</p>
+<pre><code>{
+    &quot;queryPlanner&quot;: {
+        &quot;plannerVersion&quot;: NumberInt(&quot;1&quot;),
+        &quot;namespace&quot;: &quot;sky.company_info&quot;,
+        &quot;indexFilterSet&quot;: false,
+        &quot;parsedQuery&quot;: {
+            &quot;is_insert&quot;: {
+                &quot;$eq&quot;: &quot;0&quot;
+            }
+        },
+        &quot;winningPlan&quot;: {
+            &quot;stage&quot;: &quot;FETCH&quot;,
+            &quot;inputStage&quot;: {
+                &quot;stage&quot;: &quot;IXSCAN&quot;,
+                &quot;keyPattern&quot;: {
+                    &quot;is_insert&quot;: 1
+                },
+                &quot;indexName&quot;: &quot;is_insert_1&quot;,
+                &quot;isMultiKey&quot;: false,
+                &quot;isUnique&quot;: false,
+                &quot;isSparse&quot;: false,
+                &quot;isPartial&quot;: false,
+                &quot;indexVersion&quot;: NumberInt(&quot;1&quot;),
+                &quot;direction&quot;: &quot;forward&quot;,
+                &quot;indexBounds&quot;: {
+                    &quot;is_insert&quot;: [
+                        &quot;[\&quot;0\&quot;, \&quot;0\&quot;]&quot;
+                    ]
+                }
+            }
+        },
+        &quot;rejectedPlans&quot;: [ ]
+    },
+    &quot;serverInfo&quot;: {
+        &quot;host&quot;: &quot;iZbp19x6t7z31xzrn8bqb5Z&quot;,
+        &quot;port&quot;: NumberInt(&quot;27017&quot;),
+        &quot;version&quot;: &quot;3.2.12&quot;,
+        &quot;gitVersion&quot;: &quot;ef3e1bc78e997f0d9f22f45aeb1d8e3b6ac14a14&quot;
+    },
+    &quot;ok&quot;: 1
+}
+
+</code></pre>
+<p>Mongo会通过优化分析选择其中一种更好的方案放置到winningPlan，最终执行计划是winningPlan所描述的方式。其他稍次的方案则会放到rejectedPlans中。<br>
+winningPlan中，总执行流程分为若干个stage，一个stage的分析基础可以是其他stage的输出结果。从上面的案例来说，首先是通过IXSCAN(索引扫描)的方式获取到初步结果(索引得到的结果是所有符合查询条件的文档在磁盘中的位置信息)，在通过FETCH的方式提取到各个位置所对应的完整文档。这是一种很常见的索引查询计划（explain返回的是一个树形结构，实际先执行的是子stage,在往上逐级执行父stage）。</p>
+<p>stage的不同值代表的不同含义为：<br>
+COLLSCAN 全文索引 （通常意味着没用使用到索引）<br>
+IXSCAN 按索引检索<br>
+FETCH 检索文档<br>
+SHARD-MEGRE 合并分片的结果<br>
+SHARDING-FILTER 从分片中过滤孤立文档。</p>
+<h1 id="2-线上数据库查询慢的问题定位">2 、线上数据库查询慢的问题定位</h1>
+<p>对于已经上线的性能隐患，Mongo提供了很多好用的特性帮助我们快速定位。比如说Mongostat查看实时情况。</p>
+<pre><code>mongostat --host xxxx:27017 -u root -p xxxx --authenticationDatabase admin
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://119.3.13.71:7777/images/2020/03/16/2020-03-1616.22.11.png" alt="mongostat" loading="lazy"></figure>
+<p>insert,delete,updata和query表明了该时段每秒执行的次数，可以粗略评估数据库压力。<br>
+vsize -- 占用多少兆的虚拟内存<br>
+res -- 占用多少兆的物理内存<br>
+net_in 入网流量<br>
+net_out  出网流量<br>
+conn 当前链接数</p>
+<pre><code># 查看当前数据库的可用连接数
+db.serverStatus().connections
+
+{
+    &quot;current&quot;: 350,
+    &quot;available&quot;: 52078,
+    &quot;totalCreated&quot;: NumberLong(&quot;3177228&quot;)
+}
+
+# 获取当前数据库正在执行中的命令  opid 为该操作的ID，microsecs_running为已运行的微妙数
+db.currentOp()   
+
+# 杀掉某个命令
+db.killOp(opid)
+</code></pre>
+<h1 id="3-解决问题">3 解决问题</h1>
+<h2 id="31-创建索引">3.1 创建索引</h2>
+<p>最基本的创建索引的语法为</p>
+<pre><code>db.collection.createIndex({key:1/-1})
+</code></pre>
+<p>1,-1 为增序和降序<br>
+需要注意的是，这种索引创建方式会阻塞数据库的所有读写操作，直到索引建立完成。</p>
+<pre><code>db.collection.createIndex({key:1/-1},{backgroud:true})
+</code></pre>
+<p>上面这个创建方式是在后台建立索引，速度相对较慢。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/Hw_a0KIDP/" class="tag">
+                    数据库
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/numpy-zhi-ji-chu/">
+                  <h3 class="post-title">
+                    Numpy之基础
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

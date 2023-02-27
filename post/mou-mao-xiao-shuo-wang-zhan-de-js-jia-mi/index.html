@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>某猫小说网站的JS加密 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">某猫小说网站的JS加密</h2>
+            <div class="post-date">2020-06-11</div>
+            
+            <div class="post-content">
+              <p>前言：本教程仅供学习，不得非法破坏网站。如用于其他暴力等用途，后果自负。如侵权您的网站请留言我，我立刻删除，感谢。</p>
+<p>url: aHR0cHM6Ly93d3cuY2l3ZWltYW8uY29tL2NoYXB0ZXIvMTA0ODM3NDYz</p>
+<p>访问网页，查看开发者页面，没有发现有包含小说的原文的请求，猜想可能是加密了，然后观察后发现这个chapter_content,感觉就是加密后的原文。<br>
+<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.03.13.png" alt="" loading="lazy"><br>
+然后全文搜索下这个参数，发现就只有一个地方有这个参数，然后打上断点，发现在这里中断，意味着我们没找错地方，看下方有一个myDecrypt函数，感觉就是解密函数，跟进去看看<br>
+<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.12.12.png" alt="" loading="lazy"><br>
+进来发现猜想的没错，就是我们要找的解密函数，于是就开始扣JS，扣下来一点就执行一下，看差什么，缺撒补撒的原则就行。<br>
+这里要注意的是他的 d.base64.encode 和 d.base64.decode 是网站自己写的，也需要找到扣出来。<br>
+最后执行，得到原文。<br>
+<img src="http://119.3.13.71:7777/images/2020/06/11/2020-06-1115.19.57.png" alt="" loading="lazy"></p>
+<p>JS地址：https://github.com/Fizzyi/JS_PROJECT/tree/master/XX%E7%8C%AB</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/js-lian-shou-xiang-mu-zhi-838888-xun-lei-wang-pan-url-jia-mi/">
+                  <h3 class="post-title">
+                    JS练手项目之838888 迅雷网盘URL加密
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

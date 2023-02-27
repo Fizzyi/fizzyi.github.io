@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JS练习之某省雨水监视平台 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JS练习之某省雨水监视平台</h2>
+            <div class="post-date">2020-04-03</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.25.58.png')">
+              </div>
+            
+            <div class="post-content">
+              <p>URL :  aHR0cDovL3ljLndzd2oubmV0L2Foc3h4L0xPTC9wdWJsaWMvcHVibGljLmh0bWw=</p>
+<p>点击搜索，然后打开开发者工具到Network页面。</p>
+<figure data-type="image" tabindex="1"><img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.27.21.png" alt="'请求页'" loading="lazy"></figure>
+<p>观察后发现请求有 time,hourClass,name,waterEncode,random，五个参数，特别一点的有hourClass和waterEncode两个参数，分别拿去全局搜索，hourClass没有搜索到相关的，不过waterEncode搜索到相关的JS。<br>
+<img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.32.06.png" alt="'第一页'" loading="lazy"><br>
+然后在这一行打上断点，重新进行搜索。如我所愿，卡在断点这个地方，然后进去到这个方法里面去看看。</p>
+<p><img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.34.50.png" alt="'第二页'" loading="lazy"><br>
+然后发现了这个网站的加密方法和解密方法，怎么用也给你说的很清楚。<br>
+在然后，把这个JS文件复制下来，新创建一个JS文件存放。</p>
+<p>然后我们来改写这个JS，在最下面先添加上加密的方法<br>
+<img src="http://119.3.13.71:7777/images/2020/04/03/2020-04-0316.38.11.png" alt="'加密'" loading="lazy"></p>
+<p>然后在返回找其他的参数，根据右边的调用栈往上找，在go这一步发现传入的rwData，里面包含了name和hourClass，name和hourClass都是固定的，往上找到time参数，发现就是对选择的时间进行了格式化的处理。</p>
+<p><img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.29.49.png" alt="'name'" loading="lazy"><br>
+所有的参数都已经找出来，接下来就是简单的调用了。<br>
+<img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.39.32.png" alt="'运用'" loading="lazy"><br>
+发现返回的参数中也是加密的，直接调用js中的解密函数就可以获取解密后的结果。<br>
+<img src="http://119.3.13.71:7777/images/2020/04/07/2020-04-0716.42.42.png" alt="'结果'" loading="lazy"></p>
+<p>来源：https://mp.weixin.qq.com/s/IgaU9dzLcRzCk97Qs7phYA</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mongodb-de-liu-shi-ju-he-cao-zuo/">
+                  <h3 class="post-title">
+                    MongoDB的流式聚合操作
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

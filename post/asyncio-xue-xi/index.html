@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>asyncio 学习 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">asyncio 学习</h2>
+            <div class="post-date">2019-11-12</div>
+            
+            <div class="post-content">
+              <h1 id="asyncio的组成部分">asyncio的组成部分</h1>
+<p>高层级API</p>
+<ul>
+<li>协程对象和Tasks对象</li>
+<li>数据流</li>
+<li>同步源语</li>
+<li>子进程</li>
+<li>队列</li>
+<li>异常<br>
+低层级API</li>
+<li>事件循环</li>
+<li>Futures对象</li>
+<li>传输和协议</li>
+<li>策略</li>
+<li>平台支持</li>
+</ul>
+<h1 id="asyncio的几个概念">asyncio的几个概念</h1>
+<ul>
+<li>事件循环event_loop<br>
+事件循环是一种处理多并发量的有效方式，在维基百科中被描述为 一种等待程序分配事件或消息的编程架构。我们可以定义事件循环来简化使用轮询方法来监控事件，通俗的说法就是 当A发生时，执行B。<br>
+所谓的事件，其实就是函数。事件循环，就是有一个队列，里面存放这一堆函数，从第一个函数开始执行，在函数执行的过程中，可能会有新的函数继续添加到这个队列中，一直到队列中所有的函数被执行完毕，并且再也不会有新的函数被添加到这个队列中，程序就结束了。</li>
+<li>Future 对象<br>
+Future是一个数据结构，表示还未完成的工作结果。事件循环可以见识Future对象是否完成。从而允许应用的一部分等待另一部分完成一些工作。简单来说，Future就是一个类，用生成器实现了回调。</li>
+<li>Task 任务<br>
+Task是Future的一个子类，它知道如何包装和管理一个协程的执行。任务所需的资源可用时，事件循环会调度任务允许，并且生成一个结果，而从可以由其他协程消费。一般操作最多的还是Task。用Task来封装协程，给原本没有状态的协程增加一些状态。</li>
+<li>awaitable objects(可等待对象)<br>
+如果一个对象可以用在wait表达式中，那么它就是一个可等待对象。在asyncio模块中会一直提到这个概念。其中协程函数，Task，Future都是awaitable对象。<br>
+await 的目的:
+<ul>
+<li>获取协程的结果</li>
+<li>挂起当前协程，将控制交由事件循环，切换到其他协程，然后等待结果，最后恢复协程继续执行</li>
+</ul>
+</li>
+</ul>
+<h1 id="完整的协程工作流程">完整的协程工作流程</h1>
+<ul>
+<li>定义/创建协程对象</li>
+<li>将协程转换为task对象</li>
+<li>定义事件循环对象容器</li>
+<li>将task任务扔进事件循环对象中触发<br>
+import asyncio<br>
+async def hello(name):<br>
+print(&quot;hello&quot;,name)<br>
+#定义协程对象<br>
+coroutine = hello('world')
+<h1 id="定义事件循环对象容器">定义事件循环对象容器</h1>
+loop = asyncio.get_event_loop()
+<h1 id="将协程转换为task对象">将协程转换为task对象</h1>
+task = loop.create_task(coroutine)
+<h1 id="将task任务扔进事件循环对象中并触发">将task任务扔进事件循环对象中并触发</h1>
+loop.run_until_complete(task)</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-yao/">
+                  <h3 class="post-title">
+                    JS练手之某药
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

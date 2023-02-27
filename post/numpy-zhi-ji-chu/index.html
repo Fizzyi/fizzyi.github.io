@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Numpy之基础 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Numpy之基础</h2>
+            <div class="post-date">2019-12-23</div>
+            
+            <div class="post-content">
+              <h1 id="概览">概览</h1>
+<p>Numpy的主要对象是同种元素的多维数组。这是一个所有的元素都是一种类型，通过一个正整数元祖索引的元素表格，通常的元素是数字。在Numpy中纬度叫做轴（axes），轴的个数叫做秩（rank）。<br>
+[1,2,3]<br>
+在一个3D空间的一个点的坐标[1,2,3]是一个秩为1的数组，因为它只有一个轴，轴长为3。<br>
+[[1,0,0],[0,1,2]]<br>
+在上面这个数组中，数组的秩为2，因为它有两个纬度，第一个纬度的长度为2，第二个纬度的长度为3。</p>
+<p>Numpy的数组类被称为ndarray,通常称为数组。<br>
+基本对象属性有：</p>
+<ul>
+<li>ndarray.ndim<br>
+数组轴的个数。秩</li>
+<li>ndarray.shape<br>
+数组的纬度。例如一个n排m列的矩阵，它的shape的属性将是（n,m）</li>
+<li>ndarray.size<br>
+数组元素的个数，等于shape属性中元祖元素的乘积。</li>
+<li>ndarray.dtype<br>
+数组中元素类型的对象。</li>
+</ul>
+<h1 id="创建数组">创建数组</h1>
+<p>可以使用array函数从常规的python列表和元祖创建数组。所创建的数组类型由原序列中的元素类型推导而来。</p>
+<pre><code class="language-python">from numpy as *
+a = array([2,3,4])
+</code></pre>
+<p>可以通过一些函数来快速创建数组<br>
+zeros((3,4)) 创建一个3<em>4的全为0的数组<br>
+ones((3,4)) 创建一个3</em>4的全为1的数组</p>
+<p>为了创建一个数列，Numpy提供一个类似arange的函数返回数组而不是列表。</p>
+<pre><code class="language-python">    arange(10,30,5)
+    array([10,15,20,25])
+</code></pre>
+<h1 id="基本运算">基本运算</h1>
+<p>数组的算术运算是按照元素的，新的数组被创建并且被结果填充。<br>
+不像其他的矩阵语言，Numpy中的乘法运算符按元素运算，矩阵乘法可以使用dot函数实行。<br>
+有些操作符像+=被用来更改已存在的数组而不是创建一个新的数组</p>
+<pre><code class="language-python">a = random.random((2,3))
+a.sum() # 求和
+a.min() # 最小值
+a.max() # 最大值
+# 这些运算默认应用到数组，无关数组的形状。然而，指定axis参数可以把运算应用到数组指定的轴上。
+a.sum(axis=0)  # 对每一行求和
+a.sum(axis=1)  # 对每一列求和
+</code></pre>
+<h1 id="形状操作">形状操作</h1>
+<h2 id="更改数组的形状">更改数组的形状</h2>
+<p>一个数组的形状由它每个轴上的元素个数给出。</p>
+<pre><code class="language-python">a = floor(10*random.random((3,4)))
+a.shape
+# (3,4)
+a.ravel() # 变成一行
+a.resize((2,6))
+</code></pre>
+<h2 id="组合stack不同的数组">组合（stack）不同的数组</h2>
+<p>函数column_stack以列将一维数组合成二维数组。<br>
+函数row_stack将一位数组以行组合成二维数组。</p>
+<h2 id="将一个数组分割成split成几个小数组">将一个数组分割成split成几个小数组</h2>
+<p>使用hsplit你能将数组沿着它的水平轴分割，或者指定返回相同形状数组的个数，或者指定在哪些列后发生切割。</p>
+<pre><code class="language-python">a = floor(10*random.random((2,12)))
+# 返回3个相同形状的数组
+hsplit(a,3)
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/-kX9u3mh5/" class="tag">
+                    数据分析
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/shu-ju-fen-xi-lian-xi-zong-ji-zhi-tan-suo-chipotle-kuai-can-shu-ju/">
+                  <h3 class="post-title">
+                    数据分析练习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

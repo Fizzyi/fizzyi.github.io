@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>MongoDB的流式聚合操作 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">MongoDB的流式聚合操作</h2>
+            <div class="post-date">2020-03-20</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/03/20/2020-03-2016.48.19.png')">
+              </div>
+            
+            <div class="post-content">
+              <p>MongoDB中的聚合是指同时对多个文档中的数据进行处理、筛选和归类并输出结果的过程。<br>
+MongoDB提供了三种聚合方式：</p>
+<ul>
+<li>Aggregation Pipeline</li>
+<li>Map-Reduce</li>
+<li>简单聚合</li>
+</ul>
+<h1 id="1-aggregation-pipeline">1、Aggregation Pipeline</h1>
+<p>Aggregation Pipeline 又称聚合管道。开发者可以将多个文档传入一个由多个Stage组成的Pipeline，每个Stage处理的结果都会传入下一个Stage中，最后一个Stage的处理结果就是整个Pipeline的输出。</p>
+<p>创建聚合管道的语法如下：</p>
+<pre><code>db.collection.aggregate( [ { &lt;stage1&gt; },{  &lt;stage2&gt; }.....  ] )
+</code></pre>
+<p>常见的SQL聚合术语、函数和概念以及对应的MongoDB操作符和Stage。</p>
+<table>
+<thead>
+<tr>
+<th>SQL</th>
+<th>MongoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WHERE</td>
+<td>$match</td>
+</tr>
+<tr>
+<td>GROUP BY</td>
+<td>$group</td>
+</tr>
+<tr>
+<td>HAVING</td>
+<td>$match</td>
+</tr>
+<tr>
+<td>SELECT</td>
+<td>$project</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>$sort</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>$limit</td>
+</tr>
+<tr>
+<td>SUM()</td>
+<td>$sum</td>
+</tr>
+<tr>
+<td>COUNR()</td>
+<td>sumsortByCount</td>
+</tr>
+<tr>
+<td>join</td>
+<td>$lookup</td>
+</tr>
+</tbody>
+</table>
+<p>$match 的描述为&quot;过滤文档，仅允许匹配的文档传递到下一个管道阶段 &quot;。</p>
+<pre><code>{ $match: { &lt;query&gt; } }
+</code></pre>
+<p>$group 统计文档</p>
+<pre><code>{ $group: {_id:&quot;key&quot;:&quot;$key&quot;,number:{$sum: 1}} }
+</code></pre>
+<p>$sample 从输入中随机选择指定数量的文档</p>
+<pre><code>{ $sample :  { size:  num } }
+</code></pre>
+<p>$project 是过滤文档中的字段，处理结果会传入到下一个阶段。需要展示的值为1/true，不需要展示的值为0/false。默认为0</p>
+<pre><code>{ $project: { company_name:1} }
+</code></pre>
+<p>$out 聚合Pipeline返回的结果文档，并将其写入指定的集合。</p>
+<pre><code>{ $out:  &quot;collectionName&quot; }
+</code></pre>
+<h1 id="2-简单的聚合">2、 简单的聚合</h1>
+<h2 id="count">count</h2>
+<p>用于计算集合或者视图中的文档数，返回一个包含计数结果和状态的文档。</p>
+<pre><code>{
+    count: collection/view,
+    query:document,
+    limit:integer,
+    skip: integer,
+    hint:hint, # 指定要使用的索引，将索引名称指定为字符串或者索引规范文档。
+    readConcern:document
+}
+</code></pre>
+<h2 id="group">group</h2>
+<p>按指定的键对集合中的文档进行分组，并执行简单的聚合函数。</p>
+<pre><code>{
+    group:
+    {
+        ns : &lt;namespace&gt;  通过操作执行组的集合，必填
+        key : &lt;key&gt; 要分组的字段或者字段，必填
+        $reduce : &lt;reduce function &gt; 在分组期间对文档进行聚合操作的函数
+    }
+}
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mongodb-diao-you/">
+                  <h3 class="post-title">
+                    Mongodb调优
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

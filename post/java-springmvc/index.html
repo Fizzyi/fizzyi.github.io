@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Java SpringMVC | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Java SpringMVC</h2>
+            <div class="post-date">2023-02-21</div>
+            
+            <div class="post-content">
+              <h1 id="一-最简单的一个服务">一、最简单的一个服务</h1>
+<pre><code class="language-java">@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+    //注入用户服务类
+    @Autowired
+    private UserService userService = null;
+
+    //展示用户详情
+    @RequestMapping(&quot;details&quot;)
+    public ModelAndView details(Long id){
+        //访问模型层得到数据
+        User user = userService.getUser(id);
+        //模型和视图
+        ModelAndView mv = new ModelAndView();
+        //定义模型视图
+        mv.setViewName(&quot;user/details&quot;);
+        //加入数据模型
+        mv.addObject(&quot;user&quot;,user);
+        //返回模型和视图
+        return mv;
+    }
+}
+</code></pre>
+<p>在application文件中定制InternalResourceViewResolver初始化</p>
+<pre><code>spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+</code></pre>
+<p>通过这个初始化，在返回视图名称之后，它会以前缀（prefix）+视图名称+后缀（suffix）组成全路径定位视图。<br>
+例如上文中的全路径为/webapp/WEB-INF/jsp/user/details.jsp</p>
+<pre><code class="language-jsp">&lt;%@ page pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri =&quot;http://java.sun.com/jsp/jstl/core&quot;%&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;用户详情&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table border=&quot;1&quot;&gt;
+    &lt;tr&gt;&lt;td&gt;标签&lt;/td&gt;&lt;td&gt;值&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;用户标签&lt;/td&gt;&lt;td&gt;&lt;c:out value=&quot;${user.id}&quot;&gt;&lt;/c:out&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;用户名称&lt;/td&gt;&lt;td&gt;&lt;c:out value=&quot;${user.userName}&quot;&gt;&lt;/c:out&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;用户备注&lt;/td&gt;&lt;td&gt;&lt;c:out value=&quot;${user.note}&quot;&gt;&lt;/c:out&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>通过${user.id}来获取对应的属性。</p>
+<h1 id="二-处理器映射">二、处理器映射</h1>
+<p>@RequestMapping<br>
+@GetMapping：GET方法<br>
+@PostMapping：Post方法</p>
+<h1 id="三-获取控制器参数">三、获取控制器参数</h1>
+<h2 id="31get请求并且无注解的情况下获取参数">3.1get请求并且无注解的情况下获取参数</h2>
+<p>参数允许为空，要求是参数名称和HTTP请求的参数名称保持一致</p>
+<pre><code class="language-java">@GetMapping(&quot;/no/annotation&quot;)
+@ResponseBody
+public Map&lt;String, Object&gt; noAnnotation(Integer intVal, Long longVal, String str) {
+    Map&lt;String, Object&gt; paramsMap = new HashMap&lt;&gt;();
+    paramsMap.put(&quot;intval&quot;, intVal);
+    paramsMap.put(&quot;longVal&quot;, longVal);
+    paramsMap.put(&quot;str&quot;, str);
+    return paramsMap;
+}
+</code></pre>
+<p>访问的地址为：127.0.0.1:8090/my/no/annotation?intVal=10&amp;longVal=20</p>
+<h2 id="32-使用requestparam获取参数">3.2 使用@RequestParam获取参数</h2>
+<p>允许前后端的命名规则不一样，使用该注解来确定前后端名称的映射关系.默认情况下不能为空，可以通过配置属性required=false为空。</p>
+<pre><code class="language-java">@GetMapping(&quot;/annotation&quot;)
+@ResponseBody
+public Map&lt;String, Object&gt; annotation(@RequestParam(&quot;int_val&quot;) Integer intVal,
+                                        @RequestParam(&quot;long_val&quot;) Long longVal,
+                                        @RequestParam(value = &quot;str_val&quot;, required = false) String strVal) {
+    Map&lt;String, Object&gt; paramsMap = new HashMap&lt;&gt;();
+    paramsMap.put(&quot;intval&quot;, intVal);
+    paramsMap.put(&quot;longVal&quot;, longVal);
+    paramsMap.put(&quot;str&quot;, strVal);
+    return paramsMap;
+
+    }
+</code></pre>
+<p>访问的地址为：127.0.0.1:8090/my/annotation?int_val=10&amp;long_val=20</p>
+<h2 id="33-获取json数据">3.3 获取JSON数据</h2>
+<p>使用@RequestBody对方法的参数进行标注，JSON请求题与User类之间的属性名称是保持一致的。这样Spring MVC就会通过这层映射关系将JSON请求体转换为User对象。</p>
+<pre><code class="language-java">@PostMapping(&quot;/insert&quot;)
+@ResponseBody
+public User insert(@RequestBody User user){
+    userService.insertUser(user);
+    return user;
+}
+</code></pre>
+<h2 id="34-通过url传递参数">3.4 通过URL传递参数</h2>
+<p>通过@GetMapping指定一个URL，用{...}表明参数的位置和名称。通过处理器映射和注解@PathVariable的组合获取URL参数。首先通过处理器映射可以定位参数的位置和名称，然后通过@PathVariable通过名称获取参数。</p>
+<pre><code class="language-java">@GetMapping(&quot;/{id}&quot;)
+@ResponseBody
+public User get(@PathVariable(&quot;id&quot;) Long id){
+    return userService.getUser(id);
+}
+</code></pre>
+<p>访问的地址为：127.0.0.1:8090/users/1</p>
+<h1 id="四-数据验证">四、数据验证</h1>
+<p>Spring MVC提供了验证参数的机制，一方面，支持JSR-303注解验证，另一方面也可以自定义验证规则。</p>
+<h2 id="41-方法一-jsr-303验证">4.1 方法一、JSR-303验证</h2>
+<p>主要是通过注解的方式进行的。</p>
+<pre><code class="language-java">package com.springboot.chapter10.pojo;
+
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
+import java.util.Date;
+
+public class ValidatorPojo {
+
+    @NotNull(message = &quot;ID不能为空&quot;)
+    private Long id;
+
+    @Future(message = &quot;需要一个将来的日期&quot;) //只能是将来的日期
+    //@Past 只能是过去的日期
+    @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) // 日期格式化转换
+    @NotNull
+    private Date date;
+
+    @NotNull
+    @DecimalMin(value = &quot;0.1&quot;) //最小值为 0.1
+    @DecimalMax(value = &quot;10000&quot;) //最大值为10000
+    private Double doubleValue = null;
+
+    @Min(value = 1,message = &quot;最小值为1&quot;)
+    @Max(value = 88,message = &quot;最大值为88&quot;)
+    @NotNull
+    private Integer integer;
+
+    @Range(min = 1,max = 888,message = &quot;范围从1至888&quot;)
+    private Long range;
+
+    @Email(message = &quot;邮箱格式验证&quot;)
+    private String email;
+
+    @Size(min = 20,max = 30,message = &quot;字符串长度要求20-30&quot;)
+    private String size;
+
+    public Integer getInteger(){
+        return integer;
+    }
+    public Long getId(){
+        return id;
+    }
+    public Date getDate(){
+        return date;
+    }
+
+    public Double getDoubleValue(){
+        return doubleValue;
+    }
+}
+</code></pre>
+<p>ps：此处必须要写对应的get方法，否则后面无法验证。</p>
+<p>后台的验证方法为</p>
+<pre><code class="language-java">@RequestMapping(value = &quot;/valid/validate&quot;,method = RequestMethod.POST)
+@ResponseBody
+public Map&lt;String, Object&gt; validate(@Valid @RequestBody ValidatorPojo vp, Errors errors) {
+    Map&lt;String, Object&gt; errMap = new HashMap&lt;&gt;();
+    //获取错误列表
+    List&lt;ObjectError&gt; oes = errors.getAllErrors();
+    for (ObjectError oe : oes) {
+        String key = null;
+        String msg = null;
+        //字段错误
+        if (oe instanceof FieldError) {
+            FieldError fe = (FieldError) oe;
+            key = fe.getField();//获取错误验证字段名
+        } else {
+            //非字段错误
+            key = oe.getObjectName();//获取验证对象名称
+
+        }
+        //错误信息
+        msg = oe.getDefaultMessage();
+        errMap.put(key, msg);
+    }
+    return errMap;
+}
+</code></pre>
+<p>需要进行验证的POJO，使用注解@Valid表示验证。后面为获取所有的报错信息组装后进行返回。</p>
+<h2 id="42-方法二-参数验证机制">4.2 方法二、参数验证机制</h2>
+<p>允许使用注解@InitBinder，该注解的作用是允许在进行控制器方法前修改 WebDataBinder机制。</p>
+<p>在Spring MVC中定义了一个接口Validator,接口的源码为</p>
+<pre><code class="language-java">public interface Validator {
+	boolean supports(Class&lt;?&gt; clazz);
+
+	void validate(Object target, Errors errors);
+
+}
+</code></pre>
+<p>它定义了两个方法，其中supports方法参数为需要验证的POJO类型，如果该方法返回true，则Spring会使用当前验证起的validation方法去验证POJO。validation方法包含需要的target对象和错误对象errors，其中target是参数绑定后的POJO，这样便可以通过这个参数对象进行业务逻辑的自定义验证，如果发现错误，则可以保存到errors对象中。</p>
+<pre><code class="language-java">public class UserValidator implements Validator {
+    //该验证器只支持User类验证
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        return clazz.equals(User.class);
+    }
+
+    //验证逻辑
+    @Override
+    public void validate(Object target, Errors errors) {
+        //对象为空
+        if (target == null) {
+            //直接在参数处报错，这样就不能进入控制器的方法
+            errors.rejectValue(&quot;&quot;, null, &quot;用户不能为空&quot;);
+            return;
+        }
+        // 强制转换
+        User user = (User) target;
+        // 用户名非空串
+        if (StringUtils.isEmpty(user.getUserName())) {
+            //增加错误，可以进入控制器方法
+            errors.rejectValue(&quot;userName&quot;, null, &quot;用户名不能为空&quot;);
+        }
+    }
+}
+</code></pre>
+<p>同时还需要在controller中添加对应的注解</p>
+<pre><code class="language-java">@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+    /*
+     * 调用控制器前先执行这个方法
+     * @param binder
+     * */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        //绑定验证器
+        binder.setValidator(new UserValidator());
+        //定义日期参数格式，参数不再需要注解@DateTimeFormat，boolean参数表示是否允许为空
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat(&quot;yyyy-MM-dd&quot;), false));
+    }
+
+    /*
+     * @param user 用户对象用StringToUserConverter转换
+     * @param Errors 验证器返回的错误
+     * @param date 因为WebDataBinder已经绑定了格式，所以不在需要注解
+     * @return 各类数据
+     *
+     * */
+    @GetMapping(&quot;/validator&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; validator(@Valid User user, Errors Errors, Date date) {
+        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+        map.put(&quot;user&quot;, user);
+        map.put(&quot;date&quot;, date);
+        //判断是否存在错误
+        if (Errors.hasErrors()) {
+            //获取全部错误
+            List&lt;ObjectError&gt; oes = Errors.getAllErrors();
+            for (ObjectError oe : oes) {
+                //判断是否字段错误
+                if (oe instanceof FieldError) {
+                    //字段错误
+                    FieldError fe = (FieldError) oe;
+                    map.put(fe.getField(), fe.getDefaultMessage());
+                } else {
+                    //对象错误
+                    map.put(oe.getObjectName(), oe.getDefaultMessage());
+                }
+            }
+        }
+        return map;
+    }
+}
+</code></pre>
+<p>通过@RequestMapping,@GetMapping等注解把url定位到对应的控制器方法上，通过注解@PathVariable获取url上的参数，通过@RequestBody可以将请求体为JSON的数据转换为复杂的Java对象。可以使用注解@RestController将整个控制器默认都转换为JSON数据，就不用每次都写@ResponseBody</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/java-shu-ju-ku-shi-wu-chu-li/">
+                  <h3 class="post-title">
+                    Java数据库事务处理
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

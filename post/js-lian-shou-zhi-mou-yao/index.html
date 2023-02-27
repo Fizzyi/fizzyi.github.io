@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JS练手之某药 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JS练手之某药</h2>
+            <div class="post-date">2019-11-12</div>
+            
+            <div class="post-content">
+              <p>URL:aHR0cCUzQS8vd3d3LmRka3kuY29tL2NvbW1vZGl0eS5odG1sJTNGZGRreWNhY2hlJTNEYTdiMTllODc5ZDJmMmYyNzlkMzU2ZjVhZmE2ZDVjZmY=</p>
+<p>通过观察请求参数，除了第一个sign参数不知道如何获取，其余的参数应该都比较好获取，那就开始干吧。<br>
+<img src="https://fizzyi.github.io/post-images/1573524328115.png" alt="" loading="lazy"><br>
+首先全局搜索 sign ，发现有3个文件相关，而其中之后一个JS文件，那就先进去看看。<br>
+进入该JS文件后，搜索sign，很容易就找到了sign的加密方法。<br>
+<img src="https://fizzyi.github.io/post-images/1573524509565.png" alt="" loading="lazy"></p>
+<p>接下来的事情就是用python来重写JS。</p>
+<p><img src="https://fizzyi.github.io/post-images/1573524772704.png" alt="" loading="lazy"><br>
+如图所示的python代码，就可以生成可用的sign。</p>
+<p>总结：一篇非常基础的JS破解，非常适合初学者学习（没错，说的就是我😶），不过学习到了如何使用md5进行加密。<br>
+<img src="https://fizzyi.github.io/post-images/1573524972231.png" alt="" loading="lazy"></p>
+<p>来源：https://mp.weixin.qq.com/s/SEDLwzlIjopb6cO1so5xmA</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/v4o-y8Aa4/" class="tag">
+                    爬虫
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

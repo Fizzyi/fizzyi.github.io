@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>某省建筑市场监管与诚信信息发布平台 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">某省建筑市场监管与诚信信息发布平台</h2>
+            <div class="post-date">2020-07-07</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/07/07/timg.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>url : http://223.4.65.131:8080/#/company<br>
+在进入企业详情的时候，地址为 company/companyDetail?CORPCODE=******<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.49.59.png" alt="" loading="lazy"><br>
+但是在返回数据的接口中却没有发现该参数，于是全局搜索该参数<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.52.42.png" alt="" loading="lazy"><br>
+发现有两个js文件中都出现了这个参数，于是挨个点进去看，<br>
+在第一个文件就发现了这个参数的赋值，于是带上断点之后在执行，发现就是在这个地方进行的加密操作。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.54.17.png" alt="" loading="lazy"></p>
+<pre><code class="language-js">var t = Object(p.b)(e.CorpCode);
+</code></pre>
+<p>在这里记录下学到的一个知识点，如上所示的代码，其实就是将 e.CorpCode 作为p.b 函数的参数进行执行。</p>
+<p>然后我们进去这个p.b函数，发现就是很熟悉的AES加密<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0713.58.17.png" alt="" loading="lazy"><br>
+但是仔细一看也还是不一样，不慌张，我们一个一个的进去看，首先看这个e参数的生成方式，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.01.58.png" alt="" loading="lazy"><br>
+发现他是三个函数一层一层的生成的，我们先看最里面的两个函数，现在console面板打印看下<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.03.30.png" alt="" loading="lazy"><br>
+打印了才发现最里面两个函数其实是没有什么实质的效果的，然后在看这个s.parse<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.04.28.png" alt="" loading="lazy"><br>
+这个函数的前两行都很简单，就是遍历然后生成一个列表之类的，然后完了之后最后一行给new一下，我第一次也是直接往里面找，然后最后才发现其实这个 <code>new c.init(r,n)</code>也是没有实质性的作用，只是将它的格式给该了一下，在console中打印出来<br>
+<img src="http://119.3.13.71:7777/images/2020/07/07/2020-07-0714.07.04.png" alt="" loading="lazy"><br>
+所以其实只要在最后按照它的格式给返回数据就可以了。<br>
+剩下的就很简单了，就是最简单的AES机密的方法。</p>
+<p>完整的解密方法已经上传到我的GitHub，有需要的朋友可以自取。<br>
+https://github.com/Fizzyi/JS_PROJECT</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mou-mao-xiao-shuo-wang-zhan-de-js-jia-mi/">
+                  <h3 class="post-title">
+                    某猫小说网站的JS加密
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://fizzyi.github.io</id>
+    <title>Fizzyi的垃圾桶</title>
+    <updated>2023-02-27T10:17:01.783Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://fizzyi.github.io"/>
+    <link rel="self" href="https://fizzyi.github.io/atom.xml"/>
+    <subtitle>逐渐秃头的程序员</subtitle>
+    <logo>https://fizzyi.github.io/images/avatar.png</logo>
+    <icon>https://fizzyi.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2023, Fizzyi的垃圾桶</rights>
+    <entry>
+        <title type="html"><![CDATA[Java  Iterator 迭代器知识点]]></title>
+        <id>https://fizzyi.github.io/post/java-iterator-die-dai-qi-zhi-shi-dian/</id>
+        <link href="https://fizzyi.github.io/post/java-iterator-die-dai-qi-zhi-shi-dian/">
+        </link>
+        <updated>2023-02-27T03:23:56.000Z</updated>
+        <content type="html"><![CDATA[<p>Java Iterator 不是一个集合，是一种访问集合的方法，可以用于迭代ArrayList 和HashSet等集合。<br>
+三个基本操作</p>
+<ul>
+<li>it.next()：返回迭代器的下一个元素，并且更新迭代器的状态。</li>
+<li>it.hasNext() ：用于检测集合中是否还有元素</li>
+<li>it.remove()：将迭代器返回的元素删除</li>
+</ul>
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+
+        // 创建集合
+        ArrayList&lt;String&gt; sites = new ArrayList&lt;String&gt;();
+        sites.add(&quot;Google&quot;);
+        sites.add(&quot;Runoob&quot;);
+        sites.add(&quot;Taobao&quot;);
+        sites.add(&quot;Zhihu&quot;);
+
+        // 获取迭代器
+        Iterator&lt;String&gt; it = sites.iterator();
+
+        // 输出集合中的所有元素
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+}
+
+
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[上传本地项目到github]]></title>
+        <id>https://fizzyi.github.io/post/shang-chuan-ben-di-xiang-mu-dao-github/</id>
+        <link href="https://fizzyi.github.io/post/shang-chuan-ben-di-xiang-mu-dao-github/">
+        </link>
+        <updated>2023-02-24T07:47:37.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-步骤">一、步骤</h1>
+<p>（1）进入到项目的根目录，执行<code>git init</code> 进行初始化。<br>
+（2）执行 <code>git add .</code> 把项目添加到仓库。<br>
+（3）执行 <code>git commit -m &quot;init&quot;</code>把项目提交到仓库<br>
+（4）github新建一个项目，<br>
+（5）执行 <code>git remote add origin https://&lt;your_token&gt;@github.com/&lt;USERNAME&gt;/&lt;REPO&gt;.git</code>。<br>
+ps：注意，这里的your token不是github的密码，是github的个人访问令牌（personal access token）。<br>
+（6）执行<code>git branch -M main</code><br>
+（7）执行 <code>git push -u origin main</code></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MyBatis Mapper笔记]]></title>
+        <id>https://fizzyi.github.io/post/mybatis-mapper-bi-ji/</id>
+        <link href="https://fizzyi.github.io/post/mybatis-mapper-bi-ji/">
+        </link>
+        <updated>2023-02-23T06:28:57.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-基础知识">一、基础知识</h1>
+<ul>
+<li>statement标签：select、update、delete、insert 分别对应查询，更新，删除，添加操作</li>
+<li>parameterType：参数数据类型</li>
+<li>resultType：返回参数类型</li>
+<li>id:方法名，通过ID和dao文件中的方法进行绑定<br>
+使用参数</li>
+<li>使用参数名： #{username}，#{id}</li>
+<li>使用下标：#{arg0}，#{arg1}</li>
+</ul>
+<p>如果pojo中的字段名和数据库中的字段名不一致时，可以使用as  数据库的字段名 as pojo中的字段名</p>
+<pre><code>&lt;select id=&quot;getProduct&quot; parameterType=&quot;long&quot; resultType=&quot;product&quot;&gt;
+    select id,product_name as ProductName,stock,price,version,note from T_Product where id=#{id}
+&lt;/select&gt;
+</code></pre>
+<h1 id="二-parametertype">二、parameterType</h1>
+<p>指定输入参数类型，mybatis通过ogn从输入对象中获取参数值拼接在sql中。</p>
+<h2 id="21-传递简单类型使用占位符-或者进行sql拼接">2.1 传递简单类型，使用#{}占位符 或者${}进行sql拼接</h2>
+<pre><code class="language-java">&lt;!-- 根据用户id查询用户
+1.id必须和Mapper接口方法名一致
+2.parameterType必须和接口方法参数一致
+3.resultType必须和接口方法返回值类型一致
+--&gt;
+&lt;select id=&quot;queryUserById&quot; parameterType=&quot;int&quot; resultType=&quot;com.sfwu15.pojo.User&quot;&gt;
+    SELECT * FROM `user` WHERE id=#{id}
+&lt;/select&gt;
+&lt;!-- 根据用户名称模糊查询用户 --&gt;
+&lt;select id=&quot;queryUserByUserName&quot; parameterType=&quot;string&quot; resultType=&quot;com.sfwu15.pojo.User&quot;&gt;
+    SELECT * FROM `user` WHERE username='%${value}%'
+&lt;/select&gt;
+</code></pre>
+<h1 id="三-引用sql片段">三、引用SQl片段</h1>
+<p>(1)  定义sql片段，命名ID （2）使用include 引用片段。</p>
+<pre><code class="language-xml">// 定义sql片段
+
+&lt;sql id=&quot;orderAndItem&quot;&gt;  
+    o.order_id,o.cid,o.address,o.create_date,o.orderitem_id,i.orderitem_id,i.product_id,i.count  
+  &lt;/sql&gt; 
+
+// 引用sql片段
+
+ &lt;select id=&quot;findOrderAndItemsByOid&quot; parameterType=&quot;java.lang.String&quot; resultMap=&quot;BaseResultMap&quot;&gt;  
+    select  
+    &lt;include refid=&quot;orderAndItem&quot; /&gt;  
+    from ordertable o  
+    join orderitem i on o.orderitem_id = i.orderitem_id  
+    where o.order_id = #{orderId}  
+  &lt;/select&gt;  
+</code></pre>
+<h1 id="四-动态语句标签">四、动态语句标签</h1>
+<ul>
+<li>&lt;where&gt; :使用其可以代替sql语句中的where关键字，一般放置在条件查询的最外层。</li>
+<li>&lt;if&gt;: 条件判断标签，配置属性test=&quot; 条件字符串 &quot;，判断是否满足条件，满足则执行，不满足则跳过</li>
+</ul>
+<h1 id="五-resultmap标签">五、resultMap标签</h1>
+<p>主要是解决实体类中属性和表字段名不相同的问题，如果相同，可以直接使用 resultType。<br>
+使用步骤为：（1）定义resultMap标签 （2）在select标签中把resultType换成resultMap属性。</p>
+<h2 id="步骤一">步骤一</h2>
+<pre><code class="language-xml">&lt;resultMap id=&quot;SelectedCourseInfo&quot; type=&quot;com.study.sutdentmanager.pojo.SelectedCourse&quot;&gt;
+    &lt;result column=&quot;id&quot; property=&quot;id&quot;/&gt;
+    &lt;result column=&quot;student_id&quot; property=&quot;studentId&quot;/&gt;
+    &lt;result column=&quot;course_id&quot; property=&quot;courseId&quot;/&gt;
+&lt;/resultMap&gt;
+</code></pre>
+<ul>
+<li>id：表示当前resultMap标签的唯一标识</li>
+<li>result 定义表字段和实体类属性的对应关系</li>
+<li>property：记录实体类的属性</li>
+<li>column：记录表的字段名称</li>
+<li>type：指向哪个pojo</li>
+</ul>
+<h1 id="六-mybatis的foreach语句">六、MyBatis的foreach语句</h1>
+<p>主要用于构建in条件中，可以在sql语句中进行迭代一个集合<br>
+主要属性有：</p>
+<ul>
+<li>item：表示集合中每一个元素进行迭代时的别名</li>
+<li>index：指定一个名字，用于表示在迭代过程中，每次迭代到的位置</li>
+<li>open ：表示该语句以什么开始</li>
+<li>close ： 表示以什么结束</li>
+<li>collection
+<ul>
+<li>如果传入的时单参数且参数类型是一个List的时候，collection的属性为list<pre><code class="language-xml">&lt;select id=&quot;dynamicForeachTest&quot; resultType=&quot;Blog&quot;&gt;
+select * from t_blog where id in
+&lt;foreach collection=&quot;list&quot; index=&quot;index&quot; item=&quot;item&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;
+    #{item}
+&lt;/foreach&gt;
+&lt;/select&gt;
+</code></pre>
+</li>
+<li>如果传入的是单参数且参数类型是一个array数组的时候，collection的属性为array<pre><code class="language-xml">&lt;select id=&quot;dynamicForeach2Test&quot; resultType=&quot;Blog&quot;&gt;
+select * from t_blog where id in
+&lt;foreach collection=&quot;array&quot; index=&quot;index&quot; item=&quot;item&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;
+    #{item}
+&lt;/foreach&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</select>
+        ```
+    - 如果传入的参数是多个的时候，需要把它们封装成一个Map。
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java SpringMVC]]></title>
+        <id>https://fizzyi.github.io/post/java-springmvc/</id>
+        <link href="https://fizzyi.github.io/post/java-springmvc/">
+        </link>
+        <updated>2023-02-21T06:05:49.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-最简单的一个服务">一、最简单的一个服务</h1>
+<pre><code class="language-java">@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+    //注入用户服务类
+    @Autowired
+    private UserService userService = null;
+
+    //展示用户详情
+    @RequestMapping(&quot;details&quot;)
+    public ModelAndView details(Long id){
+        //访问模型层得到数据
+        User user = userService.getUser(id);
+        //模型和视图
+        ModelAndView mv = new ModelAndView();
+        //定义模型视图
+        mv.setViewName(&quot;user/details&quot;);
+        //加入数据模型
+        mv.addObject(&quot;user&quot;,user);
+        //返回模型和视图
+        return mv;
+    }
+}
+</code></pre>
+<p>在application文件中定制InternalResourceViewResolver初始化</p>
+<pre><code>spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+</code></pre>
+<p>通过这个初始化，在返回视图名称之后，它会以前缀（prefix）+视图名称+后缀（suffix）组成全路径定位视图。<br>
+例如上文中的全路径为/webapp/WEB-INF/jsp/user/details.jsp</p>
+<pre><code class="language-jsp">&lt;%@ page pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri =&quot;http://java.sun.com/jsp/jstl/core&quot;%&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;用户详情&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table border=&quot;1&quot;&gt;
+    &lt;tr&gt;&lt;td&gt;标签&lt;/td&gt;&lt;td&gt;值&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;用户标签&lt;/td&gt;&lt;td&gt;&lt;c:out value=&quot;${user.id}&quot;&gt;&lt;/c:out&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;用户名称&lt;/td&gt;&lt;td&gt;&lt;c:out value=&quot;${user.userName}&quot;&gt;&lt;/c:out&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;用户备注&lt;/td&gt;&lt;td&gt;&lt;c:out value=&quot;${user.note}&quot;&gt;&lt;/c:out&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>通过${user.id}来获取对应的属性。</p>
+<h1 id="二-处理器映射">二、处理器映射</h1>
+<p>@RequestMapping<br>
+@GetMapping：GET方法<br>
+@PostMapping：Post方法</p>
+<h1 id="三-获取控制器参数">三、获取控制器参数</h1>
+<h2 id="31get请求并且无注解的情况下获取参数">3.1get请求并且无注解的情况下获取参数</h2>
+<p>参数允许为空，要求是参数名称和HTTP请求的参数名称保持一致</p>
+<pre><code class="language-java">@GetMapping(&quot;/no/annotation&quot;)
+@ResponseBody
+public Map&lt;String, Object&gt; noAnnotation(Integer intVal, Long longVal, String str) {
+    Map&lt;String, Object&gt; paramsMap = new HashMap&lt;&gt;();
+    paramsMap.put(&quot;intval&quot;, intVal);
+    paramsMap.put(&quot;longVal&quot;, longVal);
+    paramsMap.put(&quot;str&quot;, str);
+    return paramsMap;
+}
+</code></pre>
+<p>访问的地址为：127.0.0.1:8090/my/no/annotation?intVal=10&amp;longVal=20</p>
+<h2 id="32-使用requestparam获取参数">3.2 使用@RequestParam获取参数</h2>
+<p>允许前后端的命名规则不一样，使用该注解来确定前后端名称的映射关系.默认情况下不能为空，可以通过配置属性required=false为空。</p>
+<pre><code class="language-java">@GetMapping(&quot;/annotation&quot;)
+@ResponseBody
+public Map&lt;String, Object&gt; annotation(@RequestParam(&quot;int_val&quot;) Integer intVal,
+                                        @RequestParam(&quot;long_val&quot;) Long longVal,
+                                        @RequestParam(value = &quot;str_val&quot;, required = false) String strVal) {
+    Map&lt;String, Object&gt; paramsMap = new HashMap&lt;&gt;();
+    paramsMap.put(&quot;intval&quot;, intVal);
+    paramsMap.put(&quot;longVal&quot;, longVal);
+    paramsMap.put(&quot;str&quot;, strVal);
+    return paramsMap;
+
+    }
+</code></pre>
+<p>访问的地址为：127.0.0.1:8090/my/annotation?int_val=10&amp;long_val=20</p>
+<h2 id="33-获取json数据">3.3 获取JSON数据</h2>
+<p>使用@RequestBody对方法的参数进行标注，JSON请求题与User类之间的属性名称是保持一致的。这样Spring MVC就会通过这层映射关系将JSON请求体转换为User对象。</p>
+<pre><code class="language-java">@PostMapping(&quot;/insert&quot;)
+@ResponseBody
+public User insert(@RequestBody User user){
+    userService.insertUser(user);
+    return user;
+}
+</code></pre>
+<h2 id="34-通过url传递参数">3.4 通过URL传递参数</h2>
+<p>通过@GetMapping指定一个URL，用{...}表明参数的位置和名称。通过处理器映射和注解@PathVariable的组合获取URL参数。首先通过处理器映射可以定位参数的位置和名称，然后通过@PathVariable通过名称获取参数。</p>
+<pre><code class="language-java">@GetMapping(&quot;/{id}&quot;)
+@ResponseBody
+public User get(@PathVariable(&quot;id&quot;) Long id){
+    return userService.getUser(id);
+}
+</code></pre>
+<p>访问的地址为：127.0.0.1:8090/users/1</p>
+<h1 id="四-数据验证">四、数据验证</h1>
+<p>Spring MVC提供了验证参数的机制，一方面，支持JSR-303注解验证，另一方面也可以自定义验证规则。</p>
+<h2 id="41-方法一-jsr-303验证">4.1 方法一、JSR-303验证</h2>
+<p>主要是通过注解的方式进行的。</p>
+<pre><code class="language-java">package com.springboot.chapter10.pojo;
+
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
+import java.util.Date;
+
+public class ValidatorPojo {
+
+    @NotNull(message = &quot;ID不能为空&quot;)
+    private Long id;
+
+    @Future(message = &quot;需要一个将来的日期&quot;) //只能是将来的日期
+    //@Past 只能是过去的日期
+    @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) // 日期格式化转换
+    @NotNull
+    private Date date;
+
+    @NotNull
+    @DecimalMin(value = &quot;0.1&quot;) //最小值为 0.1
+    @DecimalMax(value = &quot;10000&quot;) //最大值为10000
+    private Double doubleValue = null;
+
+    @Min(value = 1,message = &quot;最小值为1&quot;)
+    @Max(value = 88,message = &quot;最大值为88&quot;)
+    @NotNull
+    private Integer integer;
+
+    @Range(min = 1,max = 888,message = &quot;范围从1至888&quot;)
+    private Long range;
+
+    @Email(message = &quot;邮箱格式验证&quot;)
+    private String email;
+
+    @Size(min = 20,max = 30,message = &quot;字符串长度要求20-30&quot;)
+    private String size;
+
+    public Integer getInteger(){
+        return integer;
+    }
+    public Long getId(){
+        return id;
+    }
+    public Date getDate(){
+        return date;
+    }
+
+    public Double getDoubleValue(){
+        return doubleValue;
+    }
+}
+</code></pre>
+<p>ps：此处必须要写对应的get方法，否则后面无法验证。</p>
+<p>后台的验证方法为</p>
+<pre><code class="language-java">@RequestMapping(value = &quot;/valid/validate&quot;,method = RequestMethod.POST)
+@ResponseBody
+public Map&lt;String, Object&gt; validate(@Valid @RequestBody ValidatorPojo vp, Errors errors) {
+    Map&lt;String, Object&gt; errMap = new HashMap&lt;&gt;();
+    //获取错误列表
+    List&lt;ObjectError&gt; oes = errors.getAllErrors();
+    for (ObjectError oe : oes) {
+        String key = null;
+        String msg = null;
+        //字段错误
+        if (oe instanceof FieldError) {
+            FieldError fe = (FieldError) oe;
+            key = fe.getField();//获取错误验证字段名
+        } else {
+            //非字段错误
+            key = oe.getObjectName();//获取验证对象名称
+
+        }
+        //错误信息
+        msg = oe.getDefaultMessage();
+        errMap.put(key, msg);
+    }
+    return errMap;
+}
+</code></pre>
+<p>需要进行验证的POJO，使用注解@Valid表示验证。后面为获取所有的报错信息组装后进行返回。</p>
+<h2 id="42-方法二-参数验证机制">4.2 方法二、参数验证机制</h2>
+<p>允许使用注解@InitBinder，该注解的作用是允许在进行控制器方法前修改 WebDataBinder机制。</p>
+<p>在Spring MVC中定义了一个接口Validator,接口的源码为</p>
+<pre><code class="language-java">public interface Validator {
+	boolean supports(Class&lt;?&gt; clazz);
+
+	void validate(Object target, Errors errors);
+
+}
+</code></pre>
+<p>它定义了两个方法，其中supports方法参数为需要验证的POJO类型，如果该方法返回true，则Spring会使用当前验证起的validation方法去验证POJO。validation方法包含需要的target对象和错误对象errors，其中target是参数绑定后的POJO，这样便可以通过这个参数对象进行业务逻辑的自定义验证，如果发现错误，则可以保存到errors对象中。</p>
+<pre><code class="language-java">public class UserValidator implements Validator {
+    //该验证器只支持User类验证
+    @Override
+    public boolean supports(Class&lt;?&gt; clazz) {
+        return clazz.equals(User.class);
+    }
+
+    //验证逻辑
+    @Override
+    public void validate(Object target, Errors errors) {
+        //对象为空
+        if (target == null) {
+            //直接在参数处报错，这样就不能进入控制器的方法
+            errors.rejectValue(&quot;&quot;, null, &quot;用户不能为空&quot;);
+            return;
+        }
+        // 强制转换
+        User user = (User) target;
+        // 用户名非空串
+        if (StringUtils.isEmpty(user.getUserName())) {
+            //增加错误，可以进入控制器方法
+            errors.rejectValue(&quot;userName&quot;, null, &quot;用户名不能为空&quot;);
+        }
+    }
+}
+</code></pre>
+<p>同时还需要在controller中添加对应的注解</p>
+<pre><code class="language-java">@Controller
+@RequestMapping(&quot;/user&quot;)
+public class UserController {
+    /*
+     * 调用控制器前先执行这个方法
+     * @param binder
+     * */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        //绑定验证器
+        binder.setValidator(new UserValidator());
+        //定义日期参数格式，参数不再需要注解@DateTimeFormat，boolean参数表示是否允许为空
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat(&quot;yyyy-MM-dd&quot;), false));
+    }
+
+    /*
+     * @param user 用户对象用StringToUserConverter转换
+     * @param Errors 验证器返回的错误
+     * @param date 因为WebDataBinder已经绑定了格式，所以不在需要注解
+     * @return 各类数据
+     *
+     * */
+    @GetMapping(&quot;/validator&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; validator(@Valid User user, Errors Errors, Date date) {
+        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+        map.put(&quot;user&quot;, user);
+        map.put(&quot;date&quot;, date);
+        //判断是否存在错误
+        if (Errors.hasErrors()) {
+            //获取全部错误
+            List&lt;ObjectError&gt; oes = Errors.getAllErrors();
+            for (ObjectError oe : oes) {
+                //判断是否字段错误
+                if (oe instanceof FieldError) {
+                    //字段错误
+                    FieldError fe = (FieldError) oe;
+                    map.put(fe.getField(), fe.getDefaultMessage());
+                } else {
+                    //对象错误
+                    map.put(oe.getObjectName(), oe.getDefaultMessage());
+                }
+            }
+        }
+        return map;
+    }
+}
+</code></pre>
+<p>通过@RequestMapping,@GetMapping等注解把url定位到对应的控制器方法上，通过注解@PathVariable获取url上的参数，通过@RequestBody可以将请求体为JSON的数据转换为复杂的Java对象。可以使用注解@RestController将整个控制器默认都转换为JSON数据，就不用每次都写@ResponseBody</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java数据库事务处理]]></title>
+        <id>https://fizzyi.github.io/post/java-shu-ju-ku-shi-wu-chu-li/</id>
+        <link href="https://fizzyi.github.io/post/java-shu-ju-ku-shi-wu-chu-li/">
+        </link>
+        <updated>2023-02-20T12:30:07.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-数据库配置">一、数据库配置</h1>
+<pre><code class="language-java">spring.datasource.url=jdbc:mysql://127.0.0.1:3306/test
+spring.datasource.username=root
+spring.datasource.password=123456
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+#最大等待连接中的数量，设置为0没有限制
+spring.datasource.tomcat.max-idle=10
+# 最大连接活动数
+spring.datasource.tomcat.max-active=50
+# 最大等待毫秒数，单位为ms，超出时间会出错误信息
+spring.datasource.tomcat.max-wait=10000
+# 数据库连接池初始化连接数
+spring.datasource.tomcat.initial-size=5
+</code></pre>
+<h1 id="二-spring声明式事务的使用">二、Spring声明式事务的使用</h1>
+<p>spring利用AOP为我们提供了一个数据库事务的约定流程。通过这个流程减少大量的冗余代码和一些没有必要的try...catch...finally语句。对于声明式事务，使用<code>@Transactional</code>进行标注。可以标注在类或者方法上，当标注在类上，代表这个类所有公共非静态的方法都将启用事务功能。同时还可以配置事务的隔离级别和传播行为。</p>
+<pre><code class="language-java">// 第一个定义隔离级别，第二个定义传播行为
+@Transactional(isolation = Isolation.READ_COMMITTED,propagation=Propagation.REQUIRED)
+</code></pre>
+<h1 id="三-隔离级别">三、隔离级别</h1>
+<p>##3.1 数据库事务的知识<br>
+四个基本特征，ACID</p>
+<ul>
+<li>Atomic（原子性）：事务中包含的操作被看作一个整体的业务单元，这个业务单元中的操作要么全部成功，要么全部失败，不会出现部分成败，部分成功的场景。</li>
+<li>Consistency（一致性）：事务在完成时，必须使所有的数据都保持一致状态，在数据库中所有的修改都基于事务，保证了数据的完整性。</li>
+<li>Isolation（隔离性）：为了压制丢失更新的产生，数据库定义了隔离级别的概念。</li>
+<li>Durability（持久性）：事务结束后，所有的数据会固化到一个地方，如保存在磁盘中，即使断电重启后也可以提供给应用程序访问。</li>
+</ul>
+<h2 id="32-详解隔离级别">3.2 详解隔离级别</h2>
+<h3 id="321-未提交读read-uncommitted">3.2.1 未提交读（read uncommitted）</h3>
+<p>最低的隔离级别，允许一个事务读取另外一个事务未提交的数据。优点在于并发能力高，缺点是会出现脏读，一般在实际的开发中应用不广。</p>
+<h3 id="322-读写提交read-committed">3.2.2 读写提交（read committed）</h3>
+<p>一个事务只能读取另一个事务已经提交的数据，不能读取未提交的数据。缺点是会出现不可重复读现象。</p>
+<h3 id="323-可重复读">3.2.3 可重复读</h3>
+<p>目标是克服读写提交中出现的不可重复读的现象，因为在读写提交的时候，可能会出现一些值的变化，影响当前事务的执行。如果某个数据已经被其他事务读取，这个时候数据库就会阻塞其他事务的读取，直到其他事务的提交。缺点是会出现幻读现象。幻读就是第一次查询和最后打印出来的数量对应不上，幻读是针对多条记录的统计来说的。可重复读是针对数据库的单一条数据。</p>
+<h3 id="324-串行化序列化serializable">3.2.4 串行化/序列化（Serializable）</h3>
+<p>数据库的最高隔离级别，要求所有的SQL都按照顺序执行，这样就可以克服上述隔离级别出现的各种问题，能够完全保证数据的一致性。</p>
+<p>更高的隔离级别，更好的保证了数据的一致性，但是也要付出锁的代价，意味着性能的丢失，隔离级别越高，性能越是直线下降。一般而言，选择隔离级别会以 读写提交 为主。</p>
+<h1 id="四-传播行为">四、传播行为</h1>
+<p>传播行为是方法之间调用事务采取的策略问题。在执行一个批量程序，如果有一些交易发生异常，只要回滚那些出现异常的交易，而不是整个批量任务。这样能够使得那些没有问题的交易可以顺利完成，而有问题的交易则不做任何事情。</p>
+<h2 id="41-传播行为的定义">4.1 传播行为的定义</h2>
+<p>一共有7种传播行为，通过<code>Propagation</code>定义。<br>
+常用的有：</p>
+<ul>
+<li>REQUIRED：需要事务，如果当前存在事务，就沿用当前事务，否则新建一个事务运行子方法。</li>
+<li>REQUIRES_NEW：无论当前事务是否存在，都会创建新事物运行方法，这样新事物就可以拥有新的锁和隔离级别等特性，与当前事务相互独立。</li>
+<li>NESTED：在当前方法调用子方法时，如果子方法发生异常，只回滚子方法执行过的SQL，而不回滚当前方法的事务。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java数据库连接之MyBatis]]></title>
+        <id>https://fizzyi.github.io/post/java-shu-ju-ku-lian-jie-zhi-mybatis/</id>
+        <link href="https://fizzyi.github.io/post/java-shu-ju-ku-lian-jie-zhi-mybatis/">
+        </link>
+        <updated>2023-02-20T06:10:13.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-引入依赖">一、引入依赖</h1>
+<pre><code class="language-xml">&lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;2.2.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h1 id="二-mybatis的配置">二、MyBatis的配置</h1>
+<p>MyBatis是一个基于<code>SqlSessionFactory</code>构建的框架，往往是单例模式。构建<code>SqlSessionFactory</code>是通过配置类<code>Configuration</code>来完成的。<br>
+常见的配置内容</p>
+<ul>
+<li>mappers（映射器）：是MyBatis最核心的组件，提供SQL和POJO映射关系。</li>
+<li>typeAliases（类型别名）：因为使用类全限定名会比较长，会对常用的类提供默认的别名，还允许我们通过typeAliases配置自定义的别名。</li>
+<li>typeHandlers（类型处理器）：在MyBatis写入和读取数据库的过程中对于不同类型的数据（对于JAVA是JavaType，对于数据库则是JdbcType）进行自定义转换，在大部分情况下我们不需要使用自定义的typeHandler，因为在MyBatis自身就已经定义了比较多的typeHandler，MyBatis会自动识别javaType和jdbcType，从而实现类型的转换。typeHandler的使用集中在枚举类型中。</li>
+<li>plugins（插件）：拦截器，通过动态代理和责任链模式来完成，可以修改MyBatis底层的实现功能.</li>
+</ul>
+<h2 id="21-mybatis指定别名">2.1 MyBatis指定别名</h2>
+<p>使用注解@Alias指定别名</p>
+<pre><code class="language-java">@Alias(value = &quot;user&quot;) //MyBatis指定别名
+public class User {
+
+    private Long id;
+    private String userName;
+    private String note;
+    private SexEnum sex = null; //枚举
+    }
+</code></pre>
+<h2 id="22-使用mappers进行映射">2.2 使用mappers进行映射</h2>
+<h3 id="221-usermapperxml文件">2.2.1 userMapper.xml文件</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.springboot.chapter4.dao.MyBatisUserDao&quot;&gt;
+    &lt;select id=&quot;getUser&quot; parameterType=&quot;long&quot; resultType=&quot;user&quot;&gt;
+        select id,user_name as userName,sex,note from t_user where id = #{id}
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<ul>
+<li>namespace ：指定一个接口</li>
+<li>select：代表着一个查询语句，id属性指代这条sql，parameterType属性配置为long，代表参数是一个长整形（long）参数，resultType指定返回值类型，这里使用了user，就是上面指定的别名，也可以使用全限定名（com.springboot.chapter4.pojo.User），紧接着是sql语句，这里的列名和POJO的属性名称是保持一直的</li>
+</ul>
+<h3 id="222-定义mybatis操作接口">2.2.2 定义MyBatis操作接口</h3>
+<pre><code class="language-java">@Repository
+public interface MyBatisUserDao {
+    public User getUser(Long id);
+}
+</code></pre>
+<p>这里新写一个接口，不需要任何实现类，它就是 mapper元素的namespace属性定义的MyBatisUserDao。<br>
+它的方法getUser和映射文件中定义的查询SQL的id是保持一致的，参数也是。</p>
+<h3 id="223-使用mapperscan定义扫描">2.2.3 使用@MapperScan定义扫描</h3>
+<pre><code class="language-java">@MapperSacn(
+    //指定扫描包
+    basePackages = &quot;com.springboot.chapter4.*&quot;,
+    
+)
+</code></pre>
+<h2 id="23-配置applicationproperties文件">2.3 配置application.properties文件</h2>
+<pre><code class="language-properties">#MyBatis 映射文件
+mybatis.mapper-locations=classpath:mapper/*.xml
+#MyBatis 扫描别名包和注解@Alias联用
+mybatis.type-aliases-package=com.springboot.chapter4.pojo
+# ??typeHandler
+mybatis.type-handlers-package=com.springboot.chapter4.typeHandler
+</code></pre>
+<p>配置文件只需要修改需要的东西，mybatis-spring-boot-starter对MyBatis启动了默认的配置。</p>
+<h2 id="24-插件plugin">2.4 插件Plugin</h2>
+<h3 id="241定义插件">2.4.1定义插件</h3>
+<pre><code class="language-java">
+@Intercepts({
+        @Signature(type= StatementHandler.class,method = &quot;prepare&quot;,args = {Connection.class,Integer.class})
+})
+public class MyPlugin implements Interceptor {
+    Properties properties = null;
+
+   //拦截方法逻辑
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable{
+        System.out.println(&quot;插件拦截方法&quot;);
+        return invocation.proceed();
+    }
+
+    //生成MyBatis拦截器对象
+    @Override
+    public Object plugin(Object target){
+        return Plugin.wrap(target,this);
+    }
+
+    //设置插件属性
+    @Override
+    public void setProperties(Properties properties){
+        this.properties = properties;
+    }
+
+}
+</code></pre>
+<h3 id="242-插件配置">2.4.2 插件配置</h3>
+<p>在application.properties中添加配置语句<br>
+<code>mybatis.config-location=classpath:mybatis/mybatis-config.xml</code></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java Q&A]]></title>
+        <id>https://fizzyi.github.io/post/java-qanda/</id>
+        <link href="https://fizzyi.github.io/post/java-qanda/">
+        </link>
+        <updated>2023-02-20T03:27:48.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="extends-和-implements-的区别">extends 和 implements 的区别</h1>
+<p>在Java中，<code>extends</code>和<code>implements</code>都是用于表示类和接口之间的关系，但它们之间有一些区别。</p>
+<ol>
+<li>
+<p><code>extends</code>用于表示类和类之间的继承关系，即一个类可以继承另一个类的属性和方法。一个类只能继承一个类，也就是单继承。例如：</p>
+<pre><code class="language-java">javaCopy code
+public class SubClass extends SuperClass {
+    // 子类的成员变量和方法
+}
+</code></pre>
+</li>
+<li>
+<p><code>implements</code>用于表示类和接口之间的实现关系，即一个类必须实现一个或多个接口中定义的所有方法。一个类可以实现多个接口，也就是多实现。例如：</p>
+<pre><code class="language-java">javaCopy code
+public class MyClass implements MyInterface {
+    // 实现 MyInterface 接口中的方法
+}
+</code></pre>
+</li>
+<li>
+<p>继承可以获得父类中的属性和方法，子类可以通过<code>super</code>关键字访问父类中的方法和属性，并且子类可以重写父类中的方法。实现则需要实现接口中定义的所有方法，否则需要将该类声明为抽象类。实现接口可以使得该类具有某种特定的行为，而这种行为可以被其他类重复利用。</p>
+</li>
+<li>
+<p>当一个类同时继承一个类并实现多个接口时，关键字的顺序是<code>extends</code>在前，<code>implements</code>在后。例如：</p>
+<pre><code class="language-java">javaCopy code
+public class MyClass extends SuperClass implements Interface1, Interface2 {
+    // MyClass 的成员变量和方法
+}
+</code></pre>
+</li>
+</ol>
+<p>总之，<code>extends</code>和<code>implements</code>都是Java中重要的关键字，它们分别表示了继承和实现的关系，可以使得Java程序具有更加灵活的架构和更高的代码复用性。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS练手之某联盟 ]]></title>
+        <id>https://fizzyi.github.io/post/js-lian-shou-zhi-mou-lian-meng/</id>
+        <link href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-lian-meng/">
+        </link>
+        <updated>2020-09-16T07:23:00.000Z</updated>
+        <content type="html"><![CDATA[<p>最近两个月重构了公司的项目，空余时间也在忙私事，好久都没有学习了，现在终于把公司的事情忙过了，开始学习，今天先来一个简单的练手的网站。<br>
+url:aHR0cDovL2xvZ2luLnNoaWtlZS5jb20v<br>
+老规矩，随意输入一个帐号和密码123456，查看请求头，发现密码是加密数据<br>
+<img src="http://119.3.13.71:7777/images/2020/09/16/2020-09-1615.29.31.png" alt="" loading="lazy"><br>
+于是全局搜索这个参数，很容易就发现在这个js文件中找到这个参数，于是就开始常规操作，打断点，进入这个函数里面进行分析。<br>
+<img src="http://119.3.13.71:7777/images/2020/09/16/2020-09-1615.33.18.png" alt="" loading="lazy"><br>
+然后就是缺撒补撒了，这个JS总共也就600多行，于是就全部复制下来了，然后回去看看参数，有两个参数，一个是rsa_n,一个是密码的值，<br>
+于是自己写一个JS函数构造下这部分<br>
+rsa_n 初始值是固定的，直接取出来就好。<br>
+<img src="http://119.3.13.71:7777/images/2020/09/16/2020-09-1615.35.36.png" alt="" loading="lazy"><br>
+就这样就大功告成了。<br>
+完整的JS已经上传到<a href="https://github.com/Fizzyi/JS_PROJECT">GitHub</a>，有需求的可自取。</p>
+<p>现在的我也只会最基础的方法，希望我有一天也能成长为🐮。<br>
+千里之行，始于足下。看着其他的同龄人都已经那么优秀了，自己也要努力啊。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[某租平台的JS加密]]></title>
+        <id>https://fizzyi.github.io/post/mou-zu-ping-tai-de-js-jia-mi/</id>
+        <link href="https://fizzyi.github.io/post/mou-zu-ping-tai-de-js-jia-mi/">
+        </link>
+        <updated>2020-07-13T07:25:03.000Z</updated>
+        <content type="html"><![CDATA[<p>url :  aHR0cHM6Ly93d3cubWFvbWFvenUuY29tLyMvYnVpbGQ/RGlzdHJpY3Q9JkFyZWE9LTEsLTE=</p>
+<p>在翻页的时候发现翻页的参数进行了加密，返回的数据也进行了加密<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.27.40.png" alt="翻页的参数" loading="lazy"><br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.29.17.png" alt="返回的结果" loading="lazy"></p>
+<p>全局搜索了这个地址，没有搜索到。<br>
+然后启动猴子插件，发现有一个encrypt关键字，于是对全局进行搜索，找到了下面这个地方，打上断点。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.38.23.png" alt="" loading="lazy"><br>
+刷新后发现就是我们要找打的地方，然后分析参数<br>
+参数L是我们搜索的内容，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.41.13.png" alt="" loading="lazy"><br>
+参数e是另外一个函数md5生成的<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.42.30.png" alt="" loading="lazy"><br>
+所以加密方式就解出来，以e为偏移量，对请求的参数就行AES加密即可。</p>
+<p>加密解出来之后，解密也很简单了。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.04.png" alt="" loading="lazy"><br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.24.png" alt="" loading="lazy"><br>
+完整的JS解密已经放在github上面，需要的朋友可以自取。<br>
+https://github.com/Fizzyi/JS_PROJECT/tree/master/%E6%AF%9B%E6%AF%9B%E7%A7%9F</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[某电竞平台参数加密]]></title>
+        <id>https://fizzyi.github.io/post/mou-dian-jing-ping-tai-can-shu-jia-mi/</id>
+        <link href="https://fizzyi.github.io/post/mou-dian-jing-ping-tai-can-shu-jia-mi/">
+        </link>
+        <updated>2020-07-10T06:05:19.000Z</updated>
+        <content type="html"><![CDATA[<p>污渍，永远的神！</p>
+<p>url: https://www.jdj007.com/schedule.html?gameType=1</p>
+<p>查看请求，发现参数中有个sign,就是此次的目标。</p>
+<p><img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.07.31.png" alt="" loading="lazy"><br>
+全局搜索 sign ,sign:<br>
+发现这个地方很有可能是我们要早的地方，于是打上断点，刷新页面，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.12.58.png" alt="" loading="lazy"><br>
+然后在console 面板中不断的输出，可以证实 <code> a = encodeURIComponent(c.a.stringify(n))</code><br>
+而 <code>n = = i()(t)</code>, <code>t = o = &quot;timestamp=&quot;.concat(r, &quot;&amp;secret=&quot;).concat(&quot;aHVheWluZ19zZWNyZXRfYXBp&quot;)</code>,<code> r  = = (new Date).getTime()</code><br>
+r 就是现在的时间戳，然后拼成了一个字符串，当作了i()函数的参数，所以我们现在进 i() 函数里面看看。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.17.27.png" alt="" loading="lazy"><br>
+眼熟的感觉来了，之前在另外一个网站也看见过这个 new e.init(),测试后发现这个参数其实是没有什么用的，直接看后面的 finalize(t)函数，好巧不巧，这个函数就在上面，然后进去<code>this._doFinalize()</code>，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.20.44.png" alt="" loading="lazy"><br>
+然后可以发现其实这个函数就是SHA256加密，那么就知道n这个参数其实就是对参数进行了SHA256加密。</p>
+<p>接着我们来看 <code>encodeURIComponent(c.a.stringify(n))</code>,encodeURIComponent 就是JS自带的一个编码函数，那么我们只需要破解里面的 c.a.stringify(n)，跟进去一看<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.24.02.png" alt="" loading="lazy"><br>
+就是一个Base64 的加密，那么所有的加密就全部解出来。<br>
+整体的思路就是将字符串先进行一个SHA256加密，然后在进行一个Base64的编码，最后在通过URL编码一下。</p>
+<p>完整的JS加密已经上传至我的<a href="https://github.com/Fizzyi/JS_PROJECT">github</a>.</p>
+]]></content>
+    </entry>
+</feed>

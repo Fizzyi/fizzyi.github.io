@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>MyBatis Mapper笔记 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">MyBatis Mapper笔记</h2>
+            <div class="post-date">2023-02-23</div>
+            
+            <div class="post-content">
+              <h1 id="一-基础知识">一、基础知识</h1>
+<ul>
+<li>statement标签：select、update、delete、insert 分别对应查询，更新，删除，添加操作</li>
+<li>parameterType：参数数据类型</li>
+<li>resultType：返回参数类型</li>
+<li>id:方法名，通过ID和dao文件中的方法进行绑定<br>
+使用参数</li>
+<li>使用参数名： #{username}，#{id}</li>
+<li>使用下标：#{arg0}，#{arg1}</li>
+</ul>
+<p>如果pojo中的字段名和数据库中的字段名不一致时，可以使用as  数据库的字段名 as pojo中的字段名</p>
+<pre><code>&lt;select id=&quot;getProduct&quot; parameterType=&quot;long&quot; resultType=&quot;product&quot;&gt;
+    select id,product_name as ProductName,stock,price,version,note from T_Product where id=#{id}
+&lt;/select&gt;
+</code></pre>
+<h1 id="二-parametertype">二、parameterType</h1>
+<p>指定输入参数类型，mybatis通过ogn从输入对象中获取参数值拼接在sql中。</p>
+<h2 id="21-传递简单类型使用占位符-或者进行sql拼接">2.1 传递简单类型，使用#{}占位符 或者${}进行sql拼接</h2>
+<pre><code class="language-java">&lt;!-- 根据用户id查询用户
+1.id必须和Mapper接口方法名一致
+2.parameterType必须和接口方法参数一致
+3.resultType必须和接口方法返回值类型一致
+--&gt;
+&lt;select id=&quot;queryUserById&quot; parameterType=&quot;int&quot; resultType=&quot;com.sfwu15.pojo.User&quot;&gt;
+    SELECT * FROM `user` WHERE id=#{id}
+&lt;/select&gt;
+&lt;!-- 根据用户名称模糊查询用户 --&gt;
+&lt;select id=&quot;queryUserByUserName&quot; parameterType=&quot;string&quot; resultType=&quot;com.sfwu15.pojo.User&quot;&gt;
+    SELECT * FROM `user` WHERE username='%${value}%'
+&lt;/select&gt;
+</code></pre>
+<h1 id="三-引用sql片段">三、引用SQl片段</h1>
+<p>(1)  定义sql片段，命名ID （2）使用include 引用片段。</p>
+<pre><code class="language-xml">// 定义sql片段
+
+&lt;sql id=&quot;orderAndItem&quot;&gt;  
+    o.order_id,o.cid,o.address,o.create_date,o.orderitem_id,i.orderitem_id,i.product_id,i.count  
+  &lt;/sql&gt; 
+
+// 引用sql片段
+
+ &lt;select id=&quot;findOrderAndItemsByOid&quot; parameterType=&quot;java.lang.String&quot; resultMap=&quot;BaseResultMap&quot;&gt;  
+    select  
+    &lt;include refid=&quot;orderAndItem&quot; /&gt;  
+    from ordertable o  
+    join orderitem i on o.orderitem_id = i.orderitem_id  
+    where o.order_id = #{orderId}  
+  &lt;/select&gt;  
+</code></pre>
+<h1 id="四-动态语句标签">四、动态语句标签</h1>
+<ul>
+<li>&lt;where&gt; :使用其可以代替sql语句中的where关键字，一般放置在条件查询的最外层。</li>
+<li>&lt;if&gt;: 条件判断标签，配置属性test=&quot; 条件字符串 &quot;，判断是否满足条件，满足则执行，不满足则跳过</li>
+</ul>
+<h1 id="五-resultmap标签">五、resultMap标签</h1>
+<p>主要是解决实体类中属性和表字段名不相同的问题，如果相同，可以直接使用 resultType。<br>
+使用步骤为：（1）定义resultMap标签 （2）在select标签中把resultType换成resultMap属性。</p>
+<h2 id="步骤一">步骤一</h2>
+<pre><code class="language-xml">&lt;resultMap id=&quot;SelectedCourseInfo&quot; type=&quot;com.study.sutdentmanager.pojo.SelectedCourse&quot;&gt;
+    &lt;result column=&quot;id&quot; property=&quot;id&quot;/&gt;
+    &lt;result column=&quot;student_id&quot; property=&quot;studentId&quot;/&gt;
+    &lt;result column=&quot;course_id&quot; property=&quot;courseId&quot;/&gt;
+&lt;/resultMap&gt;
+</code></pre>
+<ul>
+<li>id：表示当前resultMap标签的唯一标识</li>
+<li>result 定义表字段和实体类属性的对应关系</li>
+<li>property：记录实体类的属性</li>
+<li>column：记录表的字段名称</li>
+<li>type：指向哪个pojo</li>
+</ul>
+<h1 id="六-mybatis的foreach语句">六、MyBatis的foreach语句</h1>
+<p>主要用于构建in条件中，可以在sql语句中进行迭代一个集合<br>
+主要属性有：</p>
+<ul>
+<li>item：表示集合中每一个元素进行迭代时的别名</li>
+<li>index：指定一个名字，用于表示在迭代过程中，每次迭代到的位置</li>
+<li>open ：表示该语句以什么开始</li>
+<li>close ： 表示以什么结束</li>
+<li>collection
+<ul>
+<li>如果传入的时单参数且参数类型是一个List的时候，collection的属性为list<pre><code class="language-xml">&lt;select id=&quot;dynamicForeachTest&quot; resultType=&quot;Blog&quot;&gt;
+select * from t_blog where id in
+&lt;foreach collection=&quot;list&quot; index=&quot;index&quot; item=&quot;item&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;
+    #{item}
+&lt;/foreach&gt;
+&lt;/select&gt;
+</code></pre>
+</li>
+<li>如果传入的是单参数且参数类型是一个array数组的时候，collection的属性为array<pre><code class="language-xml">&lt;select id=&quot;dynamicForeach2Test&quot; resultType=&quot;Blog&quot;&gt;
+select * from t_blog where id in
+&lt;foreach collection=&quot;array&quot; index=&quot;index&quot; item=&quot;item&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot;&gt;
+    #{item}
+&lt;/foreach&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</select>
+        ```
+    - 如果传入的参数是多个的时候，需要把它们封装成一个Map。
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/java-springmvc/">
+                  <h3 class="post-title">
+                    Java SpringMVC
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

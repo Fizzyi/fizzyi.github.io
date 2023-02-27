@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>数据分析 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">数据分析</h2>
+            <div class="post-date">2019-12-06</div>
+            
+            <div class="post-content">
+              <h1 id="1-pandas数据结构">1 Pandas数据结构</h1>
+<h2 id="11-series数据结构">1.1 Series数据结构</h2>
+<p>Series是一种类似于一维数组的对象，由一组数据以及一组相对应的索引组成。</p>
+<h3 id="111-创建一个series">1.1.1 创建一个Series</h3>
+<pre><code>s1 = pd.Series(['a','b','c','d'])
+</code></pre>
+<p>如果创建的时候只传入一个列表而不指定数据标签，那么Series会默认索引，从0开始。<br>
+需要自定义索引通过设置index参数。或者是以字典形式传入，key为索引。</p>
+<h3 id="112-获取索引">1.1.2 获取索引</h3>
+<pre><code>s1.index
+</code></pre>
+<h3 id="113-获取series的值">1.1.3 获取Series的值</h3>
+<pre><code>s1.values
+</code></pre>
+<h3 id="12-dateframe-表格型数据结构">1.2 DateFrame 表格型数据结构</h3>
+<p>DataFrame是一组数据与一对索引（行索引和列索引）组成的表格型数据结构，类似与Excel。</p>
+<h4 id="121-创建一个dataframe">1.2.1 创建一个DataFrame</h4>
+<pre><code>s2 = pd.DateFrame(['a','b','c','d'])
+</code></pre>
+<p>传入的是一个单一列表时，该列表的值会显示成一列，且行和列都是从0开始的默认索引。<br>
+传入的是一个嵌套列表时，会根据嵌套列表数显示成多行列数据。行索引和列索引都是默认从0开始。<br>
+通过设置columns参数自定义列索引，通过设置index参数自定义行索引。<br>
+传入的是一个字典，key为列索引，行索引还是从0开始。</p>
+<h4 id="122-获取dataframe的行列索引">1.2.2 获取DataFrame的行，列索引</h4>
+<p>列索引的获取<br>
+s2.columns()<br>
+行索引的获取<br>
+s2.index()</p>
+<h4 id="123-获取dateframe的值">1.2.3 获取DateFrame的值</h4>
+<h1 id="2-获取数据">2 获取数据</h1>
+<h2 id="21导入外部的数据">2.1导入外部的数据</h2>
+<p>导入数据用Pandas里面的read_x()方法，x表示的待导入文件的格式。</p>
+<h3 id="211-导入-xlsx文件">2.1.1 导入 .xlsx文件</h3>
+<pre><code>pd.read_excel(path,sheet_name='',index_col=1)
+</code></pre>
+<p>导入文件的时候首先要指定文件路径path。<br>
+使用sheet_name指定导入哪一个sheet，可以是sheet名或者是下标。默认的为导入的第一个sheet。<br>
+使用index_col设定行索引的起始下标。<br>
+默认使用源数据表的第一行默认为列索引。<br>
+通过设定usecols参数来指定导入的列数。</p>
+<h3 id="212-导入csv文件">2.1.2 导入.csv文件</h3>
+<pre><code>pd.read_csv(path,sep=&quot;,&quot;,nrows=2,encoding=&quot;utf-8&quot;)
+</code></pre>
+<p>导入csv文件使用read.csv()<br>
+path 为文件路径<br>
+sep 为csv文件的分隔符，默认为,<br>
+encoding 为文件的编码方式，默认为utf-8</p>
+<h3 id="213-导入txt文件">2.1.3 导入.txt文件</h3>
+<pre><code>pd.read_table(path，sep='')
+</code></pre>
+<p>read_table()是利用分隔符分开的文件导入DataFrame的通用函数，不仅可以导入txt文件，也可以导入csv文件。</p>
+<h3 id="214-导入sql文件">2.1.4 导入sql文件</h3>
+<p>使用pymysql连接数据库后，执行对应的sql语句<br>
+sql = 'select * from info'<br>
+eng = pymysql.connect()<br>
+pd.read_sql(sql,eng)</p>
+<h1 id="3-熟悉数据">3 熟悉数据</h1>
+<pre><code>df = pd.read_excl('info.excel')
+</code></pre>
+<h2 id="31-利用head预览前几行">3.1 利用head预览前几行</h2>
+<pre><code>df.head(num)
+</code></pre>
+<p>默认为前5行</p>
+<h2 id="32-利用shape获取数据表的大小">3.2 利用shape获取数据表的大小</h2>
+<pre><code>df.shape()
+</code></pre>
+<p>返回元祖（行数，列数），不会计算索引数。</p>
+<h2 id="33-利用info获取数据类型">3.3 利用info获取数据类型</h2>
+<pre><code>df.info()
+</code></pre>
+<p>返回整个表中所有列的数据类型，以及索引信息。</p>
+<h2 id="34-利用describe获取数值分布情况">3.4 利用describe获取数值分布情况</h2>
+<p>调用describe()方法时，只会计算数值类型的数据。返回的数据包括 平均值，计数，求和，均值，方差等。</p>
+<h1 id="4-数据预处理">4 数据预处理</h1>
+<h2 id="41-缺失值处理">4.1 缺失值处理</h2>
+<p>对于缺失数据的处理一种是删除一种是填充</p>
+<h3 id="411-缺失值查看">4.1.1 缺失值查看</h3>
+<p>使用info()方法查看<br>
+使用isnull()方法判断，如果为缺失值则返回True.</p>
+<h3 id="412缺失值的删除">4.1.2缺失值的删除</h3>
+<p>缺失值有两种 一种是一行中某个字段是缺失值，一种是一行中所有字段全部为缺失值。<br>
+df.dropna()<br>
+默认删除只要有一个字段为缺失值的数据，如果想删出空白行，加入参数how=“all”即可。</p>
+<h3 id="413-缺失值的填充">4.1.3 缺失值的填充</h3>
+<pre><code>df.fillna(0)
+</code></pre>
+<p>fillna()方法对数据表中的所有缺失值进行填充，参数为要填充的值即可。<br>
+也可以选定某一列进行填充.<br>
+df.fillna({'性别':'男'})</p>
+<h2 id="42-重复值的处理">4.2 重复值的处理</h2>
+<p>对于重复值，一般做删除处理。<br>
+df.drop_duplicates()<br>
+默认对所有值进行重复值判断，且默认保留第一个值。<br>
+可以针对某一个字段进行去重处理，需要在参数中添加指定的列名，也可以根据多个字段联合去重，参数格式为列表。<br>
+df.drop_duplicates(subset = [&quot;name&quot;,'sex'],keep = true)<br>
+自定以删除重复项时保留哪一个，keep=first 保留第一个 keep=last 保留最后一个 keep= False 重复值全部删除</p>
+<h2 id="43-异常值的检测与处理">4.3 异常值的检测与处理。</h2>
+<p>异常值就是相比正常数据而言过高或者过低的数据。</p>
+<h3 id="431-异常值检测">4.3.1 异常值检测</h3>
+<p>发现异常值的三种方法</p>
+<ul>
+<li>根据经验划定不同指标的正常范围，超过该范围的值算作异常</li>
+<li>通过绘制图箱型图，把大于（小于）箱型图上边缘（下边缘）的点称为异常值</li>
+<li>如果数据服从正态分布则可可以利用3倍原则，如果一个值与平局值的偏差超过3倍标准，则认为这个值是异常值。</li>
+</ul>
+<h3 id="432-异常值处理">4.3.2 异常值处理</h3>
+<ul>
+<li>删除</li>
+<li>把异常值当作缺失值来填充</li>
+<li>研究异常值出现的原因。</li>
+</ul>
+<h2 id="44-数据类型转换">4.4 数据类型转换</h2>
+<p>获取某列数据类型<br>
+df['姓名'].dtype()<br>
+类型转换<br>
+df['姓名'].astype('float64')</p>
+<h2 id="45-索引设置">4.5 索引设置</h2>
+<h3 id="451-为无索引表添加索引">4.5.1 为无索引表添加索引</h3>
+<p>如果表没有索引，默认从0开始<br>
+为表添加列索引，行索引<br>
+df.columns = ['姓名','年龄','性别']<br>
+df.index = [1,2,3]</p>
+<h3 id="452-重新设置索引">4.5.2 重新设置索引</h3>
+<pre><code>df.set_index('列名称')
+</code></pre>
+<h3 id="453-重命名索引">4.5.3 重命名索引</h3>
+<pre><code>df.rename(columns = {'姓名':'新姓名','年龄':'新年龄'}，index={})
+</code></pre>
+<h1 id="5-数据选择">5 数据选择</h1>
+<h2 id="51-列选择">5.1 列选择</h2>
+<h3 id="511-选择某一列某几列">5.1.1 选择某一列/某几列</h3>
+<pre><code>df[['姓名','年龄']]
+</code></pre>
+<p>除了具体的列名，还可以传入具体的列的位置。需要用到iloc方法<br>
+df.iloc[:,[0,2]]<br>
+,号之前表示要获取的行的位置，只有一个冒号表示获取所有行。，号之后获取列的位置。<br>
+类似与列表的元素选择</p>
+<h2 id="52-行选择">5.2 行选择</h2>
+<h3 id="521-选择某一行某几行">5.2.1 选择某一行/某几行</h3>
+<pre><code>df.loc('1')
+df.iloc[1:2,[1,2]]
+</code></pre>
+<h3 id="522-选择满足条件的行">5.2.2 选择满足条件的行</h3>
+<p>筛选年龄小于200的值且为男性<br>
+df[(df[&quot;年龄&quot;]&lt;200) &amp; df['性别']= '男']<br>
+这种通过传入一个判断条件来选择数据的称为布尔索引。</p>
+<h3 id="53-行列同时选择">5.3 行列同时选择</h3>
+<h4 id="531普通索引和普通索引">5.3.1普通索引和普通索引</h4>
+<pre><code>df.loc[['1','2'],['姓名','年龄']]
+</code></pre>
+<h4 id="532位置索引和位置索引">5.3.2位置索引和位置索引</h4>
+<pre><code>df.iloc[[0,1],[0,2]]
+</code></pre>
+<h4 id="533布尔索引和普通索引">5.3.3布尔索引和普通索引</h4>
+<pre><code>df[df['年龄']&lt;200][['姓名']]
+</code></pre>
+<h4 id="534-切片索引">5.3.4 切片索引</h4>
+<pre><code>df.iloc[0:2,1:3]
+</code></pre>
+<h1 id="6-数据操作">6 数据操作</h1>
+<h2 id="61-数值替换">6.1 数值替换</h2>
+<p>可用于异常值替换处理，缺失之填充处理。主要有一对一，多对一，多对多替换。</p>
+<h2 id="611一对一替换">6.1.1一对一替换</h2>
+<pre><code>df['年龄'].repalce(250,23)
+</code></pre>
+<p>将所有缺失值修改为0<br>
+df.repalce(np.NaN,0)</p>
+<h2 id="612-多对一替换">6.1.2 多对一替换</h2>
+<pre><code>df.repalce([240,260,280],33)
+</code></pre>
+<h2 id="613-多对多替换">6.1.3 多对多替换</h2>
+<pre><code>df.replace({'A':'a','B':b,'C':c})
+</code></pre>
+<h1 id="62-数值排序">6.2 数值排序</h1>
+<h2 id="621-按照一列数值进行排序">6.2.1 按照一列数值进行排序</h2>
+<pre><code>df.sort_values(by=['年龄'，'性别'],ascending=False)
+</code></pre>
+<p>by指明要排序的列名，ascending指明是升序还是降序</p>
+<h1 id="63-数值删除">6.3 数值删除</h1>
+<h2 id="631删除列">6.3.1删除列</h2>
+<pre><code>df.drop([&quot;性别&quot;],axis=1)或者是 df.drop(columns = ['性别'])
+</code></pre>
+<h2 id="632-删除行">6.3.2 删除行</h2>
+<pre><code>df.drop([&quot;0a&quot;,'1b'],axis=0) 或者是 df.drop(index = [&quot;0a&quot;,&quot;1b&quot;])
+</code></pre>
+<h1 id="64-数值统计">6.4 数值统计</h1>
+<p>计算某个值在一系列数值中出现的次数<br>
+df['性别'].value_counts()</p>
+<h1 id="65-唯一值获取">6.5 唯一值获取</h1>
+<p>唯一值获取就是把某一系列值删除重复项以后的结果。<br>
+df['姓名'].unique()</p>
+<h1 id="66-数据查找">6.6 数据查找</h1>
+<p>数值查找就是查看数据表中的数据是否包含某个值或者某些值<br>
+df['年龄'].isin([20,19])<br>
+针对于全表找<br>
+df.isin([19,22])</p>
+<h1 id="67-行列互换">6.7 行列互换</h1>
+<p>所谓的行列互换就是将行数据转换到列方向上，将列数据转换到行数据上。<br>
+df.T</p>
+<h1 id="7-数据运算">7 数据运算</h1>
+<h2 id="71算数运算">7.1算数运算</h2>
+<pre><code>df['c1'] + df['c2']
+df['c1'] - df['c2']
+df['c1'] * df['c3']
+df['c1'] / df['c2']
+</code></pre>
+<p>给这一行/列所有数据进行操作<br>
+df['C1'] +/-/*// 2</p>
+<h2 id="72比较运算">7.2比较运算</h2>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/-kX9u3mh5/" class="tag">
+                    数据分析
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mongodb-xue-xi/">
+                  <h3 class="post-title">
+                    Mongodb 学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

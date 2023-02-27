@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>某租平台的JS加密 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">某租平台的JS加密</h2>
+            <div class="post-date">2020-07-13</div>
+            
+              <div class="feature-container" style="background-image: url('http://119.3.13.71:7777/images/2020/07/13/2020-07-1316.04.35.png')">
+              </div>
+            
+            <div class="post-content">
+              <p>url :  aHR0cHM6Ly93d3cubWFvbWFvenUuY29tLyMvYnVpbGQ/RGlzdHJpY3Q9JkFyZWE9LTEsLTE=</p>
+<p>在翻页的时候发现翻页的参数进行了加密，返回的数据也进行了加密<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.27.40.png" alt="翻页的参数" loading="lazy"><br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.29.17.png" alt="返回的结果" loading="lazy"></p>
+<p>全局搜索了这个地址，没有搜索到。<br>
+然后启动猴子插件，发现有一个encrypt关键字，于是对全局进行搜索，找到了下面这个地方，打上断点。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.38.23.png" alt="" loading="lazy"><br>
+刷新后发现就是我们要找打的地方，然后分析参数<br>
+参数L是我们搜索的内容，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.41.13.png" alt="" loading="lazy"><br>
+参数e是另外一个函数md5生成的<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.42.30.png" alt="" loading="lazy"><br>
+所以加密方式就解出来，以e为偏移量，对请求的参数就行AES加密即可。</p>
+<p>加密解出来之后，解密也很简单了。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.04.png" alt="" loading="lazy"><br>
+<img src="http://119.3.13.71:7777/images/2020/07/13/2020-07-1315.45.24.png" alt="" loading="lazy"><br>
+完整的JS解密已经放在github上面，需要的朋友可以自取。<br>
+https://github.com/Fizzyi/JS_PROJECT/tree/master/%E6%AF%9B%E6%AF%9B%E7%A7%9F</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mou-dian-jing-ping-tai-can-shu-jia-mi/">
+                  <h3 class="post-title">
+                    某电竞平台参数加密
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

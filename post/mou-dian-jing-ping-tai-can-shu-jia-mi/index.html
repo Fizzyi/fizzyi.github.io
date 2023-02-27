@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>某电竞平台参数加密 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">某电竞平台参数加密</h2>
+            <div class="post-date">2020-07-10</div>
+            
+              <div class="feature-container" style="background-image: url('https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1594372975561&amp;di=d28b449adc79f56fb4a2816b045cb400&amp;imgtype=0&amp;src=http%3A%2F%2Fn.sinaimg.cn%2Fcq%2Fcrawl%2F0%2Fw400h400%2F20180522%2FvHPO-hawmaua5423512.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>污渍，永远的神！</p>
+<p>url: https://www.jdj007.com/schedule.html?gameType=1</p>
+<p>查看请求，发现参数中有个sign,就是此次的目标。</p>
+<p><img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.07.31.png" alt="" loading="lazy"><br>
+全局搜索 sign ,sign:<br>
+发现这个地方很有可能是我们要早的地方，于是打上断点，刷新页面，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.12.58.png" alt="" loading="lazy"><br>
+然后在console 面板中不断的输出，可以证实 <code> a = encodeURIComponent(c.a.stringify(n))</code><br>
+而 <code>n = = i()(t)</code>, <code>t = o = &quot;timestamp=&quot;.concat(r, &quot;&amp;secret=&quot;).concat(&quot;aHVheWluZ19zZWNyZXRfYXBp&quot;)</code>,<code> r  = = (new Date).getTime()</code><br>
+r 就是现在的时间戳，然后拼成了一个字符串，当作了i()函数的参数，所以我们现在进 i() 函数里面看看。<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.17.27.png" alt="" loading="lazy"><br>
+眼熟的感觉来了，之前在另外一个网站也看见过这个 new e.init(),测试后发现这个参数其实是没有什么用的，直接看后面的 finalize(t)函数，好巧不巧，这个函数就在上面，然后进去<code>this._doFinalize()</code>，<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.20.44.png" alt="" loading="lazy"><br>
+然后可以发现其实这个函数就是SHA256加密，那么就知道n这个参数其实就是对参数进行了SHA256加密。</p>
+<p>接着我们来看 <code>encodeURIComponent(c.a.stringify(n))</code>,encodeURIComponent 就是JS自带的一个编码函数，那么我们只需要破解里面的 c.a.stringify(n)，跟进去一看<br>
+<img src="http://119.3.13.71:7777/images/2020/07/10/2020-07-1014.24.02.png" alt="" loading="lazy"><br>
+就是一个Base64 的加密，那么所有的加密就全部解出来。<br>
+整体的思路就是将字符串先进行一个SHA256加密，然后在进行一个Base64的编码，最后在通过URL编码一下。</p>
+<p>完整的JS加密已经上传至我的<a href="https://github.com/Fizzyi/JS_PROJECT">github</a>.</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/mou-sheng-jian-zhu-shi-chang-jian-guan-yu-cheng-xin-xin-xi-fa-bu-ping-tai/">
+                  <h3 class="post-title">
+                    某省建筑市场监管与诚信信息发布平台
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

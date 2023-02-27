@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JS练习之Gojoy | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JS练习之Gojoy</h2>
+            <div class="post-date">2019-11-15</div>
+            
+              <div class="feature-container" style="background-image: url('https://fizzyi.github.io/post-images/js-lian-xi-zhi-gojoy.png')">
+              </div>
+            
+            <div class="post-content">
+              <p>url：https://m.gojoy.cn/pages/login/index?from=%2Fpages%2Fuser%2Findex</p>
+<p>访问该网站，按照惯例打开检查，发现有无限debug阻扰。之前都是点击右边暂停旁边的那个方向键进行取消debug,这次学到了一个新的方法，就是在debug代码这行右键点击前面的序号3，选择第三个 Add condlitional breakpoint，然后在输入框中输入false，然后回车，就设置了一个条件断点。<img src="https://fizzyi.github.io/post-images/1573803144819.png" alt="" loading="lazy"></p>
+<p>随便输入一个账号和密码，在Network下可以看见一个login，观察后发现这个是一个post请求并且携带了一个参数，请求地址是 https://gmall.gojoy.cn/user-service/user/login<br>
+<img src="https://fizzyi.github.io/post-images/1573803305376.png" alt="" loading="lazy"><br>
+我还是第一次看见这种携带参数的方式，😳</p>
+<p>在Network下可以知道这个请求的方式是XHR,我们就可以在Sources下打XHR断点，然后输入关键字login。<br>
+<img src="https://fizzyi.github.io/post-images/1573803623169.png" alt="" loading="lazy"><br>
+找到XHR/fetch Breakpoint,然后点击右边的+,输入login.然后在继续重新登陆，就会断在这里。<br>
+<img src="https://fizzyi.github.io/post-images/1573803747690.png" alt="" loading="lazy"><br>
+妈耶，密密麻麻的参数看的我头大。<br>
+顺着这里往上看，越看头越大。这里就又学到了一个新知识，堆栈。<br>
+<img src="https://fizzyi.github.io/post-images/1573803980463.png" alt="" loading="lazy"><br>
+从上往下一个一个的点，这个堆栈应该就是一种关联方式把，能找到它的父级？（我猜的）<br>
+然后当点到这个(anonymous)的时候，我看到了这个，直觉告诉我，就是它了。<br>
+<img src="https://fizzyi.github.io/post-images/1573804097510.png" alt="" loading="lazy"><br>
+于是在这里打上一个断点，取消xhr断点，然后重新登陆，断点生效，然后来看看这几个参数是什么,这几个参数更加证明了猜想，就是这里发送的请求。<br>
+<img src="https://fizzyi.github.io/post-images/1573804862634.png" alt="" loading="lazy"><br>
+这里u是我输入的参数，那么这个Q应该就是加密的过程了，在console下输入Q，出现了native code,双击进入，我看大佬说一般是进不去的，不过这里可以进去。进去之后看着这，头又大了一圈。<br>
+<img src="https://fizzyi.github.io/post-images/1573805005450.png" alt="" loading="lazy"><br>
+不过在console下输入 a[o.m[[o.m.i[&quot;;&quot;]]].q](o.m[[o.m.i[&quot;;&quot;]]].x  得到的结果就是这个请求的参数。</p>
+<p>新知识总结：<br>
+1 无限debugger的解决方式：在debugger这行前面的序号右键 Add condlitional breakpoint 输入false，可跳过无限debugger。<br>
+2 堆栈这个东西，挺好用的，可以快速找到上一级调用的地方。<br>
+3 如果请求是xhr的话，可以通过打xhr断点来寻找调用的地方。</p>
+<p>来源地址：https://mp.weixin.qq.com/s/Lzb809M3GNJ2hi1m-L56Pw</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/v4o-y8Aa4/" class="tag">
+                    爬虫
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/asyncio-xue-xi/">
+                  <h3 class="post-title">
+                    asyncio 学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

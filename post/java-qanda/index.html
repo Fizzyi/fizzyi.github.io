@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Java Q&amp;A | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Java Q&amp;A</h2>
+            <div class="post-date">2023-02-20</div>
+            
+            <div class="post-content">
+              <h1 id="extends-和-implements-的区别">extends 和 implements 的区别</h1>
+<p>在Java中，<code>extends</code>和<code>implements</code>都是用于表示类和接口之间的关系，但它们之间有一些区别。</p>
+<ol>
+<li>
+<p><code>extends</code>用于表示类和类之间的继承关系，即一个类可以继承另一个类的属性和方法。一个类只能继承一个类，也就是单继承。例如：</p>
+<pre><code class="language-java">javaCopy code
+public class SubClass extends SuperClass {
+    // 子类的成员变量和方法
+}
+</code></pre>
+</li>
+<li>
+<p><code>implements</code>用于表示类和接口之间的实现关系，即一个类必须实现一个或多个接口中定义的所有方法。一个类可以实现多个接口，也就是多实现。例如：</p>
+<pre><code class="language-java">javaCopy code
+public class MyClass implements MyInterface {
+    // 实现 MyInterface 接口中的方法
+}
+</code></pre>
+</li>
+<li>
+<p>继承可以获得父类中的属性和方法，子类可以通过<code>super</code>关键字访问父类中的方法和属性，并且子类可以重写父类中的方法。实现则需要实现接口中定义的所有方法，否则需要将该类声明为抽象类。实现接口可以使得该类具有某种特定的行为，而这种行为可以被其他类重复利用。</p>
+</li>
+<li>
+<p>当一个类同时继承一个类并实现多个接口时，关键字的顺序是<code>extends</code>在前，<code>implements</code>在后。例如：</p>
+<pre><code class="language-java">javaCopy code
+public class MyClass extends SuperClass implements Interface1, Interface2 {
+    // MyClass 的成员变量和方法
+}
+</code></pre>
+</li>
+</ol>
+<p>总之，<code>extends</code>和<code>implements</code>都是Java中重要的关键字，它们分别表示了继承和实现的关系，可以使得Java程序具有更加灵活的架构和更高的代码复用性。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/EH113Unlw/" class="tag">
+                    Java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/js-lian-shou-zhi-mou-lian-meng/">
+                  <h3 class="post-title">
+                    JS练手之某联盟 
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

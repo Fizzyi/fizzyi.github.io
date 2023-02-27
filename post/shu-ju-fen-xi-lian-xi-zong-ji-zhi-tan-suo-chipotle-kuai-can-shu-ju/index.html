@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>数据分析练习 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">数据分析练习</h2>
+            <div class="post-date">2019-12-12</div>
+            
+            <div class="post-content">
+              <h1 id="chipotle快餐数据">Chipotle快餐数据</h1>
+<p>chipo = pd.read_csv(path)</p>
+<h2 id="查看前10行数据">查看前10行数据</h2>
+<pre><code>chipo.head(10)
+</code></pre>
+<h2 id="打印表头">打印表头</h2>
+<pre><code>chipo.columns()
+</code></pre>
+<h2 id="统计某一列中不重复的值的数量">统计某一列中不重复的值的数量</h2>
+<pre><code>chipo[''].nunique()
+</code></pre>
+<h2 id="统计某一列中数据出现的次数">统计某一列中数据出现的次数</h2>
+<pre><code>chipo[''].value_counts()
+</code></pre>
+<h2 id="求和">求和</h2>
+<pre><code>chipo[''].sum()
+</code></pre>
+<h2 id="对某一列数据进行批量处理例如转换为浮点数">对某一列数据进行批量处理，例如转换为浮点数</h2>
+<pre><code>func = lambda x :float(x[1:-1])
+chipo['item_pirce'] = chipo['item_price'].apple(func)
+</code></pre>
+<h1 id="探索2012欧洲杯数据">探索2012欧洲杯数据</h1>
+<h2 id="只显示某一列数据">只显示某一列数据</h2>
+<pre><code>euro12.Goals
+euro12['Goals']
+</code></pre>
+<h2 id="同时多个条件进行排序">同时多个条件进行排序</h2>
+<pre><code>euro12.sort_values(['Red Cards','Yellow Cards'])
+</code></pre>
+<h2 id="求黄牌的平均数">求黄牌的平均数</h2>
+<pre><code>euro12['Yellow Cards'].mean()
+</code></pre>
+<h2 id="选出队伍名为g开头的队伍的数据">选出队伍名为G开头的队伍的数据</h2>
+<pre><code>euro12[euro12.Team.str.startswith('G')]
+</code></pre>
+<h2 id="选取前7列的数据">选取前7列的数据</h2>
+<pre><code>euro12.iloc[:,:7]
+</code></pre>
+<h2 id="找到英格兰england-意大利italy和俄罗斯russia的射正率shooting-accuracy">找到英格兰(England)、意大利(Italy)和俄罗斯(Russia)的射正率(Shooting Accuracy)</h2>
+<pre><code>euro12.loc[euro12.Team.isin(['England','Italy','Russia']),['Team','Shooting Accuracy']]
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/-kX9u3mh5/" class="tag">
+                    数据分析
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/shu-ju-fen-xi/">
+                  <h3 class="post-title">
+                    数据分析
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

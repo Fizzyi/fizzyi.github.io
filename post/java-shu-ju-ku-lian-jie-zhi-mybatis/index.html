@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Java数据库连接之MyBatis | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Java数据库连接之MyBatis</h2>
+            <div class="post-date">2023-02-20</div>
+            
+            <div class="post-content">
+              <h1 id="一-引入依赖">一、引入依赖</h1>
+<pre><code class="language-xml">&lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;2.2.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h1 id="二-mybatis的配置">二、MyBatis的配置</h1>
+<p>MyBatis是一个基于<code>SqlSessionFactory</code>构建的框架，往往是单例模式。构建<code>SqlSessionFactory</code>是通过配置类<code>Configuration</code>来完成的。<br>
+常见的配置内容</p>
+<ul>
+<li>mappers（映射器）：是MyBatis最核心的组件，提供SQL和POJO映射关系。</li>
+<li>typeAliases（类型别名）：因为使用类全限定名会比较长，会对常用的类提供默认的别名，还允许我们通过typeAliases配置自定义的别名。</li>
+<li>typeHandlers（类型处理器）：在MyBatis写入和读取数据库的过程中对于不同类型的数据（对于JAVA是JavaType，对于数据库则是JdbcType）进行自定义转换，在大部分情况下我们不需要使用自定义的typeHandler，因为在MyBatis自身就已经定义了比较多的typeHandler，MyBatis会自动识别javaType和jdbcType，从而实现类型的转换。typeHandler的使用集中在枚举类型中。</li>
+<li>plugins（插件）：拦截器，通过动态代理和责任链模式来完成，可以修改MyBatis底层的实现功能.</li>
+</ul>
+<h2 id="21-mybatis指定别名">2.1 MyBatis指定别名</h2>
+<p>使用注解@Alias指定别名</p>
+<pre><code class="language-java">@Alias(value = &quot;user&quot;) //MyBatis指定别名
+public class User {
+
+    private Long id;
+    private String userName;
+    private String note;
+    private SexEnum sex = null; //枚举
+    }
+</code></pre>
+<h2 id="22-使用mappers进行映射">2.2 使用mappers进行映射</h2>
+<h3 id="221-usermapperxml文件">2.2.1 userMapper.xml文件</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.springboot.chapter4.dao.MyBatisUserDao&quot;&gt;
+    &lt;select id=&quot;getUser&quot; parameterType=&quot;long&quot; resultType=&quot;user&quot;&gt;
+        select id,user_name as userName,sex,note from t_user where id = #{id}
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<ul>
+<li>namespace ：指定一个接口</li>
+<li>select：代表着一个查询语句，id属性指代这条sql，parameterType属性配置为long，代表参数是一个长整形（long）参数，resultType指定返回值类型，这里使用了user，就是上面指定的别名，也可以使用全限定名（com.springboot.chapter4.pojo.User），紧接着是sql语句，这里的列名和POJO的属性名称是保持一直的</li>
+</ul>
+<h3 id="222-定义mybatis操作接口">2.2.2 定义MyBatis操作接口</h3>
+<pre><code class="language-java">@Repository
+public interface MyBatisUserDao {
+    public User getUser(Long id);
+}
+</code></pre>
+<p>这里新写一个接口，不需要任何实现类，它就是 mapper元素的namespace属性定义的MyBatisUserDao。<br>
+它的方法getUser和映射文件中定义的查询SQL的id是保持一致的，参数也是。</p>
+<h3 id="223-使用mapperscan定义扫描">2.2.3 使用@MapperScan定义扫描</h3>
+<pre><code class="language-java">@MapperSacn(
+    //指定扫描包
+    basePackages = &quot;com.springboot.chapter4.*&quot;,
+    
+)
+</code></pre>
+<h2 id="23-配置applicationproperties文件">2.3 配置application.properties文件</h2>
+<pre><code class="language-properties">#MyBatis 映射文件
+mybatis.mapper-locations=classpath:mapper/*.xml
+#MyBatis 扫描别名包和注解@Alias联用
+mybatis.type-aliases-package=com.springboot.chapter4.pojo
+# ??typeHandler
+mybatis.type-handlers-package=com.springboot.chapter4.typeHandler
+</code></pre>
+<p>配置文件只需要修改需要的东西，mybatis-spring-boot-starter对MyBatis启动了默认的配置。</p>
+<h2 id="24-插件plugin">2.4 插件Plugin</h2>
+<h3 id="241定义插件">2.4.1定义插件</h3>
+<pre><code class="language-java">
+@Intercepts({
+        @Signature(type= StatementHandler.class,method = &quot;prepare&quot;,args = {Connection.class,Integer.class})
+})
+public class MyPlugin implements Interceptor {
+    Properties properties = null;
+
+   //拦截方法逻辑
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable{
+        System.out.println(&quot;插件拦截方法&quot;);
+        return invocation.proceed();
+    }
+
+    //生成MyBatis拦截器对象
+    @Override
+    public Object plugin(Object target){
+        return Plugin.wrap(target,this);
+    }
+
+    //设置插件属性
+    @Override
+    public void setProperties(Properties properties){
+        this.properties = properties;
+    }
+
+}
+</code></pre>
+<h3 id="242-插件配置">2.4.2 插件配置</h3>
+<p>在application.properties中添加配置语句<br>
+<code>mybatis.config-location=classpath:mybatis/mybatis-config.xml</code></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/EH113Unlw/" class="tag">
+                    Java
+                  </a>
+                
+                  <a href="https://fizzyi.github.io/tag/Hw_a0KIDP/" class="tag">
+                    数据库
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/java-qanda/">
+                  <h3 class="post-title">
+                    Java Q&amp;A
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

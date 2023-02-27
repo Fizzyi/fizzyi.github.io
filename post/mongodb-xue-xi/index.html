@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Mongodb 学习 | Fizzyi的垃圾桶</title>
+<meta name="description" content="逐渐秃头的程序员">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://fizzyi.github.io/favicon.ico?v=1677492981636">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://fizzyi.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=L0Y7XKKEQJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'L0Y7XKKEQJ');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://fizzyi.github.io">
+        <img src="https://fizzyi.github.io/images/avatar.png?v=1677492981636" class="site-logo">
+        <h1 class="site-title">Fizzyi的垃圾桶</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      逐渐秃头的程序员
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://fizzyi.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Mongodb 学习</h2>
+            <div class="post-date">2019-11-21</div>
+            
+            <div class="post-content">
+              <h1 id="基础学习-文档的crud操作">基础学习 文档的CRUD操作</h1>
+<h2 id="一-增">一、增</h2>
+<p>创建操作或者插入操作会向集合中添加新的文档，如果插入时集合不存在，插入操作会创建对应的集合。<br>
+MongDB有3个插入文档的方法</p>
+<ul>
+<li>db.collection.insert()<br>
+向集合中插入多个文档</li>
+<li>db.collection.insertOne()<br>
+向集合中插入单个文档</li>
+<li>db.collection.insertMany()<br>
+向集合中插入多个文档<br>
+执行操作命令会返回一个结果文档<br>
+{<br>
+&quot;acknowledged&quot; : true,<br>
+&quot;insertedId&quot; : ObjectId(&quot;5d157fe26fcb85935e9cb786&quot;)<br>
+}<br>
+acknowledged代表本次操作的操作状态，状态值包括true和false。insertedId代表的是插入成功的文档的ID。</li>
+</ul>
+<h2 id="二-查">二、查</h2>
+<p>读最基本的语句为 db.collection.find(),会返回所有的文档。这句话类似与mysql中的selct * from info</p>
+<h3 id="21查询条件">2.1查询条件</h3>
+<pre><code>如果要指定查询条件，可以使用过滤表达式,例如找出已经处理过的数据
+db.collection.find({is_deal:1})
+这句话类似与mysql中的 select * from info where id_deal=1
+</code></pre>
+<h3 id="22根据嵌套文档字段查询">2.2根据嵌套文档字段查询</h3>
+<pre><code>例如查询企业信息中的法人代表姓名为张三的数据
+db.collection.find({&quot;info.person_name&quot;:'张三'})
+注意 在使用嵌套文档字段查询时 条件为 &quot;info.person_name&quot; 而不是 info.person_name
+</code></pre>
+<h3 id="23查询与投影操作">2.3查询与投影操作</h3>
+<pre><code>mongodb中提供了多种查询操作符
+- 比较查询操作符
+- 逻辑查询操作符
+- 元素查询操作符
+- 评估查询操作符
+- 地理空间查询操作符
+- 数组查询操作符
+- 按位查询操作
+</code></pre>
+<h4 id="231比较查询操作符">2.3.1比较查询操作符</h4>
+<pre><code>比较是常见的操作，分为同类型比较和非同类型比较。在面对不同的BSON类型值时，比较的并不是值的大小，而是值的类型，即按类比较。MongoDB使用一下类型，顺序从低到高。
+- Minkey
+- Null
+- Numbers
+- Symbol
+- Object
+- Array
+- BinData
+- Objectid
+- Boolean
+- Date
+- Timestamp
+- Regular Expression
+- MaxKey
+数字类型的比较是比较值的大小，字符串的比较是比较的其二进制，数组的小于或者升序比较的数组中最小的元素，大于或者降序比较的是数组中最大的元素。
+mongodb提供了一系列的比较符：
+- $eq 等于
+- $gt 大于
+- $gte 大于等于
+- $in 数组中指定的任何值
+- $lt 小于
+- $lte 小于等于
+- $ne 不等于
+</code></pre>
+<h4 id="232-逻辑查询操作符">2.3.2 逻辑查询操作符</h4>
+<pre><code>逻辑查询操作符一共有4种
+- $and 匹配符合多个条件的文档
+- $not 匹配不符合条件的文档
+- $nor 匹配不符合多个条件的文档
+- $or 匹配符合任一条件的文档
+</code></pre>
+<h4 id="233-元素查询操作符">2.3.3 元素查询操作符</h4>
+<pre><code>- $exists 匹配具有指定字段的文档
+- $type 匹配字段值符合类型的文档
+</code></pre>
+<h4 id="234-数组查询操作符">2.3.4 数组查询操作符</h4>
+<pre><code>- $all 匹配包含查询中执行条件的所有元素的数组
+- $elemMatch 匹配数组字段中至少有一个元素与指定条件相符的文档
+- $size 匹配数组元素符合指定大小的文档
+</code></pre>
+<h3 id="24-cursor对象">2.4 Cursor对象</h3>
+<p>Cursor对象不是查询结果，而是查询返回的接口。当我们调用find()/findMany()/findOne()时，shell并不是立即从数据库中取出数据，而是在我们使用时才会取出数据。<br>
+Cursor对象的方法：<br>
+- cursor.batchSize() 控制MongoDB在单个网络消息中返回客户端的文档数<br>
+- cursor.close() 关闭游标并释放相关的服务器资源。<br>
+- cursor.count() 返回结果集中的文档数<br>
+- cursor.skip() 返回仅在传递或者跳过多个文档后才开始返回结果的游标<br>
+- cursor.sort() 返回根据排序规范排序的结果<br>
+- cursor.toArray() 返回一个数组 其中包含游标返回的所有文档</p>
+<h4 id="241-示例">2.4.1 示例</h4>
+<pre><code>- 统计： 
+    db.company_info.find().size() 会受到skip()或者limit()的影响
+    db.company_info.find().count()
+- skip()和limit():
+    db.company_info.find().skip(10).limit(3) 从第10个开始取3个文档。
+- 排序:
+    db.company_info.find().sort({_id:-1}) 根据_id降序排序。
+</code></pre>
+<h2 id="三-改">三、 改</h2>
+<pre><code>db.collection.updateOne()
+db.collection.updateMany()
+db.collection.replaceOne()
+</code></pre>
+<h3 id="31更新单个文档">3.1更新单个文档</h3>
+<pre><code>db.collection.updateOne()
+</code></pre>
+<p>例如将company_info集合中的 名为 张三 的是否处理改为1<br>
+db.company_info.updateOne({name:'张三'},{$set:{'is_deal':1}})<br>
+返回的内容为：<br>
+{ &quot;acknowledged&quot; : true, &quot;matchedCount&quot; : 1, &quot;modifiedCount&quot; : 1 }<br>
+acknowledged 表示 操作状态，matchedCount表示匹配的文档数，modifiedCount表示修改过的文档数。</p>
+<p>更新操作中有个upsert操作，即当upsert的值为true时，如果在文档中没有匹配到对应的文档，那么会将该文档当作新文档添加到集合中去。<br>
+例如 将company_info中名为 李四 的性别改为男<br>
+db.company_info.updataOne({name:'李四'},{$set:{'is_deal':'1'}},{upsert:true})<br>
+返回的结果为<br>
+{<br>
+&quot;acknowledged&quot; : true,<br>
+&quot;matchedCount&quot; : 0,<br>
+&quot;modifiedCount&quot; : 0,<br>
+&quot;upsertedId&quot; : ObjectId(&quot;5d15d6c718f0856b4385c123&quot;)<br>
+}<br>
+返回的结果表示 操作成功，但是没有匹配的文档数为0 修改成功的文档数为0，这就说明是新增加了数据，可以通过这三个来判断到底是新增还是更新数据。</p>
+<h3 id="32更新多个文档">3.2更新多个文档</h3>
+<p>updateMany() 方法可以更新多个文档，其语法格式与 updateOne() 相同。<br>
+db.company_info.updateMany({is_deal:'0'},{$set:{'is_deal':'1'}})</p>
+<h3 id="33替换文档">3.3替换文档</h3>
+<p>reolaceOne() 方法会根据过滤器替换集合中的单个文档。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://fizzyi.github.io/tag/Hw_a0KIDP/" class="tag">
+                    数据库
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://fizzyi.github.io/post/js-lian-xi-zhi-gojoy/">
+                  <h3 class="post-title">
+                    JS练习之Gojoy
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
